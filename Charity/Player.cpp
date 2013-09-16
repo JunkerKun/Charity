@@ -4,7 +4,7 @@
 extern Engine* engine;
 
 Player::Player(sf::Texture* tex):Image(tex) {
-	speed=64;
+	speed=70;
 	objectIndex=1;
 	direction=0;
 	canMove=true;
@@ -12,23 +12,14 @@ Player::Player(sf::Texture* tex):Image(tex) {
 	SetOrigin(imageWidth/2,imageHeight-7);
 
 	AddSequence(0,0,0.25);
-	AddSequence(1,1,0.25);
-	AddSequence(2,2,0.25);
-	AddSequence(3,3,0.25);
-	AddSequence(0,0,0.25);
-	AddSequence(1,1,0.25);
-	AddSequence(2,2,0.25);
-	AddSequence(3,3,0.25);
-
-	AddSequence(0,0,0.25);
 	AddSequence(5,5,0.25);
 	AddSequence(10,10,0.25);
 	AddSequence(15,15,0.25);
 
-	AddSequence(1,4,0.25);
-	AddSequence(6,9,0.25);
-	AddSequence(11,14,0.25);
-	AddSequence(16,19,0.25);
+	AddSequence(1,4,0.2);
+	AddSequence(6,9,0.2);
+	AddSequence(11,14,0.2);
+	AddSequence(16,19,0.2);
 
 	SetSequence(0,1);
 	engine->camera->target=this;
