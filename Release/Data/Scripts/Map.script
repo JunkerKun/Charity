@@ -1,12 +1,12 @@
 Map {
 function(Init);
-debug();
-setEffect(noise,1);
+//debug();
+//setEffect(noise,1);
 end();
 
 function(Bed);
 showText("Charity","I don't want to sleep.");
-showText("Charity","At least not now.");
+showText("Charity","At least now.");
 end();
 
 function(Table);
