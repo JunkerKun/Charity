@@ -9,8 +9,10 @@ public:
 	ResourcesManager();
 	~ResourcesManager();
 	bool AddTexture(std::string name, std::string path);
+	void DesaturateTexture(std::string name);
 	sf::Texture* GetTexture(std::string name);
 	sf::Texture* GetTexture(int index);
+	bool DeleteTexture(std::string name);
 	std::string GetTextureName(int index);
 	int GetTexturesNumber();
 	bool AddFont(int type, std::string path);

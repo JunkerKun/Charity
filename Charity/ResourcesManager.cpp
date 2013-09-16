@@ -1,8 +1,26 @@
 #include "ResourcesManager.h"
+#include "Engine.h"
+
+extern Engine* engine;
 
 ResourcesManager::ResourcesManager() {
 	texturesList= new std::map<std::string,sf::Texture*>;
 	fontText= new sf::Font;
+	sf::Image img;
+	img.create(engine->windowSize.x,engine->windowSize.y);
+	for (int i=0;i<engine->windowSize.x;i++) {
+		for (int j=0;j<engine->windowSize.y;j++) {
+			int chance=rand()%50;
+			if (chance==1) {
+				img.setPixel(i,j,sf::Color(128,128,128,255));
+			};
+		};
+	};
+	img.createMaskFromColor(sf::Color::Black);
+	sf::Texture* noiseTexture=new sf::Texture;
+	noiseTexture->loadFromImage(img);
+	noiseTexture->setRepeated(true);
+	texturesList->insert(std::pair<std::string,sf::Texture*>("sprNoise",noiseTexture));
 };
 
 ResourcesManager::~ResourcesManager() {
@@ -20,6 +38,34 @@ bool ResourcesManager::AddTexture(std::string name, std::string path) {
 	tex->loadFromFile(path);
 	texturesList->insert(std::pair<std::string,sf::Texture*>(name,tex));
 	return true;
+};
+
+bool ResourcesManager::DeleteTexture(std::string name) {
+	std::map<std::string,sf::Texture*>::iterator it=texturesList->find(name);
+	if (it==texturesList->end()) return false;
+	delete it->second;
+	texturesList->erase(it);
+	return true;
+};
+
+void ResourcesManager::DesaturateTexture(std::string name) {
+	sf::Texture* tex=GetTexture(name);
+	sf::Image img=tex->copyToImage();
+	for (int i=0;i<img.getSize().x;i++) {
+		for (int j=0;j<img.getSize().y;j++) {
+			sf::Color pixel=img.getPixel(i,j);
+			sf::Color saturation;
+			saturation.r=pixel.r*0.3+pixel.g*0.59+pixel.b*0.11;
+			saturation.g=pixel.r*0.3+pixel.g*0.59+pixel.b*0.11;
+			saturation.b=pixel.r*0.3+pixel.g*0.59+pixel.b*0.11;
+			saturation.a=pixel.a;
+			img.setPixel(i,j,saturation);
+		};
+	};
+	DeleteTexture(name);
+	sf::Texture* tex2=new sf::Texture();
+	tex2->loadFromImage(img);
+	texturesList->insert(std::pair<std::string,sf::Texture*>(name,tex2));
 };
 
 sf::Texture* ResourcesManager::GetTexture(std::string name) {

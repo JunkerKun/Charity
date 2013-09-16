@@ -32,6 +32,7 @@ public:
 	float GetDelta();
 	bool Update();
 	bool Draw();
+	void SetDrawNoise(bool mode=true);
 	sf::Event GetInputEvent();
 	std::map<std::wstring,int>* commandFunctions;
 	std::vector<std::wstring>* commands;
@@ -64,7 +65,7 @@ private:
 	sf::Event inputEvent;
 	sf::Text* debugText;
 	
-	bool isFocused;
+	bool isFocused, drawNoise;
 	float delta;
 };
 #endif

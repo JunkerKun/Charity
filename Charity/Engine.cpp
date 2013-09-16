@@ -17,6 +17,8 @@ Engine::Engine() {
 	commandPause = false;
 	commandReturn = 0;
 
+	drawNoise=false;
+
 	sizeText=16;
 	colorText=sf::Color::White;
 };
@@ -33,11 +35,6 @@ void Engine::Begin() {
 	textBox=NULL;
 	resourcesManager=new ResourcesManager();
 	scripting.ExecuteFile("Data/Resources.script");
-	/*resourcesManager->AddTexture("UITextBox","Data/UI/TextBox.png");
-	resourcesManager->AddTexture("TileSet","Data/Tiles/TileSet.png");
-	resourcesManager->AddTexture("sprTable","Data/Sprites/Table.png");
-	resourcesManager->AddTexture("sprShadow","Data/Sprites/Shadow.png");
-	resourcesManager->AddFont(1,"Data/Fonts/STREET.ttf");*/
 	LoadMap("Map");
 	scripting.ExecuteFunction(L"Init");
 
@@ -78,6 +75,15 @@ bool Engine::Draw() {
 	renderWindow.clear();
 	tilesManager->Draw(renderWindow);
 	objectsManager->Draw(renderWindow);
+
+	if (drawNoise) {
+	sf::Sprite spr;
+	spr.setTexture(*resourcesManager->GetTexture("sprNoise"));
+	spr.setTextureRect(sf::IntRect(rand()%windowSize.x,rand()%windowSize.y,windowSize.x,windowSize.y));
+	spr.setPosition(camera->xView,camera->yView);
+	renderWindow.draw(spr);
+	};
+
 	if (textBox!=NULL) textBox->Draw(renderWindow);
 	if (debug) {
 		debugText->setPosition(camera->xView,camera->yView);
@@ -108,6 +114,10 @@ bool Engine::Tick() {
 	};
 
 	return true;
+};
+
+void Engine::SetDrawNoise(bool mode) {
+	drawNoise=mode;
 };
 
 float Engine::GetDelta() {

@@ -186,6 +186,17 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 				textBox->GetIndex()).find_first_of(L"]")+2));
 		};
 		return true;
+	} else if (command==L"setEffect") {
+		do {
+			if (parameters.at(1)==L"noise") {
+				engine->SetDrawNoise(stoi(parameters.at(2)));
+				break;
+			};
+		} while(false);
+		return true;
+	} else if (command==L"debug") {
+		engine->debug = true;
+		return true;
 	} else if (command==L"end") {
 		engine->commandPause = true;
 		return true;
@@ -195,6 +206,10 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
 		parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
 		engine->resourcesManager->AddTexture(wStringToString(parameters.at(1)),wStringToString(parameters.at(2)));
+		return true;
+	}else if(command==L"desaturateTexture") {
+		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+		engine->resourcesManager->DesaturateTexture(wStringToString(parameters.at(1)));
 		return true;
 	} else if(command==L"addFont") {
 		parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);

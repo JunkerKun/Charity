@@ -6,7 +6,7 @@ extern Engine* engine;
 Block::Block():Object() {
 	SetBBox(-16,-16,32,32);
 	objectIndex=0;
-	visible=engine->debug;
+	visible=false;
 	solid=true;
 };
 
@@ -18,7 +18,7 @@ bool Block::Update() {
 };
 
 bool Block::Draw(sf::RenderTarget& RT) {
-	if (visible) {
+	if (engine->debug) {
 	sf::RectangleShape RS;
 	RS.setPosition(x+bBox.left,y+bBox.top);
 	RS.setSize(sf::Vector2f(bBox.width,bBox.height));

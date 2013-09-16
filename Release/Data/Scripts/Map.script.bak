@@ -1,6 +1,6 @@
 Map {
 function(Init);
-debug();
+debug(1);
 setEffect(noise,1);
 end();
 
