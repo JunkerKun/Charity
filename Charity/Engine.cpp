@@ -19,8 +19,6 @@ Engine::Engine() {
 
 	sizeText=16;
 	colorText=sf::Color::White;
-
-	pathPlayerSprite = "Data/Sprites/Charity.png";
 };
 
 void Engine::Begin() {
@@ -34,12 +32,12 @@ void Engine::Begin() {
 	tilesManager=new TilesManager();
 	textBox=NULL;
 	resourcesManager=new ResourcesManager();
-	resourcesManager->AddTexture("UITextBox","Data/UI/TextBox.png");
+	scripting.ExecuteFile("Data/Resources.script");
+	/*resourcesManager->AddTexture("UITextBox","Data/UI/TextBox.png");
 	resourcesManager->AddTexture("TileSet","Data/Tiles/TileSet.png");
-	resourcesManager->AddTexture("sprPlayer",pathPlayerSprite);
 	resourcesManager->AddTexture("sprTable","Data/Sprites/Table.png");
 	resourcesManager->AddTexture("sprShadow","Data/Sprites/Shadow.png");
-	resourcesManager->AddFont(1,"Data/Fonts/STREET.ttf");
+	resourcesManager->AddFont(1,"Data/Fonts/STREET.ttf");*/
 	LoadMap("Map");
 	scripting.ExecuteFunction(L"Init");
 

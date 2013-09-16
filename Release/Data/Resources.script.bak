@@ -1,0 +1,8 @@
+Resources {
+//addTexture("sprPlayer","Data/Sprites/Charity.png");
+addTexture("UITextBox","Data/UI/TextBox.png");
+addTexture("TileSet","Data/Tiles/TileSet.png");
+addTexture("sprTable","Data/Sprites/Table.png");
+addTexture("sprShadow","Data/Sprites/Shadow.png");
+addFont(1,"Data/Fonts/STREET.ttf");
+};

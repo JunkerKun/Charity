@@ -23,10 +23,13 @@ bool ResourcesManager::AddTexture(std::string name, std::string path) {
 };
 
 sf::Texture* ResourcesManager::GetTexture(std::string name) {
-	return texturesList->find(name)->second;
+	std::map<std::string,sf::Texture*>::iterator it=texturesList->find(name);
+	if (it==texturesList->end()) return NULL;
+	return it->second;
 };
 
 sf::Texture* ResourcesManager::GetTexture(int index) {
+	if (index>texturesList->size()) return NULL;
 	std::map<std::string,sf::Texture*>::iterator it=texturesList->begin();
 	for(int i=0;i<index;i++) {
 		it++;
@@ -35,6 +38,7 @@ sf::Texture* ResourcesManager::GetTexture(int index) {
 };
 
 std::string ResourcesManager::GetTextureName(int index) {
+	if (index>texturesList->size()) return "";
 	std::map<std::string,sf::Texture*>::iterator it=texturesList->begin();
 	for(int i=0;i<index;i++) {
 		it++;

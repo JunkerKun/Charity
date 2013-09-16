@@ -52,7 +52,6 @@ public:
 	bool GetIsFocused();
 	bool LoadMap(std::string name);
 	std::string pathMusic;
-	char* pathPlayerSprite;
 	char* pathMap;
 
 	int sizeText;

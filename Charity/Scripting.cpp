@@ -189,6 +189,17 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 	} else if (command==L"end") {
 		engine->commandPause = true;
 		return true;
+	}
+	//Resources add
+	else if(command==L"addTexture") {
+		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+		parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
+		engine->resourcesManager->AddTexture(wStringToString(parameters.at(1)),wStringToString(parameters.at(2)));
+		return true;
+	} else if(command==L"addFont") {
+		parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
+		engine->resourcesManager->AddFont(stoi(parameters.at(1)),wStringToString(parameters.at(2)));
+		return true;
 	};
 	return false;
 };
