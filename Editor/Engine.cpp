@@ -13,7 +13,7 @@ Engine::Engine() {
 	windowView.setSize(windowSize.x, windowSize.y);
 	windowView.setCenter(xView+windowSize.x/2,yView+windowSize.y/2);
 	renderWindow.setView(windowView);
-	pathPlayerSprite="Data/Sprites/RD.png";
+	pathPlayerSprite="Data/Sprites/Charity.png";
 	save=false;
 	load=false;
 	create=false;

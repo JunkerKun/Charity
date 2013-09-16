@@ -54,6 +54,7 @@ public:
 	bool LoadMap(std::string name);
 	std::string pathMusic;
 	char* pathMap;
+	std::string playerSpriteName;
 
 	int sizeText;
 	sf::Color colorText;

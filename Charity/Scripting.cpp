@@ -164,7 +164,11 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 	if (command==L"showText") {
 		bool first=false;
 		if (engine->textBox==NULL) {
-			engine->textBox=new TextBox(20,332);
+			if (parameters.at(3)==L"-1") engine->textBox=new TextBox(20,332);
+			else {
+				parameters.at(3)=parameters.at(3).substr(1,parameters.at(3).length()-2);
+				engine->textBox=new TextBox(0,0,engine->resourcesManager->GetTexture(wStringToString(parameters.at(3))));
+			};
 			first=true;
 		};
 		if (parameters.at(2)!=L"-1") {

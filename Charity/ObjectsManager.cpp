@@ -81,7 +81,7 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 		temp=new Block();
 		break;
 	case 1:
-		temp=new Player(engine->resourcesManager->GetTexture("sprPlayer"));
+		temp=new Player(engine->resourcesManager->GetTexture(engine->playerSpriteName));
 		break;
 	case 2: {
 		temp=new Usable();

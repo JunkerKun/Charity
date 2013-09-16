@@ -18,6 +18,7 @@ Engine::Engine() {
 	commandReturn = 0;
 
 	drawNoise=false;
+	playerSpriteName="sprPlayer";
 
 	sizeText=16;
 	colorText=sf::Color::White;

@@ -3,11 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 #include "Object.h"
-#include <SFML/Graphics.hpp>
 
 class TextBox : public Object {
 public:
-	TextBox(int x=0, int y=0);
+	TextBox(int x=0, int y=0, sf::Texture* tex=NULL);
 	~TextBox();
 	bool Update();
 	bool Draw(sf::RenderTarget &RT);
@@ -20,10 +19,11 @@ public:
 private:
 	sf::Sprite sprite;
 	sf::Text text;
+	sf::Texture* textImage;
 	std::vector<std::wstring> strings; 
 	int index;
 	float timer;
-	bool locked;
+	bool locked, nvlMode;
 };
 
 #endif

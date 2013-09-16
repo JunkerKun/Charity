@@ -3,14 +3,26 @@
 
 extern Engine* engine;
 
-TextBox::TextBox(int xx, int yy):Object() {
+TextBox::TextBox(int xx, int yy, sf::Texture* texture):Object() {
+	nvlMode=false;
+	textImage=texture;
+	objectIndex=10001;
 	SetPosition(xx,yy);
+	if (textImage==NULL) {
 	sf::Texture* tex=engine->resourcesManager->GetTexture("UITextBox");
 	sprite.setTexture(*tex,true);
 	bBox.left=0;
 	bBox.top=0;
 	bBox.width=tex->getSize().x;
 	bBox.height=tex->getSize().y;
+	} else {
+		nvlMode=true;
+		sprite.setTexture(*textImage,true);
+		bBox.left=0;
+		bBox.top=0;
+		bBox.width=textImage->getSize().x;
+		bBox.height=textImage->getSize().y;
+	};
 	text.setColor(engine->colorText);
 	text.setCharacterSize(engine->sizeText);
 	text.setFont(*engine->resourcesManager->GetFont(1));
@@ -67,6 +79,13 @@ void TextBox::Unlock() {
 bool TextBox::Draw(sf::RenderTarget &RT) {
 	if (!visible) return false;
 	RT.draw(sprite);
+	if (nvlMode) {
+		sf::RectangleShape RS;
+		RS.setPosition(engine->camera->xView,engine->camera->yView);
+		RS.setSize(sf::Vector2f(engine->windowSize.x,engine->windowSize.y));
+		RS.setFillColor(sf::Color(0,0,0,200));
+		RT.draw(RS);
+	};
 	RT.draw(text);
 	return true;
 };
