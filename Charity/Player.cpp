@@ -4,6 +4,7 @@
 extern Engine* engine;
 
 Player::Player(sf::Texture* tex):Image(tex) {
+	hp=100;
 	speed=70;
 	objectIndex=1;
 	direction=0;

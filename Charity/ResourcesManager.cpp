@@ -5,7 +5,7 @@ extern Engine* engine;
 
 ResourcesManager::ResourcesManager() {
 	texturesList= new std::map<std::string,sf::Texture*>;
-	fontText= new sf::Font;
+	fontText= new Font(14,255,255,255);
 	sf::Image img;
 	img.create(engine->windowSize.x,engine->windowSize.y);
 	for (int i=0;i<engine->windowSize.x;i++) {
@@ -96,16 +96,18 @@ int ResourcesManager::GetTexturesNumber() {
 	return texturesList->size();
 };
 
-bool ResourcesManager::AddFont(int type, std::string path) {
+bool ResourcesManager::AddFont(int type, std::string path, int size, int r, int g, int b) {
 	switch (type) {
 	case 1:
-		if (!fontText->loadFromFile(path)) return false;
+		if (!fontText->font.loadFromFile(path)) return false;
+		fontText->color=sf::Color(r,g,b,255);
+		fontText->size=size;
 		break;
 	};
 	return true;
 };
 
-sf::Font* ResourcesManager::GetFont(int type) {
+Font* ResourcesManager::GetFont(int type) {
 	switch (type) {
 	case 1:
 		return fontText;

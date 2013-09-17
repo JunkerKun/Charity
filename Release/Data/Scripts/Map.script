@@ -13,7 +13,10 @@ showText("Charity","My table. It's so old...");
 end();
 
 function(TableBook);
-showText("Equestrian History - The Trixie wars.# # #In the year 40 after the day of coronation, Princess Twilight Sparkle defeated the Great and Powerful Trixie and took her title. Now officially named the Great and Powerful Princess Twilight Sparkle, she has demonstrated time and time again that she is the greatest pony to have ever lead an imperial army, save perhaps the holy god-empress herself.# #As the only surviving element of harmony, she is the symbol of the Solar empire's cause and it's side to righteousness. Forever may she guide us, for as long as the sun lives on, her light will be burning forever brightly.# #And let her accolades heap ever more for her invaluable service to our goddess.",-1,"imgBook");
+showText("Equestrian History - The Trixie wars.",-1,"imgBook");
+extendText("# #In the year 40 after the day of coronation, Princess Twilight Sparkle defeated the Great and Powerful Trixie and took her title. Now officially named the Great and Powerful Princess Twilight Sparkle, she has demonstrated time and time again that she is the greatest pony to have ever lead an imperial army, save perhaps the holy god-empress herself.");
+extendText("# #As the only surviving element of harmony, she is the symbol of the Solar empire's cause and it's side to righteousness. Forever may she guide us, for as long as the sun lives on, her light will be burning forever brightly.");
+extendText("# #And let her accolades heap ever more for her invaluable service to our goddess.");
 end();
 
 function(Nightstand);

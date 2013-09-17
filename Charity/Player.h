@@ -12,6 +12,7 @@ public:
 private:
 	float speed;
 	float direction;
+	int hp;
 	sf::Sprite sprShadow;
 };
 

@@ -56,9 +56,6 @@ public:
 	char* pathMap;
 	std::string playerSpriteName;
 
-	int sizeText;
-	sf::Color colorText;
-
 	bool debug;
 private:
 	sf::RenderWindow renderWindow;

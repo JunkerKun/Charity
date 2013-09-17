@@ -31,10 +31,10 @@ bool CollisionIntersect(Object* o1, Object* o2) {
 Object* CollisionCheckPoint(float x, float y, unsigned int index) {
 	int chunkX = floor(engine->camera->xView/engine->objectsManager->chunkSize.x);
 	int chunkY = floor(engine->camera->yView/engine->objectsManager->chunkSize.y);
-	int chunkXStart = std::max(0,chunkX-1);
-	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(engine->objectsManager->chunksNumber.x,chunkX+2);
-	int chunkYEnd = std::min(engine->objectsManager->chunksNumber.y,chunkY+2);
+	int chunkXStart = chunkX;//std::max(0,chunkX-1);
+	int chunkYStart = chunkY;//std::max(0,chunkY-1);
+	int chunkXEnd = chunkX+1;//std::min(engine->objectsManager->chunksNumber.x,chunkX+2);
+	int chunkYEnd = chunkY+1;//std::min(engine->objectsManager->chunksNumber.y,chunkY+2);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			int size=engine->objectsManager->chunks->at(i)->at(j)->list->size();
@@ -53,10 +53,10 @@ Object* CollisionCheckPoint(float x, float y, unsigned int index) {
 Object* CollisionCheckIntersect(Object* o1, unsigned int index) {
 	int chunkX = floor(engine->camera->xView/engine->objectsManager->chunkSize.x);
 	int chunkY = floor(engine->camera->yView/engine->objectsManager->chunkSize.y);
-	int chunkXStart = std::max(0,chunkX-1);
-	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(engine->objectsManager->chunksNumber.x,chunkX+2);
-	int chunkYEnd = std::min(engine->objectsManager->chunksNumber.y,chunkY+2);
+	int chunkXStart = chunkX;//std::max(0,chunkX-1);
+	int chunkYStart = chunkY;//std::max(0,chunkY-1);
+	int chunkXEnd = chunkX+1;//std::min(engine->objectsManager->chunksNumber.x,chunkX+2);
+	int chunkYEnd = chunkY+1;//std::min(engine->objectsManager->chunksNumber.y,chunkY+2);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			int size=engine->objectsManager->chunks->at(i)->at(j)->list->size();

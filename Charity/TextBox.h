@@ -12,6 +12,7 @@ public:
 	bool Draw(sf::RenderTarget &RT);
 	void SetText(std::wstring str);
 	void AddText(std::wstring text);
+	void ExtendText(std::wstring text);
 	std::vector<std::wstring> GetStrings();
 	int GetIndex();
 	void Unlock();

@@ -4,6 +4,16 @@
 #include <SFML\Graphics.hpp>
 #include <map>
 
+struct Font {
+	sf::Font font;
+	int size;
+	sf::Color color;
+	Font(int siz, int r, int g, int b) {
+		size=16;
+		color=sf::Color(r,g,b,255);
+	};
+};
+
 class ResourcesManager {
 public:
 	ResourcesManager();
@@ -15,11 +25,11 @@ public:
 	bool DeleteTexture(std::string name);
 	std::string GetTextureName(int index);
 	int GetTexturesNumber();
-	bool AddFont(int type, std::string path);
-	sf::Font* GetFont(int type); 
+	bool AddFont(int type, std::string path, int size=16, int r=255, int g=255, int b=255);
+	Font* GetFont(int type); 
 private:
 	std::map<std::string,sf::Texture*>* texturesList;
-	sf::Font* fontText;
+	Font* fontText;
 };
 
 #endif

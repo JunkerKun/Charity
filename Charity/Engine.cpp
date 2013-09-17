@@ -19,9 +19,6 @@ Engine::Engine() {
 
 	drawNoise=false;
 	playerSpriteName="sprPlayer";
-
-	sizeText=16;
-	colorText=sf::Color::White;
 };
 
 void Engine::Begin() {
@@ -41,9 +38,10 @@ void Engine::Begin() {
 
 	if (debug) {
 		debugText=new sf::Text();
-		debugText->setColor(colorText);
-		debugText->setCharacterSize(sizeText);
-		debugText->setFont(*resourcesManager->GetFont(1));
+		Font* fnt=resourcesManager->GetFont(1);
+		debugText->setColor(fnt->color);
+		debugText->setCharacterSize(fnt->size);
+		debugText->setFont(fnt->font);
 	};
 };
 

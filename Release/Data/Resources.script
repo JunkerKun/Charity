@@ -6,5 +6,5 @@ addTexture("TileSet","Data/Tiles/TileSet.png");
 addTexture("sprTable","Data/Sprites/Table.png");
 addTexture("sprTableBook","Data/Sprites/TableBook.png");
 addTexture("sprShadow","Data/Sprites/Shadow.png");
-addFont(1,"Data/Fonts/STREET.ttf");
+addFont(1,"Data/Fonts/STREET.ttf",19);
 };

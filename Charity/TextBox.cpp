@@ -23,9 +23,10 @@ TextBox::TextBox(int xx, int yy, sf::Texture* texture):Object() {
 		bBox.width=textImage->getSize().x;
 		bBox.height=textImage->getSize().y;
 	};
-	text.setColor(engine->colorText);
-	text.setCharacterSize(engine->sizeText);
-	text.setFont(*engine->resourcesManager->GetFont(1));
+	Font* fnt=engine->resourcesManager->GetFont(1);
+	text.setColor(fnt->color);
+	text.setCharacterSize(fnt->size);
+	text.setFont(fnt->font);
 	index=0;
 	engine->objectsManager->GetPlayer()->canMove=false;
 	locked=true;
@@ -96,6 +97,10 @@ void TextBox::SetText(std::wstring str) {
 
 void TextBox::AddText(std::wstring string) {
 	strings.push_back(string);
+};
+
+void TextBox::ExtendText(std::wstring string) {
+	strings.at(strings.size()-1)+=string;
 };
 
 sf::Text TextBox::GetTextBox() {

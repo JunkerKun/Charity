@@ -190,6 +190,12 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 				textBox->GetIndex()).find_first_of(L"]")+2));
 		};
 		return true;
+	} else if (command==L"extendText") {
+		if (engine->textBox!=NULL) {
+			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+		engine->textBox->ExtendText(WrapString(parameters.at(1),engine->textBox->GetBBox().width-20));
+		};
+		return true;
 	} else if (command==L"setEffect") {
 		do {
 			if (parameters.at(1)==L"noise") {
@@ -217,7 +223,11 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		return true;
 	} else if(command==L"addFont") {
 		parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
-		engine->resourcesManager->AddFont(stoi(parameters.at(1)),wStringToString(parameters.at(2)));
+		if (parameters.at(3)!=L"-1") {
+			engine->resourcesManager->AddFont(stoi(parameters.at(1)),wStringToString(parameters.at(2)),stoi(parameters.at(3)));
+		} else {
+			engine->resourcesManager->AddFont(stoi(parameters.at(1)),wStringToString(parameters.at(2)));
+		};
 		return true;
 	};
 	return false;
