@@ -30,6 +30,7 @@ TextBox::TextBox(int xx, int yy, sf::Texture* texture):Object() {
 	index=0;
 	engine->objectsManager->GetPlayer()->canMove=false;
 	locked=true;
+	timer=0;
 };
 
 std::vector<std::wstring> TextBox::GetStrings() {

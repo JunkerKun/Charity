@@ -117,7 +117,7 @@ void Scripting::SplitString(std::wstring str, std::vector<std::wstring> &strings
 		if (temp>qpos && qpos!=str.npos) {
 			str.erase(0,qpos+1);
 			qpos=str.find_first_of(L'"');
-			/*if (qpos==str.length()-1) {
+			/*if (qpos==str.find_first_of(L")")-1) {
 			str.insert(0,L"\"");
 			break;
 			};*/
