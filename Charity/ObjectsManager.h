@@ -5,6 +5,8 @@
 #include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
 #include "Object.h"
+#include "Functions.h"
+#include "Player.h"
 
 struct Chunk {
 	std::vector<Object*>* list;
@@ -13,6 +15,30 @@ struct Chunk {
 	};
 	~Chunk() {
 		delete list;
+	};
+};
+
+struct Mover {
+	Object* object;
+	float speed;
+	sf::Vector2i coords;
+	bool toDelete;
+	Mover(Object* obj, int x, int y, float sp) {
+		object=obj;
+		speed=sp;
+		coords.x=x;
+		coords.y=y;
+		toDelete=false;
+	};
+	void Update() {
+		object->x=Increment(object->x,coords.x,speed);
+		object->y=Increment(object->y,coords.y,speed);
+		object->isControlled=true;
+		object->isMoving=true;
+		if (object->x==coords.x && object->y==coords.y) {
+			toDelete=true;
+			object->isControlled=false;
+		};
 	};
 };
 
@@ -25,18 +51,21 @@ public:
 	void Clear(int sizeX, int sizeY);
 	Object* AddObject(int x, int y, int index, std::string function="none");
 	void DeleteObject(Object* obj);
+	void AddMover(Object* obj, int x, int y, float sp);
+	void DeleteMover(int index);
 	void Resize(int sizeX, int sizeY);
 	bool LoadMap(std::string path);
 	void DeleteAt(int x, int y);
 	Object* GetObjectAt(int x, int y);
 	Object* FindObject(Object* obj);
-	Object* GetPlayer();
+	Player* GetPlayer();
 	void SetPlayer(Object* obj);
 	sf::Vector2i chunkSize;
 	sf::Vector2i chunksNumber;
 	std::vector<std::vector<Chunk*>*>* chunks;
+	std::vector<Mover*> movers;
 private:
-	Object* player;
+	Player* player;
 };
 
 #endif

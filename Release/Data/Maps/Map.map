@@ -33,16 +33,18 @@
 0 464 336 none 
 0 176 368 none 
 0 464 368 none 
+4 448 384 CornerGood 
+4 192 384 CornerBad 
+0 208 400 none 
+0 240 400 none 
 0 272 400 none 
 0 304 400 none 
 0 400 400 none 
-0 208 400 none 
-0 240 400 none 
+0 368 400 none 
+0 432 400 none 
 0 336 400 none 
 0 176 400 none 
 0 464 400 none 
-0 368 400 none 
-0 432 400 none 
 -404
 TileSet 448 128 0 0 0 
 TileSet 448 160 0 0 0 

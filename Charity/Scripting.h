@@ -15,6 +15,7 @@ public:
 	std::wstring ToWString(float number);
 	std::string wStringToString(std::wstring str);
 	std::wstring StringToWString(std::string str);
+	std::wstring Calculate(std::wstring str);
 	void SplitString(std::wstring str, std::vector<std::wstring> &stringsarray);
 	bool ExecuteCommand(std::vector<std::wstring> &parameters);
 	bool ExecuteString(std::wstring string);

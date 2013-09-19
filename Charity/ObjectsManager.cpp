@@ -46,9 +46,20 @@ void ObjectsManager::Update() {
 	int chunkYEnd = std::min(chunksNumber.y,chunkYStart+3);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
-			int size=chunks->at(i)->at(j)->list->size();
-			for(int k=0;k<size;k++) {
+			//int size=;
+			for(int k=0;k<chunks->at(i)->at(j)->list->size();k++) {
 				chunks->at(i)->at(j)->list->at(k)->Update();
+			};
+		};
+	};
+	if (movers.size()!=0) {
+		int size=movers.size();
+		for(int i=0;i<size;i++) {
+			if (movers[i]->toDelete) {
+				DeleteMover(i);
+				size--;
+			} else {
+				movers[i]->Update();
 			};
 		};
 	};
@@ -95,6 +106,12 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 		dec->spriteName=function;
 		break;
 			};
+	case 4: {
+		temp=new Trigger();
+		Trigger* trg = static_cast<Trigger*>(temp);
+		trg->function=function;
+		break;
+			};
 	};
 	temp->SetPosition(x, y);
 	temp->chunk.x=floor(temp->x/chunkSize.x);
@@ -103,6 +120,15 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 	chunks->at(temp->chunk.x)->at(temp->chunk.y)->list->push_back(static_cast<Object*>(temp));
 	return temp;
 	
+};
+
+void ObjectsManager::AddMover(Object* obj, int x, int y, float sp) {
+	movers.push_back(new Mover(obj,x,y,sp));
+};
+
+void ObjectsManager::DeleteMover(int index) {
+	delete movers[index];
+	movers.erase(movers.begin()+index);
 };
 
 Object* ObjectsManager::FindObject(Object* obj) {
@@ -116,19 +142,18 @@ Object* ObjectsManager::FindObject(Object* obj) {
 	return NULL;
 };
 
-Object* ObjectsManager::GetPlayer() {
+Player* ObjectsManager::GetPlayer() {
 	return player;
 };
 
 void ObjectsManager::SetPlayer(Object* obj) {
-	player=obj;
+	player=static_cast<Player*>(obj);
 };
 
 void ObjectsManager::DeleteObject(Object* obj) {
 	for (int i=0;i<chunks->at(obj->chunk.x)->at(obj->chunk.y)->list->size();i++) {
 		if (chunks->at(obj->chunk.x)->at(obj->chunk.y)->list->at(i)==obj) {
-			chunks->at(obj->chunk.x)->at(obj->chunk.y)->list->erase(
-				chunks->at(obj->chunk.x)->at(obj->chunk.y)->list->begin()+i);
+			chunks->at(obj->chunk.x)->at(obj->chunk.y)->list->erase(chunks->at(obj->chunk.x)->at(obj->chunk.y)->list->begin()+i);
 			delete obj;
 			return;
 		};

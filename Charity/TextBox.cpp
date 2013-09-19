@@ -5,6 +5,7 @@ extern Engine* engine;
 
 TextBox::TextBox(int xx, int yy, sf::Texture* texture):Object() {
 	nvlMode=false;
+	//toDelete=false;
 	textImage=texture;
 	objectIndex=10001;
 	SetPosition(xx,yy);
@@ -64,7 +65,19 @@ bool TextBox::Update() {
 				};
 			} else {
 				if (text.getString().getSize()>=strings.at(index).size()) {
-					delete this;
+					//toDelete=true;
+					if (callback!=L"") {
+						engine->scripting.ExecuteFunction(callback);
+						callback=L"";
+						if (index<strings.size()-1) {
+							index+=1;
+							text.setString(L"");
+						} else {
+							delete this;
+						};
+					} else {
+						delete this;
+					};
 				} else {
 					SetText(strings.at(index));
 				};
@@ -72,6 +85,23 @@ bool TextBox::Update() {
 		};
 	};
 	return true;
+};
+
+void TextBox::SetCallback(std::wstring cb) {
+	callback=cb;
+};
+
+void TextBox::SetNvl(bool enabled, sf::Texture* tex) {
+	if (enabled) {
+	textImage=tex;
+	sprite.setTexture(*textImage,true);
+	engine->textBox->SetPosition(0,0);
+	} else {
+	sf::Texture* tex=engine->resourcesManager->GetTexture("UITextBox");
+	sprite.setTexture(*tex,true);
+	engine->textBox->SetPosition(20,332);
+	};
+	nvlMode=enabled;
 };
 
 void TextBox::Unlock() {

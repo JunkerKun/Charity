@@ -12,6 +12,7 @@ public:
 	float xView, yView;
 	bool Update();
 	Object* target;
+	sf::Vector2f viewTo;
 };
 
 #endif

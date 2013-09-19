@@ -6,9 +6,9 @@ class Object {
 public:
 	Object();
 	virtual ~Object()=0;
-	unsigned int objectIndex; //0-Block; 1-Player; 2-Usable; 3-Decoration;
+	unsigned int objectIndex; //0-Block; 1-Player; 2-Usable; 3-Decoration; 4-Trigger;
 	sf::Vector2i chunk;
-	bool visible, canMove, solid;
+	bool visible, canMove, solid, isMoving, isControlled;
 	int depth;
 	virtual bool Update()=0;
 	virtual bool Draw(sf::RenderTarget& RT)=0;

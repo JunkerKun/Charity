@@ -108,6 +108,9 @@ bool Input::GetAnyKeyIsPressed(bool letter) {
 char Input::GetLetterPressed() {
 	for (std::map<char, sf::Keyboard::Key>::iterator i=letters.begin();i!=letters.end();i++) {
 		if (GetKeyPressed(i->second)) {
+			if (GetKeyIsPressed(sf::Keyboard::LShift)) {
+				return (i->first-32);
+			};
 			return (i->first);
 		};
 	};

@@ -128,7 +128,7 @@ bool Engine::Update() {
 			//Load
 			if (!enter) {
 				if (input->GetKeyPressed(sf::Keyboard::F9)) {
-					std::cout<<"\nEnter the name of the map to load: ";
+					std::cout<<"\nEnter the name of the map to load: \n";
 					path="";
 					load=true;
 					enter=true;
@@ -217,12 +217,24 @@ bool Engine::Update() {
 				if (input->GetKeyPressed(sf::Keyboard::Return)) {
 					addinfo=false;
 					enter=false;
-					if (addinfotype==2) {
+					switch(addinfotype) {
+					case 2: {
 						Usable* use=static_cast<Usable*>(editorCollision);
 						use->function=path;
-					} else if (addinfotype==3) {
+						break;
+							};
+					case 3: {
 						Decoration* dec=static_cast<Decoration*>(editorCollision);
 						dec->spriteName=path;
+						break;
+							};
+					case 4: {
+						Trigger* trg=static_cast<Trigger*>(editorCollision);
+						trg->function=path;
+						break;
+							};
+					default:
+						break;
 					};
 					std::cout<<"\nAdditional info added\n";
 				};
@@ -245,7 +257,7 @@ bool Engine::Update() {
 				};
 			};
 			if (input->GetKeyPressed(sf::Keyboard::Numpad6)) {
-				if (editorObjectIndex<3) {
+				if (editorObjectIndex<4) {
 					editorObjectIndex+=1;
 				};
 			};
@@ -363,7 +375,7 @@ void Engine::MouseCheck() {
 									path="";
 									addinfo=true;
 									addinfotype=2;
-									std::cout<<"\nEnter the function name\n";
+									std::cout<<"\nEnter the function's name\n";
 								};
 							} else if (editorCollision->objectIndex==3) {
 								if (!enter) {
@@ -371,6 +383,13 @@ void Engine::MouseCheck() {
 									addinfo=true;
 									addinfotype=3;
 									std::cout<<"\nEnter the sprite's name\n";
+								};
+							} else if (editorCollision->objectIndex==4) {
+								if (!enter) {
+									path="";
+									addinfo=true;
+									addinfotype=4;
+									std::cout<<"\nEnter the function's name\n";
 								};
 							};
 						};
@@ -436,7 +455,9 @@ bool Engine::Tick() {
 			switch (inputEvent.type) {
 			case sf::Event::KeyPressed:
 				if (inputEvent.key.code==sf::Keyboard::Escape) {
+					if (!save && !load && !resize && !enter && !addinfo) {
 					renderWindow.close();
+					};
 				};
 			};
 		};

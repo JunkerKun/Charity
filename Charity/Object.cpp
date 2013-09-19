@@ -12,6 +12,8 @@ Object::Object() {
 	chunk.y=0;
 	objectIndex=0;
 	canMove=true;
+	isMoving=false;
+	isControlled=false;
 };
 
 Object::~Object() {

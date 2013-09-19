@@ -21,6 +21,7 @@
 #include "TextBox.h"
 #include "Usable.h"
 #include "Decoration.h"
+#include "Trigger.h"
 
 class Engine {
 public:

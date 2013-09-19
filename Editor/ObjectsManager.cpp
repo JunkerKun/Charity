@@ -98,6 +98,17 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 		dec->spriteName=function;
 		break;
 			};
+	case 4: {
+		temp=new Trigger();
+		Trigger* trg=static_cast<Trigger*>(temp);
+		if (function=="none") {
+			trg->function="Function";
+			trg->function+=ToString(engine->editorUsablesNumber);
+		} else {
+			trg->function=function;
+		};
+		break;
+			};
 	};
 	temp->SetPosition(x, y);
 	temp->chunk.x=floor(temp->x/chunkSize.x);
@@ -142,6 +153,11 @@ bool ObjectsManager::SaveMap(std::string name) {
 				case 3: {
 					Decoration* dec=static_cast<Decoration*>(obj);
 					save<<dec->spriteName<<" ";
+					break;
+						};
+				case 4: {
+					Trigger* trg=static_cast<Trigger*>(obj);
+					save<<trg->function<<" ";
 					break;
 						};
 				default:

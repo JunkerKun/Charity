@@ -4,6 +4,7 @@
 extern Engine* engine;
 
 Player::Player(sf::Texture* tex):Image(tex) {
+	collisionTrigger=NULL;
 	hp=100;
 	speed=70;
 	objectIndex=1;
@@ -31,17 +32,18 @@ Player::Player(sf::Texture* tex):Image(tex) {
 };
 
 bool Player::Update() {
-	bool move=false;
+	if (!isControlled) {
+		isMoving=false;
 	if (canMove) {
 		if (engine->input->GetKeyIsPressed(sf::Keyboard::Left)) {
-			move=true;
+			isMoving=true;
 			x-=speed*engine->GetDelta();
 			direction=1;
 			if (CollisionCheckIntersect(this,0)) {
 				x+=speed*engine->GetDelta();
 			};
 		} else if (engine->input->GetKeyIsPressed(sf::Keyboard::Right)) {
-			move=true;
+			isMoving=true;
 			x+=speed*engine->GetDelta();
 			direction=3;
 			if (CollisionCheckIntersect(this,0)) {
@@ -49,14 +51,14 @@ bool Player::Update() {
 			};
 		};
 		if (engine->input->GetKeyIsPressed(sf::Keyboard::Up)) {
-			move=true;
+			isMoving=true;
 			y-=speed*0.8*engine->GetDelta();
 			direction=2;
 			if (CollisionCheckIntersect(this,0)) {
 				y+=speed*0.8*engine->GetDelta();
 			};
 		} else if (engine->input->GetKeyIsPressed(sf::Keyboard::Down)) {
-			move=true;
+			isMoving=true;
 			y+=speed*0.8*engine->GetDelta();
 			direction=0;
 			if (CollisionCheckIntersect(this,0)) {
@@ -64,23 +66,15 @@ bool Player::Update() {
 			};
 		};
 
-		if (engine->input->GetKeyPressed(sf::Keyboard::Z)) {
-			/*Object* collision=NULL;
-			switch(static_cast<int>(direction)) {
-			case 0:
-			collision=CollisionCheckPoint(x,y+22,2);
-			break;
-			case 1:
-			collision=CollisionCheckPoint(x-22,y,2);
-			break;
-			case 2:
-			collision=CollisionCheckPoint(x,y-22,2);
-			break;
-			case 3:
-			collision=CollisionCheckPoint(x+22,y,2);
-			break;
-			};*/
+		//if (collisionTrigger==NULL) {
+		collisionTrigger=CollisionCheckIntersect(this,4);
+		if (collisionTrigger!=NULL) {
+			Trigger* trg=static_cast<Trigger*>(collisionTrigger);
+			if (trg->function!="none") engine->scripting.ExecuteFunction(engine->scripting.StringToWString(trg->function));
+		};
+		//};
 
+		if (engine->input->GetKeyPressed(sf::Keyboard::Z)) {
 			Block blk;
 			blk.SetBBox(-13,-7,26,14);
 			switch(static_cast<int>(direction)) {
@@ -114,10 +108,10 @@ bool Player::Update() {
 			};
 		};
 	};
-
+};
 	MoveToChunk();
 
-	SetSequence(floor(direction)+4*(move));
+	SetSequence(floor(direction)+4*(isMoving));
 	Image::Update();
 	sprShadow.setPosition(floor(x),floor(y));
 
@@ -165,6 +159,14 @@ bool Player::Draw(sf::RenderTarget &RT) {
 		RT.draw(RS);
 	}
 	return true;
+};
+
+void Player::SetDirection(int dir) {
+	direction=dir;
+};
+
+int Player::GetDirection() {
+	return direction;
 };
 
 Player::~Player() {

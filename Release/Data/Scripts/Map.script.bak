@@ -1,6 +1,6 @@
 Map {
 function(Init);
-
+setCameraPosition();
 end();
 
 function(Bed);
@@ -14,12 +14,32 @@ end();
 
 function(TableBook);
 showText("Luna game.",-1,"imgBook");
-extendText("# #On April 3, 2011, a game was posted on Equestria Daily labeled Luna Game. It seemed harmless enough, so a few bronies downloaded it -- only to quickly realize it was not what it seemed.");
+extendText("# #On April 3, 2011, a game was posted on Equestria Daily labeled Luna Game. It seemed harmless enough, so a few bronies downloaded it - only to quickly realize it was not what it seemed.");
 extendText("# #The beginnings of the first three games and Luna Game 5 use Super Ponybeat songs as their soundtrack, however, it is unknown who made this game.");
 end();
 
 function(Nightstand);
 showText("Charity","The nightstand is broken; the drawer doesn't want to open.");
 showText("Charity","My dairy is stuck in there...");
+end();
+
+function(CornerBad);
+showText("Charity","It's... a bad corner.");
+showText("Charity","Let's not do... things... here...");
+getPlayerDirection(pDir);
+if($pDir == 0) 
+setPlayerDirection(2);
+moveObject(player,0,-32,70);
+fi
+if($pDir == 1)
+setPlayerDirection(3);
+moveObject(player,32,0,70);
+fi
+varDel(pDir);
+end();
+
+function(CornerGood);
+deleteTrigger();
+showText("Charity","Hey, that's a good corner!");
 end();
 }

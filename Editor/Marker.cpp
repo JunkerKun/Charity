@@ -28,17 +28,17 @@ void Marker::SetCell(int col, int row) {
 
 bool Marker::Update() {
 	if (grabbed) {
-	if (engine->GetInputEvent().type==sf::Event::MouseMoved) {
-		if (!engine->input->GetKeyIsPressed(sf::Keyboard::LShift)) {
-		x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/32)*32+16;
-		y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/32)*32+16;
-		sprite.setPosition(x-16,y-16);
-		} else {
-		x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/16)*16+16;
-		y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/16)*16+16;
-		sprite.setPosition(x-16,y-16);
+		if (engine->GetInputEvent().type==sf::Event::MouseMoved) {
+			if (!engine->input->GetKeyIsPressed(sf::Keyboard::LShift)) {
+				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/32)*32+16;
+				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/32)*32+16;
+				sprite.setPosition(x-16,y-16);
+			} else {
+				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/16)*16+16;
+				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/16)*16+16;
+				sprite.setPosition(x-16,y-16);
+			};
 		};
-	};
 	};
 	return true;
 };
@@ -53,19 +53,27 @@ bool Marker::Draw(sf::RenderTarget& RT) {
 	RS.setPosition(x+bBox.left,y+bBox.top);
 	RS.setSize(sf::Vector2f(bBox.width,bBox.height));
 	if (mode==0) {
-	RS.setFillColor(sf::Color(0,255,0,60));
+		RS.setFillColor(sf::Color(0,255,0,60));
 	} else if (mode==1) {
-	RS.setFillColor(sf::Color(0,0,255,60));
+		RS.setFillColor(sf::Color(0,0,255,60));
 	};
 	RT.draw(RS);
-	if (engine->editorObjectIndex==0) {
+	switch(engine->editorObjectIndex) {
+	case 0:
 		text.setString("Blk");
-	} else if (engine->editorObjectIndex==1) {
+		break;
+	case 1:
 		text.setString("Plr");
-	} else if (engine->editorObjectIndex==2) {
+		break;
+	case 2:
 		text.setString("Use");
-	} else if (engine->editorObjectIndex==3) {
+		break;
+	case 3:
 		text.setString("Dec");
+		break;
+	case 4:
+		text.setString("Trg");
+		break;
 	};
 	text.setPosition(x-8,y-10);
 	RT.draw(text);

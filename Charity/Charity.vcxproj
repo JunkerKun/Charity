@@ -96,6 +96,7 @@
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TilesManager.h" />
+    <ClInclude Include="Trigger.h" />
     <ClInclude Include="Usable.h" />
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +117,7 @@
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TilesManager.cpp" />
+    <ClCompile Include="Trigger.cpp" />
     <ClCompile Include="Usable.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

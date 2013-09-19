@@ -132,7 +132,7 @@ void Scripting::SplitString(std::wstring str, std::vector<std::wstring> &strings
 		stringsarray.push_back(str.substr(0,pos));
 	};
 	pos=str.find_first_of(L")");
-	stringsarray.push_back(str.substr(0,pos));
+	if (pos!=-1) stringsarray.push_back(str.substr(0,pos));
 	for(int i=0;i<5;i++) {
 		stringsarray.push_back(L"-1");
 	};
@@ -170,7 +170,15 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 				engine->textBox=new TextBox(0,0,engine->resourcesManager->GetTexture(wStringToString(parameters.at(3))));
 			};
 			first=true;
+		} else {
+			if (parameters.at(3)!=L"-1") {
+				parameters.at(3)=parameters.at(3).substr(1,parameters.at(3).length()-2);
+				engine->textBox->x=0;
+				engine->textBox->y=0;
+				engine->textBox->SetNvl(true, engine->resourcesManager->GetTexture(wStringToString(parameters.at(3))));
+			};
 		};
+		//engine->textBox->toDelete=false;
 		if (parameters.at(2)!=L"-1") {
 			std::wstring str=L"[";
 			str+=parameters.at(1).substr(1,parameters.at(1).length()-2);
@@ -193,7 +201,17 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 	} else if (command==L"extendText") {
 		if (engine->textBox!=NULL) {
 			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
-		engine->textBox->ExtendText(WrapString(parameters.at(1),engine->textBox->GetBBox().width-20));
+			engine->textBox->ExtendText(WrapString(parameters.at(1),engine->textBox->GetBBox().width-20));
+		};
+		return true;
+	} else if (command==L"textCallback") {
+		engine->textBox->SetCallback(parameters.at(1));
+		return true;
+	} else if (command==L"setTextNvl") {
+		if (parameters.at(2)!=L"-1") {
+			engine->textBox->SetNvl(false,engine->resourcesManager->GetTexture(wStringToString(parameters.at(2))));
+		} else {
+			engine->textBox->SetNvl(false);
 		};
 		return true;
 	} else if (command==L"setEffect") {
@@ -203,6 +221,100 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 				break;
 			};
 		} while(false);
+		return true;
+	} else if (command==L"moveObject") {
+		do {
+			if (parameters.at(1)==L"player") {
+				if (parameters.at(5)!=L"-1") {
+					engine->objectsManager->AddMover(engine->objectsManager->GetPlayer(),
+						stoi(parameters.at(2)),stoi(parameters.at(3)),stoi(parameters.at(4)));
+				} else {
+					engine->objectsManager->AddMover(engine->objectsManager->GetPlayer(),
+						engine->objectsManager->GetPlayer()->x+stoi(parameters.at(2)),
+						engine->objectsManager->GetPlayer()->y+stoi(parameters.at(3)),
+						stoi(parameters.at(4)));
+				};
+			};
+		} while (false);
+		return true;
+	} else if (command==L"setPlayerDirection") {
+		engine->objectsManager->GetPlayer()->SetDirection(stoi(parameters.at(1)));
+		return true;
+	} else if (command==L"getPlayerDirection") {
+		std::wstring str=L"varSet(";
+		str+=parameters.at(1);
+		str+=L",";
+		str+=ToWString(engine->objectsManager->GetPlayer()->GetDirection());
+		str+=L");";
+		ExecuteString(str);
+		return true;
+	} else if (command==L"deleteTrigger") {
+		if (engine->objectsManager->GetPlayer()->collisionTrigger!=NULL) {
+			engine->objectsManager->DeleteObject(engine->objectsManager->GetPlayer()->collisionTrigger);
+		};
+		return true;
+	} else if (command==L"varSet") {
+		//varSet(variable, value);
+		std::map<std::wstring,float>::iterator it = engine->variables->find(parameters.at(1));
+		if (it!=engine->variables->end()) {
+			if (parameters.at(2)==L"++") {it->second+=1; printf("Variable %s incremented\n",parameters.at(1).c_str()); return true;}
+			else
+				if (parameters.at(2)==L"--") {it->second-=1; printf("Variable %s decremented\n",parameters.at(1).c_str()); return true;}
+				else
+					if (parameters.at(2)==L"random") {
+						std::map<std::wstring,float>::iterator it = engine->variables->find(parameters.at(1));
+						if (parameters.at(3)==L"-1" || parameters.at(3)==L"0") parameters.at(3)=L"100";
+						it->second = rand() % stoi(parameters.at(3));
+						printf("Variable %s set to %f\n",parameters.at(1).c_str(),it->second);
+						return true;
+					} else
+						parameters.at(2)=Calculate(parameters.at(2));
+					it->second = stof(parameters.at(2));
+					printf("Variable %s set to %f\n",parameters.at(1).c_str(),it->second);
+					return true;
+		} else {
+			if (parameters.at(2)==L"random") {
+				srand (time(NULL));
+				if (parameters.at(3)==L"-1" || parameters.at(3)==L"0") parameters.at(3)=L"100";
+				engine->variables->insert(engine->variables->end(),
+					std::pair<std::wstring,float>(parameters.at(1),rand() % stoi(parameters.at(3))));
+				printf("Variable %s set to %f\n",parameters.at(1).c_str(),engine->variables->find(parameters.at(1))->second);
+				return true;
+			} else
+				parameters.at(2)=Calculate(parameters.at(2));
+			engine->variables->insert(engine->variables->end(),std::pair<std::wstring,float>(parameters.at(1),stof(parameters.at(2))));
+			printf("Variable %s set to %f\n",parameters.at(1).c_str(),stof(parameters.at(2)));
+			return true;
+		};
+		return true;
+	} else if (command==L"varDel") {
+		//varDel(variable);
+		std::map<std::wstring,float>::iterator it = engine->variables->find(parameters.at(1));
+		if (it!=engine->variables->end()) {
+			engine->variables->erase(it);
+		};
+		printf("Variable %s was deleted\n",parameters.at(1).c_str());
+		return true;
+	} else if (command==L"varClear") {
+		//varClear();
+		engine->variables->clear();
+		return true;
+	} else if (command==L"setCameraTarget") {
+		if (parameters.at(1)==L"-1") engine->camera->target=NULL;
+		if (parameters.at(1)==L"player") engine->camera->target=engine->objectsManager->GetPlayer();
+		return true;
+	} else if (command==L"setCameraPosition") {
+		if (parameters.at(1)==L"" && parameters.at(2)==L"-1") {
+			if (engine->camera->target!=NULL) {
+			engine->camera->xView=engine->camera->target->x-(engine->windowSize.x/2);
+			engine->camera->yView=engine->camera->target->y-(engine->windowSize.y/2);
+			engine->camera->viewTo.x=engine->camera->target->x-(engine->windowSize.x/2);
+			engine->camera->viewTo.y=engine->camera->target->y-(engine->windowSize.y/2);
+			return true;
+			};
+		};
+		engine->camera->xView=stoi(parameters.at(1));
+		engine->camera->yView=stoi(parameters.at(2));
 		return true;
 	} else if (command==L"debug") {
 		engine->debug = true;
@@ -233,11 +345,116 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 	return false;
 };
 
+std::wstring Scripting::Calculate(std::wstring string) {
+	//Check if we need to calculate anything
+	std::vector<std::wstring> numbers;
+	std::wstring str=L"";
+	if (string.find_first_of(L"+-*/")!=string.npos) {
+		for (int i=0;i<string.size();i++) {
+			if (string.substr(i,1)==L"+" ||
+				string.substr(i,1)==L"-" ||
+				string.substr(i,1)==L"*" ||
+				string.substr(i,1)==L"/") {
+					numbers.push_back(str);
+					str=L"";
+					numbers.push_back(string.substr(i,1));
+			} else {
+				str+=string.substr(i,1);
+			};
+		};
+		numbers.push_back(str);
+
+		std::wstring delimeters[4]={L"/",L"*",L"+",L"-"};
+		for (int j=0;j<4;j++) {
+			int end=(numbers.size()-1)/2;
+			//Dividing
+			for(int i=0;i<end;i++) {
+				std::vector<std::wstring>::iterator pos=std::find(numbers.begin(),numbers.end(),delimeters[j]);
+				if (pos!=numbers.end()) {
+					float temp;
+					int position=pos-numbers.begin();
+					temp=std::stof(numbers.at(position-1));
+					switch(j) {
+					case 0:
+						temp/=std::stof(numbers.at(position+1));
+						break;
+					case 1:
+						temp*=std::stof(numbers.at(position+1));
+						break;
+					case 2:
+						temp+=std::stof(numbers.at(position+1));
+						break;
+					case 3:
+						temp-=std::stof(numbers.at(position+1));
+						break;
+					};
+					numbers.at(position)=ToWString(temp);
+					numbers.erase(numbers.begin()+position+1);
+					numbers.erase(numbers.begin()+position-1);
+				};
+			};
+		};
+		return numbers.at(0);
+	};
+	return string;
+};
+
+
 bool Scripting::ExecuteString(std::wstring string) {
 	std::vector<std::wstring> parameters;
 	SplitString(string, parameters);
-	ExecuteCommand(parameters);
-	return true;
+	if (parameters.at(0)==L"if") {
+		int type = 0;
+		int pos = parameters.at(1).find(L"==");
+		float first, second;
+		if (parameters.at(1).find(L">")!=parameters.at(1).npos) {type = 1; pos = parameters.at(1).find(L">");}
+		else if (parameters.at(1).find(L"<")!=parameters.at(1).npos) {type = 2; pos = parameters.at(1).find(L"<");}
+		else if (parameters.at(1).find(L">=")!=parameters.at(1).npos) {type = 3; pos = parameters.at(1).find(L">=");}
+		else if (parameters.at(1).find(L"<=")!=parameters.at(1).npos) {type = 4; pos = parameters.at(1).find(L"<=");}
+		else if (parameters.at(1).find(L"!=")!=parameters.at(1).npos) {type = 5; pos = parameters.at(1).find(L"!=");}
+		first = std::stof(parameters.at(1).substr(0,pos));
+
+		switch (type) {
+		case 0:
+			//==
+			second = std::stof(parameters.at(1).substr(pos+2,parameters.at(1).length()-pos-2));
+			if (first!=second) break;
+			return true;
+		case 1:
+			//>
+			second = std::stof(parameters.at(1).substr(pos+2,parameters.at(1).length()-pos-2));
+			if (first<=second) break;
+			return true;
+		case 2:
+			//<
+			second = std::stof(parameters.at(1).substr(pos+2,parameters.at(1).length()-pos-2));
+			if (first>=second) break;
+			return true;
+		case 3:
+			//>=
+			second = std::stof(parameters.at(1).substr(pos+2,parameters.at(1).length()-pos-2));
+			if (first<second) break;
+			return true;
+		case 4:
+			//<=
+			second = std::stof(parameters.at(1).substr(pos+2,parameters.at(1).length()-pos-2));
+			if (first>second) break;
+			return true;
+		case 5:
+			//!=
+			second = std::stof(parameters.at(1).substr(pos+2,parameters.at(1).length()-pos-2));
+			if (first==second) break;
+			return true;
+		};
+		while(engine->commands->at(engine->commandNumber)!=L"fi" &&
+			engine->commandNumber<engine->commands->size()-1) {
+				engine->commandNumber++;
+		};
+		return true;
+	} else {
+		ExecuteCommand(parameters);
+		return true;
+	};
 };
 
 bool Scripting::ExecuteFunction(std::wstring function) {

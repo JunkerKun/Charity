@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "Engine.h"
+#include "Functions.h"
 
 extern Engine* engine;
 
@@ -14,11 +15,9 @@ Camera::Camera() {
 
 bool Camera::Update() {
 	if (target!=NULL) {
-		if (xView>0 && xView+engine->windowSize.x<engine->objectsManager->chunksNumber.x*engine->objectsManager->chunkSize.x) 
-			xView=floor(target->x-(engine->windowSize.x/2));
-
-		if (yView>0 && yView+engine->windowSize.y<engine->objectsManager->chunksNumber.y*engine->objectsManager->chunkSize.y) 
-		yView=floor(target->y-(engine->windowSize.y/2));
+		viewTo=Interpolate2D(viewTo, sf::Vector2f(target->x-(engine->windowSize.x/2),target->y-(engine->windowSize.y/2)),3);
+		xView=floor(viewTo.x);
+		yView=floor(viewTo.y);
 	};
 	view.setCenter(xView+engine->windowSize.x/2,yView+engine->windowSize.y/2);
 	return true;

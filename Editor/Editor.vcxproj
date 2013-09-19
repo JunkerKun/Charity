@@ -95,6 +95,7 @@
     <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TilesManager.cpp" />
+    <ClCompile Include="Trigger.cpp" />
     <ClCompile Include="Usable.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +113,7 @@
     <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TilesManager.h" />
+    <ClInclude Include="Trigger.h" />
     <ClInclude Include="Usable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

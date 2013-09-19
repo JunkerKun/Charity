@@ -1,5 +1,8 @@
 #ifndef __FUNCTIONS
 #define __FUNCTIONS
 
-float Increment(float start, float end, float& speed);
+#include <SFML/System.hpp>
+
+float Increment(float start, float end, float speed);
+sf::Vector2f Interpolate2D(sf::Vector2f vec1, sf::Vector2f vec2, float scalar);
 #endif
