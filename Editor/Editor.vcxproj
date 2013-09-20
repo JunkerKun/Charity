@@ -71,7 +71,7 @@
       <AdditionalIncludeDirectories>C:\SFML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
@@ -91,6 +91,7 @@
     <ClCompile Include="Marker.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectsManager.cpp" />
+    <ClCompile Include="Place.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Tile.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="Marker.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectsManager.h" />
+    <ClInclude Include="Place.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Tile.h" />

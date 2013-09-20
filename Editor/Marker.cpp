@@ -74,6 +74,9 @@ bool Marker::Draw(sf::RenderTarget& RT) {
 	case 4:
 		text.setString("Trg");
 		break;
+	case 5:
+		text.setString("Plc");
+		break;
 	};
 	text.setPosition(x-8,y-10);
 	RT.draw(text);

@@ -109,6 +109,11 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 		};
 		break;
 			};
+	case 5:
+		temp=new Place();
+		Place* plc = static_cast<Place*>(temp);
+		plc->place=stoi(function);
+		break;
 	};
 	temp->SetPosition(x, y);
 	temp->chunk.x=floor(temp->x/chunkSize.x);
@@ -158,6 +163,11 @@ bool ObjectsManager::SaveMap(std::string name) {
 				case 4: {
 					Trigger* trg=static_cast<Trigger*>(obj);
 					save<<trg->function<<" ";
+					break;
+						};
+				case 5: {
+					Place* plc=static_cast<Place*>(obj);
+					save<<plc->place<<" ";
 					break;
 						};
 				default:

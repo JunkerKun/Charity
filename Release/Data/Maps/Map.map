@@ -18,15 +18,15 @@
 0 240 192 none 
 0 176 208 none 
 0 464 208 none 
-1 304 208 none 
+5 304 208 0 
 0 464 240 none 
 0 176 240 none 
 2 320 256 Table 
 3 320 256 sprTable 
-0 176 272 none 
 0 464 272 none 
-3 320 288 sprTableBook 
+0 176 272 none 
 2 320 288 TableBook 
+3 320 288 sprTableBook 
 0 176 304 none 
 0 464 304 none 
 0 176 336 none 
@@ -35,16 +35,16 @@
 0 464 368 none 
 4 448 384 CornerGood 
 4 192 384 CornerBad 
-0 208 400 none 
 0 240 400 none 
 0 272 400 none 
 0 304 400 none 
 0 400 400 none 
-0 368 400 none 
+0 208 400 none 
 0 432 400 none 
 0 336 400 none 
 0 176 400 none 
 0 464 400 none 
+0 368 400 none 
 -404
 TileSet 448 128 0 0 0 
 TileSet 448 160 0 0 0 

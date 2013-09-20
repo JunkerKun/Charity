@@ -6,7 +6,7 @@ class Object {
 public:
 	Object();
 	virtual ~Object()=0;
-	unsigned int objectIndex; //0-Block; 1-Player; 3-Usable;
+	unsigned int objectIndex; //0-Block; 1-Player; 2-Usable; 3-Decoration; 4-Trigger; 5-Place
 	sf::Vector2i chunk;
 	bool visible;
 	int depth;

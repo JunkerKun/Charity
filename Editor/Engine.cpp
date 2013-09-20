@@ -29,6 +29,7 @@ Engine::Engine() {
 	addinfotype=0;
 	editorTileName="";
 	editorUsablesNumber=0;
+	editorPlaceIndex=0;
 	col=0;
 	row=0;
 	path="";
@@ -98,6 +99,7 @@ bool Engine::Update() {
 				//Save
 				if (input->GetKeyPressed(sf::Keyboard::F5)) {
 					std::cout<<"\nEnter the name of the map to save: ";
+					editorFuncString="Enter the name of the map to save: \n";
 					path="";
 					save=true;
 					enter=true;
@@ -108,7 +110,10 @@ bool Engine::Update() {
 				if (input->GetAnyKeyPressed(true)) {
 					char letter = input->GetLetterPressed();
 					path+=letter;
-					std::cout<<letter;
+					//std::cout<<letter;
+				};
+				if (input->GetKeyPressed(sf::Keyboard::BackSpace)) {
+					path=path.substr(0,path.size()-1);
 				};
 				if (input->GetKeyPressed(sf::Keyboard::Return)) {
 					std::string fullPath="Data/Maps/";
@@ -129,6 +134,7 @@ bool Engine::Update() {
 			if (!enter) {
 				if (input->GetKeyPressed(sf::Keyboard::F9)) {
 					std::cout<<"\nEnter the name of the map to load: \n";
+					editorFuncString="Enter the name of the map to load: \n";
 					path="";
 					load=true;
 					enter=true;
@@ -139,7 +145,10 @@ bool Engine::Update() {
 				if (input->GetAnyKeyPressed(true)) {
 					char letter = input->GetLetterPressed();
 					path+=letter;
-					std::cout<<letter;
+					//std::cout<<letter;
+				};
+				if (input->GetKeyPressed(sf::Keyboard::BackSpace)) {
+					path=path.substr(0,path.size()-1);
 				};
 				if (input->GetKeyPressed(sf::Keyboard::Return)) {
 					std::string fullPath="Data/Maps/";
@@ -160,8 +169,10 @@ bool Engine::Update() {
 			if (!enter) {
 				if (input->GetKeyPressed(sf::Keyboard::F2)) {
 					std::cout<<"\nEnter new size: ";
+					editorFuncString="Enter new size: \n";
 					path="";
 					resize=true;
+					enter=true;
 				};
 			};
 
@@ -169,8 +180,11 @@ bool Engine::Update() {
 				if (input->GetAnyKeyPressed(true)) {
 					char letter = input->GetLetterPressed();
 					path+=letter;
-					std::cout<<letter;
+					//std::cout<<letter;
 					enter=true;
+				};
+				if (input->GetKeyPressed(sf::Keyboard::BackSpace)) {
+					path=path.substr(0,path.size()-1);
 				};
 				if (input->GetKeyPressed(sf::Keyboard::Return)) {
 					objectsManager->Resize(stoi(path),stoi(path));
@@ -211,8 +225,11 @@ bool Engine::Update() {
 				if (input->GetAnyKeyPressed(true)) {
 					char letter = input->GetLetterPressed();
 					path+=letter;
-					std::cout<<letter;
+					//std::cout<<letter;
 					enter=true;
+				};
+				if (input->GetKeyPressed(sf::Keyboard::BackSpace)) {
+					path=path.substr(0,path.size()-1);
 				};
 				if (input->GetKeyPressed(sf::Keyboard::Return)) {
 					addinfo=false;
@@ -257,7 +274,7 @@ bool Engine::Update() {
 				};
 			};
 			if (input->GetKeyPressed(sf::Keyboard::Numpad6)) {
-				if (editorObjectIndex<4) {
+				if (editorObjectIndex<5) {
 					editorObjectIndex+=1;
 				};
 			};
@@ -346,8 +363,12 @@ void Engine::MouseCheck() {
 							grab=NULL;
 						};
 					} else {
-						if (objectsManager->GetObjectAt(marker->x,marker->y)==NULL) 
-							objectsManager->AddObject(marker->x,marker->y,editorObjectIndex);
+						if (objectsManager->GetObjectAt(marker->x,marker->y)==NULL) {
+							if (editorObjectIndex==5) {
+								objectsManager->AddObject(marker->x,marker->y,editorObjectIndex,ToString(editorPlaceIndex));
+								editorPlaceIndex++;
+							} else objectsManager->AddObject(marker->x,marker->y,editorObjectIndex);
+						};
 					};
 				} else {
 					Tile* temp = tilesManager->GetTileAt(marker->x,marker->y);
@@ -375,21 +396,24 @@ void Engine::MouseCheck() {
 									path="";
 									addinfo=true;
 									addinfotype=2;
-									std::cout<<"\nEnter the function's name\n";
+									std::cout<<"\nEnter the function's name: \n";
+									editorFuncString="Enter the function's name\n";
 								};
 							} else if (editorCollision->objectIndex==3) {
 								if (!enter) {
 									path="";
 									addinfo=true;
 									addinfotype=3;
-									std::cout<<"\nEnter the sprite's name\n";
+									std::cout<<"\nEnter the sprite's name: \n";
+									editorFuncString="Enter the sprite's name: \n";
 								};
 							} else if (editorCollision->objectIndex==4) {
 								if (!enter) {
 									path="";
 									addinfo=true;
 									addinfotype=4;
-									std::cout<<"\nEnter the function's name\n";
+									std::cout<<"\nEnter the function's name: \n";
+									editorFuncString="Enter the function's name: \n";
 								};
 							};
 						};
@@ -437,6 +461,11 @@ bool Engine::Draw() {
 	if (tiling) {
 		str+="\nTiles layer: ";
 		str+=ToString(editorTilesLayer);
+	};
+	if (enter) {
+		str+="\n";
+		str+=editorFuncString;
+		str+=path;
 	};
 	text.setString(str);
 

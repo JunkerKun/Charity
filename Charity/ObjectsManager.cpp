@@ -86,6 +86,7 @@ void ObjectsManager::Draw(sf::RenderTarget &rt) {
 
 Object* ObjectsManager::AddObject(int x, int y, int index, std::string function) {
 	if (chunks==NULL) return NULL;
+	bool done=true;
 	Object* temp;
 	switch(index) {
 	case 0:
@@ -112,12 +113,22 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 		trg->function=function;
 		break;
 			};
+	case 5: {
+		if (stoi(function)==engine->placeIndex) {
+			temp=new Player(engine->resourcesManager->GetTexture(engine->playerSpriteName));
+			break;
+		};
+		done=false;
+		break;
+			};
 	};
+	if (done) {
 	temp->SetPosition(x, y);
 	temp->chunk.x=floor(temp->x/chunkSize.x);
 	temp->chunk.y=floor(temp->y/chunkSize.y);
 	temp->depth=temp->y;
 	chunks->at(temp->chunk.x)->at(temp->chunk.y)->list->push_back(static_cast<Object*>(temp));
+	};
 	return temp;
 	
 };

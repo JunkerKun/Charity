@@ -20,6 +20,7 @@
 #include "Usable.h"
 #include "Decoration.h"
 #include "Trigger.h"
+#include "Place.h"
 
 class Engine {
 public:
@@ -45,7 +46,7 @@ public:
 	Tile* tile;
 	sf::Texture tex;
 	sf::Font font;
-	int editorObjectIndex, editorUsablesNumber;
+	int editorObjectIndex, editorUsablesNumber, editorPlaceIndex;
 
 	char* pathPlayerSprite;
 private:
@@ -62,7 +63,7 @@ private:
 	Marker* marker;
 	Marker* tileMarker;
 	int editorTilesIndex, editorTilesLayer, col, row;
-	std::string editorTileName;
+	std::string editorTileName, editorFuncString;
 	sf::Text text;
 	Object* editorCollision;
 };

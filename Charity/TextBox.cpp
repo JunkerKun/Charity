@@ -49,7 +49,7 @@ bool TextBox::Update() {
 	text.setPosition(xx+10,yy+10);
 	if (!locked) {
 		if (text.getString().getSize()!=strings.at(index).size()) {
-			timer+=120*engine->GetDelta();
+			timer+=engine->setTextSpeed*engine->GetDelta();
 			if (timer>1) {
 				SetText(strings.at(index).substr(0,text.getString().getSize()+1));
 				timer=0;

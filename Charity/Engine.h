@@ -56,8 +56,15 @@ public:
 	std::string pathMusic;
 	char* pathMap;
 	std::string playerSpriteName;
+	int placeIndex;
+	std::ifstream IniOpen(std::string filename);
+	void IniClose(std::ifstream &ini);
+	float IniFindValue(std::ifstream &ini, std::string group, std::string key, float defaultValue);
+	void LoadSettings();
 
-	bool debug;
+	//Settings
+	bool debug, setVsync, setBloom, setFullscreen, setOutline;
+	int setTextSpeed, setFramerateLimit, volumeSounds, volumeBGM;
 private:
 	sf::RenderWindow renderWindow;
 	sf::Clock clock;
