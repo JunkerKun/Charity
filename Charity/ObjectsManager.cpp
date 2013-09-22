@@ -42,8 +42,8 @@ void ObjectsManager::Update() {
 	int chunkY = floor(engine->camera->yView/chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
 	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(chunksNumber.x,chunkXStart+3);
-	int chunkYEnd = std::min(chunksNumber.y,chunkYStart+3);
+	int chunkXEnd = std::min(chunksNumber.x,chunkXStart+2);
+	int chunkYEnd = std::min(chunksNumber.y,chunkYStart+2);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			//int size=;
@@ -71,8 +71,8 @@ void ObjectsManager::Draw(sf::RenderTarget &rt) {
 	int chunkY = floor(engine->camera->yView/chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
 	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(chunksNumber.x,chunkXStart+3);
-	int chunkYEnd = std::min(chunksNumber.y,chunkYStart+3);
+	int chunkXEnd = std::min(chunksNumber.x,chunkXStart+2);
+	int chunkYEnd = std::min(chunksNumber.y,chunkYStart+2);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			int size=chunks->at(i)->at(j)->list->size();
@@ -133,11 +133,35 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 	
 };
 
+Object* ObjectsManager::AddNpc(int x, int y, std::string name, sf::Texture* tex) {
+	if (chunks==NULL) return NULL;
+	Npc* temp;
+	temp=new Npc(tex);
+	temp->SetPosition(x, y);
+	temp->chunk.x=floor(temp->x/chunkSize.x);
+	temp->chunk.y=floor(temp->y/chunkSize.y);
+	temp->depth=temp->y;
+	temp->index=npcList.size();
+	chunks->at(temp->chunk.x)->at(temp->chunk.y)->list->push_back(static_cast<Object*>(temp));
+	npcList.insert(npcList.end(),std::pair<std::string,Object*>(name,temp));
+	return temp;
+};
+
+void ObjectsManager::DeleteNpc(std::string name) {
+	std::map<std::string,Object*>::iterator it=npcList.find(name);
+	Object* obj;
+	if (it!=npcList.end()) {
+		obj=it->second;
+		DeleteObject(obj);
+	}
+};
+
 void ObjectsManager::AddMover(Object* obj, int x, int y, float sp) {
-	movers.push_back(new Mover(obj,x,y,sp));
+	if (obj!=NULL) movers.push_back(new Mover(obj,x,y,sp));
 };
 
 void ObjectsManager::DeleteMover(int index) {
+	movers[index]->object->isMoving=false;
 	delete movers[index];
 	movers.erase(movers.begin()+index);
 };
@@ -157,6 +181,12 @@ Player* ObjectsManager::GetPlayer() {
 	return player;
 };
 
+Npc* ObjectsManager::GetNpc(std::string name) {
+	std::map<std::string,Object*>::iterator it=npcList.find(name);
+	if (it==npcList.end()) return NULL;
+	else return static_cast<Npc*>(it->second);
+};
+
 void ObjectsManager::SetPlayer(Object* obj) {
 	player=static_cast<Player*>(obj);
 };
@@ -172,6 +202,10 @@ void ObjectsManager::DeleteObject(Object* obj) {
 };
 
 void ObjectsManager::Clear(int sizeX, int sizeY) {
+	int size=npcList.size();
+	for(int i=0;i<size;i++) {
+		npcList.erase(npcList.begin());
+		};
 	if (chunks!=NULL) {
 		for(int i=0;i<chunksNumber.x;i++) {
 			for(int j=0;j<chunksNumber.y;j++) {

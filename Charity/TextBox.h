@@ -19,6 +19,7 @@ public:
 	sf::Text GetTextBox();
 	void SetCallback(std::wstring callback);
 	void SetNvl(bool enabled, sf::Texture* tex=NULL);
+	int xAdv, yAdv, xNvl, yNvl;
 	//bool toDelete;
 private:
 	std::wstring callback;

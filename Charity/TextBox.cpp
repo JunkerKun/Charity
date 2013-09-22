@@ -5,10 +5,17 @@ extern Engine* engine;
 
 TextBox::TextBox(int xx, int yy, sf::Texture* texture):Object() {
 	nvlMode=false;
+	xAdv=20*engine->screenScale;
+	yAdv=418*engine->screenScale;
+	xNvl=0*engine->screenScale;
+	yNvl=0*engine->screenScale;
 	//toDelete=false;
 	textImage=texture;
 	objectIndex=10001;
 	SetPosition(xx,yy);
+	if (xx==-1 && yy==-1) {
+	SetPosition(xAdv,yAdv);
+	};
 	if (textImage==NULL) {
 	sf::Texture* tex=engine->resourcesManager->GetTexture("UITextBox");
 	sprite.setTexture(*tex,true);
@@ -16,6 +23,8 @@ TextBox::TextBox(int xx, int yy, sf::Texture* texture):Object() {
 	bBox.top=0;
 	bBox.width=tex->getSize().x;
 	bBox.height=tex->getSize().y;
+	//xAdv=20*engine->screenScale;
+	//yAdv=engine->windowSize.y-tex->getSize().y-20*engine->screenScale;
 	} else {
 		nvlMode=true;
 		sprite.setTexture(*textImage,true);
@@ -24,6 +33,7 @@ TextBox::TextBox(int xx, int yy, sf::Texture* texture):Object() {
 		bBox.width=textImage->getSize().x;
 		bBox.height=textImage->getSize().y;
 	};
+	
 	Font* fnt=engine->resourcesManager->GetFont(1);
 	text.setColor(fnt->color);
 	text.setCharacterSize(fnt->size);
@@ -46,7 +56,7 @@ bool TextBox::Update() {
 	int xx=engine->camera->xView+floor(x);
 	int yy=engine->camera->yView+floor(y);
 	sprite.setPosition(xx,yy);
-	text.setPosition(xx+10,yy+10);
+	text.setPosition(xx+10*engine->screenScale,yy+10*engine->screenScale);
 	if (!locked) {
 		if (text.getString().getSize()!=strings.at(index).size()) {
 			timer+=engine->setTextSpeed*engine->GetDelta();
@@ -99,7 +109,7 @@ void TextBox::SetNvl(bool enabled, sf::Texture* tex) {
 	} else {
 	sf::Texture* tex=engine->resourcesManager->GetTexture("UITextBox");
 	sprite.setTexture(*tex,true);
-	engine->textBox->SetPosition(20,332);
+	engine->textBox->SetPosition(xAdv,yAdv);
 	};
 	nvlMode=enabled;
 };

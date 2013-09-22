@@ -24,6 +24,7 @@ public:
 	sf::Texture* GetTexture(int index);
 	bool DeleteTexture(std::string name);
 	std::string GetTextureName(int index);
+	std::string GetTextureName(sf::Texture* tex);
 	int GetTexturesNumber();
 	bool AddFont(int type, std::string path, int size=16, int r=255, int g=255, int b=255);
 	Font* GetFont(int type); 

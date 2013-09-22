@@ -5,11 +5,12 @@ Engine::Engine() {
 	//System Stuff
 	grab=NULL;
 	delta = clock.restart().asSeconds();
-	windowSize.x=640;
-	windowSize.y=480;
+	windowSize.x=800;
+	windowSize.y=600;
 	xView = 0;
 	yView = 0;
 	renderWindow.create(sf::VideoMode(windowSize.x, windowSize.y), "Charity",sf::Style::Close);
+	renderWindow.setFramerateLimit(60);
 	windowView.setSize(windowSize.x, windowSize.y);
 	windowView.setCenter(xView+windowSize.x/2,yView+windowSize.y/2);
 	renderWindow.setView(windowView);
@@ -81,16 +82,20 @@ bool Engine::Update() {
 
 	//Editor stuff
 	if (input->GetKeyIsPressed(sf::Keyboard::Left)) {
-		xView-=150*delta;
+		if (!input->GetKeyIsPressed(sf::Keyboard::LShift)) xView-=150*delta;
+		else xView-=300*delta;
 	} else
 		if (input->GetKeyIsPressed(sf::Keyboard::Right)) {
-			xView+=150*delta;
+			if (!input->GetKeyIsPressed(sf::Keyboard::LShift)) xView+=150*delta;
+			else xView+=300*delta;
 		};
 	if (input->GetKeyIsPressed(sf::Keyboard::Up)) {
-		yView-=150*delta;
+		if (!input->GetKeyIsPressed(sf::Keyboard::LShift)) yView-=150*delta;
+		else yView-=300*delta;
 	} else
 		if (input->GetKeyIsPressed(sf::Keyboard::Down)) {
-			yView+=150*delta;
+			if (!input->GetKeyIsPressed(sf::Keyboard::LShift)) yView+=150*delta;
+			else yView+=300*delta;
 		};
 	if (!tiling) {
 		if (!create && grab==NULL) {
@@ -373,11 +378,11 @@ void Engine::MouseCheck() {
 				} else {
 					Tile* temp = tilesManager->GetTileAt(marker->x,marker->y);
 					if (temp==NULL) {
-						Tile* temp = tilesManager->AddTile(editorTileName,marker->x-16,marker->y-16,col,row);
+						Tile* temp = tilesManager->AddTile(editorTileName,marker->x-32,marker->y-32,col,row);
 						temp->layer=editorTilesLayer;
 					} else {
 						if (temp->layer!=editorTilesLayer) {
-							Tile* temp = tilesManager->AddTile(editorTileName,marker->x-16,marker->y-16,col,row);
+							Tile* temp = tilesManager->AddTile(editorTileName,marker->x-32,marker->y-32,col,row);
 							temp->layer=editorTilesLayer;
 						};
 					};
@@ -398,6 +403,7 @@ void Engine::MouseCheck() {
 									addinfotype=2;
 									std::cout<<"\nEnter the function's name: \n";
 									editorFuncString="Enter the function's name\n";
+									enter=true;
 								};
 							} else if (editorCollision->objectIndex==3) {
 								if (!enter) {
@@ -406,6 +412,7 @@ void Engine::MouseCheck() {
 									addinfotype=3;
 									std::cout<<"\nEnter the sprite's name: \n";
 									editorFuncString="Enter the sprite's name: \n";
+									enter=true;
 								};
 							} else if (editorCollision->objectIndex==4) {
 								if (!enter) {
@@ -414,6 +421,7 @@ void Engine::MouseCheck() {
 									addinfotype=4;
 									std::cout<<"\nEnter the function's name: \n";
 									editorFuncString="Enter the function's name: \n";
+									enter=true;
 								};
 							};
 						};

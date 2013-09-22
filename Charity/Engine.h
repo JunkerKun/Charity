@@ -22,6 +22,52 @@
 #include "Usable.h"
 #include "Decoration.h"
 #include "Trigger.h"
+#include "Npc.h"
+
+struct Timer {
+	float time, endTime;
+	Timer() {
+		time=0;
+		endTime=-1;
+	};
+};
+
+struct Queue {
+	std::vector<std::wstring> queue;
+	Scripting scripting;
+	int index;
+	Timer timer;
+	Queue(Scripting &scr) {
+		scripting=scr;
+		index=0;
+	};
+	void Add(std::wstring func, std::wstring time) {
+		if (queue.size()==0) {
+			timer.endTime=stof(time);
+		};
+		queue.push_back(func);
+		queue.push_back(time);
+	};
+	void Update(float delta) {
+		if (timer.endTime!=-1) {
+			if (timer.time<timer.endTime) {
+				timer.time+=delta;
+			};
+			if (timer.time>=timer.endTime) {
+				scripting.ExecuteString(queue.at(index));
+				if (index+2<queue.size()) {
+				timer.endTime=stof(queue.at(index+1));
+				timer.time=0;
+				index+=2;
+				} else {
+					index=0;
+					queue.clear();
+					timer.endTime=-1;
+				};
+			};
+		};
+	};
+};
 
 class Engine {
 public:
@@ -43,6 +89,7 @@ public:
 	bool commandPause;
 	int commandReturn;
 	Scripting scripting;
+	Queue* queue;
 	std::string scriptName;
 	sf::Vector2i windowSize;
 	TextBox* textBox;
@@ -65,6 +112,7 @@ public:
 	//Settings
 	bool debug, setVsync, setBloom, setFullscreen, setOutline;
 	int setTextSpeed, setFramerateLimit, volumeSounds, volumeBGM;
+	float screenScale;
 private:
 	sf::RenderWindow renderWindow;
 	sf::Clock clock;

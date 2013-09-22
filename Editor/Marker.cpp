@@ -4,7 +4,7 @@
 extern Engine* engine;
 
 Marker::Marker(int mode):Object() {
-	SetBBox(-16,-16,32,32);
+	SetBBox(-32,-32,64,64);
 	objectIndex=0;
 	this->mode=mode;
 	draw=false;
@@ -18,25 +18,25 @@ Marker::~Marker() {
 
 void Marker::SetTexture(sf::Texture* tex) {
 	sprite.setTexture(*tex, false);
-	sprite.setTextureRect(sf::IntRect(0,0,32,32));
+	sprite.setTextureRect(sf::IntRect(0,0,64,64));
 	draw=true;
 };
 
 void Marker::SetCell(int col, int row) {
-	sprite.setTextureRect(sf::IntRect(col*32,row*32,32,32));
+	sprite.setTextureRect(sf::IntRect(col*64,row*64,64,64));
 };
 
 bool Marker::Update() {
 	if (grabbed) {
 		if (engine->GetInputEvent().type==sf::Event::MouseMoved) {
 			if (!engine->input->GetKeyIsPressed(sf::Keyboard::LShift)) {
-				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/32)*32+16;
-				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/32)*32+16;
-				sprite.setPosition(x-16,y-16);
+				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/64)*64+32;
+				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/64)*64+32;
+				sprite.setPosition(x-32,y-32);
 			} else {
-				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/16)*16+16;
-				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/16)*16+16;
-				sprite.setPosition(x-16,y-16);
+				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/32)*32+32;
+				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/32)*32+32;
+				sprite.setPosition(x-32,y-32);
 			};
 		};
 	};
@@ -78,7 +78,7 @@ bool Marker::Draw(sf::RenderTarget& RT) {
 		text.setString("Plc");
 		break;
 	};
-	text.setPosition(x-8,y-10);
+	text.setPosition(x-8*2,y-10*2);
 	RT.draw(text);
 	return true;
 };

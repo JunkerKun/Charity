@@ -6,12 +6,12 @@ extern Engine* engine;
 Player::Player(sf::Texture* tex):Image(tex) {
 	collisionTrigger=NULL;
 	hp=100;
-	speed=70;
+	speed=70*2;
 	objectIndex=1;
 	direction=0;
 	canMove=true;
-	SetBBox(-14,-9,28,18);
-	SetOrigin(imageWidth/2,imageHeight-7);
+	SetBBox(-14*2,-9*2,28*2,18*2);
+	SetOrigin(imageWidth/2,imageHeight-7*2);
 
 	AddSequence(0,0,0.25);
 	AddSequence(5,5,0.25);
@@ -28,7 +28,7 @@ Player::Player(sf::Texture* tex):Image(tex) {
 	engine->objectsManager->SetPlayer(this);
 	sprShadow.setTexture(*engine->resourcesManager->GetTexture("sprShadow"),true);
 	sprShadow.setOrigin(engine->resourcesManager->GetTexture("sprShadow")->getSize().x/2,
-		engine->resourcesManager->GetTexture("sprShadow")->getSize().y/2-1);
+		engine->resourcesManager->GetTexture("sprShadow")->getSize().y/2-1*2);
 };
 
 bool Player::Update() {
@@ -76,31 +76,31 @@ bool Player::Update() {
 
 		if (engine->input->GetKeyPressed(sf::Keyboard::Z)) {
 			Block blk;
-			blk.SetBBox(-13,-7,26,14);
-			switch(static_cast<int>(direction)) {
-			case 0: {
-				blk.SetBBox(-7,-13,14,26);
-				blk.x=x;
-				blk.y=y+10;
-				break;
-					};
-			case 1: {
-				blk.x=x-14;
-				blk.y=y;
-				break;
-					};
-			case 2: {
-				blk.SetBBox(-7,-13,14,26);
-				blk.x=x;
-				blk.y=y-10;
-				break;
-					};
-			case 3: {
-				blk.x=x+14;
-				blk.y=y;
-				break;
-					};
-			};
+			blk.SetBBox(-26,-14,52,28);
+		switch(static_cast<int>(direction)) {
+		case 0: {
+			blk.SetBBox(-14,-26,28,52);
+			blk.x=x;
+			blk.y=y+20;
+			break;
+				};
+		case 1: {
+			blk.x=x-28;
+			blk.y=y;
+			break;
+				};
+		case 2: {
+			blk.SetBBox(-14,-26,28,52);
+			blk.x=x;
+			blk.y=y-20;
+			break;
+				};
+		case 3: {
+			blk.x=x+28;
+			blk.y=y;
+			break;
+				};
+		};
 			Object* collision=CollisionCheckIntersect(&blk,2);
 			if (collision!=NULL) {
 				Usable* use=static_cast<Usable*>(collision);
@@ -127,27 +127,27 @@ bool Player::Draw(sf::RenderTarget &RT) {
 
 	if (engine->debug) {
 		Block blk;
-		blk.SetBBox(-13,-7,26,14);
+		blk.SetBBox(-26,-14,52,28);
 		switch(static_cast<int>(direction)) {
 		case 0: {
-			blk.SetBBox(-7,-13,14,26);
+			blk.SetBBox(-14,-26,28,52);
 			blk.x=x;
-			blk.y=y+10;
+			blk.y=y+20;
 			break;
 				};
 		case 1: {
-			blk.x=x-14;
+			blk.x=x-28;
 			blk.y=y;
 			break;
 				};
 		case 2: {
-			blk.SetBBox(-7,-13,14,26);
+			blk.SetBBox(-14,-26,28,52);
 			blk.x=x;
-			blk.y=y-10;
+			blk.y=y-20;
 			break;
 				};
 		case 3: {
-			blk.x=x+14;
+			blk.x=x+28;
 			blk.y=y;
 			break;
 				};

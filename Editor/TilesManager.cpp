@@ -122,8 +122,8 @@ Tile* TilesManager::GetTileAt(int x, int y) {
 				Tile* obj = engine->tilesManager->GetChunks()->at(i)->at(j)->list->at(k);
 				if (x>obj->x) {
 					if (y>obj->y) {
-						if (x<obj->x+32) {
-							if (y<obj->y+32) {
+						if (x<obj->x+64) {
+							if (y<obj->y+64) {
 								collision=true;
 							};
 						};

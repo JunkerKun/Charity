@@ -5,10 +5,10 @@ extern Engine* engine;
 
 Decoration::Decoration(sf::Texture* tex):Image(tex) {
 	objectIndex=0;
-	SetBBox(-14,-12,28,24);
+	SetBBox(-28,-25,56,48);
 	solid=true;
 	spriteName="none";
-	SetOrigin(imageWidth/2,imageHeight-10);
+	SetOrigin(imageWidth/2,imageHeight-10*2);
 };
 
 Decoration::~Decoration() {

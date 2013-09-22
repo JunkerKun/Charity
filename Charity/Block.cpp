@@ -4,7 +4,7 @@
 extern Engine* engine;
 
 Block::Block():Object() {
-	SetBBox(-16,-16,32,32);
+	SetBBox(-32,-32,64,64);
 	objectIndex=0;
 	visible=false;
 	solid=true;

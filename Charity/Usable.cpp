@@ -5,7 +5,7 @@ extern Engine* engine;
 
 Usable::Usable():Object() {
 	objectIndex=2;
-	SetBBox(-14,-14,28,28);
+	SetBBox(-28,-28,56,56);
 	function="";
 };
 

@@ -164,7 +164,7 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 	if (command==L"showText") {
 		bool first=false;
 		if (engine->textBox==NULL) {
-			if (parameters.at(3)==L"-1") engine->textBox=new TextBox(20,332);
+			if (parameters.at(3)==L"-1") engine->textBox=new TextBox(-1,-1);
 			else {
 				parameters.at(3)=parameters.at(3).substr(1,parameters.at(3).length()-2);
 				engine->textBox=new TextBox(0,0,engine->resourcesManager->GetTexture(wStringToString(parameters.at(3))));
@@ -173,14 +173,14 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		} else {
 			if (parameters.at(3)!=L"-1") {
 				parameters.at(3)=parameters.at(3).substr(1,parameters.at(3).length()-2);
-				engine->textBox->x=0;
-				engine->textBox->y=0;
+				engine->textBox->x=engine->textBox->xNvl;
+				engine->textBox->y=engine->textBox->yNvl;
 				engine->textBox->SetNvl(true, engine->resourcesManager->GetTexture(wStringToString(parameters.at(3))));
 			};
 		};
 		//engine->textBox->toDelete=false;
 		if (parameters.at(2)!=L"-1") {
-			std::wstring str=L"[";
+			std::wstring str=L" [";
 			str+=parameters.at(1).substr(1,parameters.at(1).length()-2);
 			str+=L"]\n";
 			str+=parameters.at(2).substr(1,parameters.at(2).length()-2);
@@ -188,7 +188,8 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		} else {
 			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
 		};
-		engine->textBox->AddText(WrapString(parameters.at(1),engine->textBox->GetBBox().width-20));
+		engine->textBox->AddText(WrapString(parameters.at(1),
+			engine->textBox->GetBBox().width*engine->screenScale-engine->textBox->xAdv));
 		if (first) {
 			TextBox* textBox=engine->textBox;
 			textBox->SetText(
@@ -201,7 +202,8 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 	} else if (command==L"extendText") {
 		if (engine->textBox!=NULL) {
 			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
-			engine->textBox->ExtendText(WrapString(parameters.at(1),engine->textBox->GetBBox().width-20));
+			engine->textBox->ExtendText(WrapString(parameters.at(1),
+				engine->textBox->GetBBox().width*engine->screenScale-engine->textBox->xAdv));
 		};
 		return true;
 	} else if (command==L"textCallback") {
@@ -223,32 +225,53 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		} while(false);
 		return true;
 	} else if (command==L"moveObject") {
-		do {
-			if (parameters.at(1)==L"player") {
 				if (parameters.at(5)!=L"-1") {
+					if (parameters.at(1)==L"player") {
 					engine->objectsManager->AddMover(engine->objectsManager->GetPlayer(),
 						stoi(parameters.at(2)),stoi(parameters.at(3)),stoi(parameters.at(4)));
+					} else {
+						parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+						Object* obj=engine->objectsManager->GetNpc(wStringToString(parameters.at(1)));
+						engine->objectsManager->AddMover(obj,stoi(parameters.at(2)),stoi(parameters.at(3)),stoi(parameters.at(4)));
+					};
 				} else {
+					if (parameters.at(1)==L"player") {
 					engine->objectsManager->AddMover(engine->objectsManager->GetPlayer(),
 						engine->objectsManager->GetPlayer()->x+stoi(parameters.at(2)),
 						engine->objectsManager->GetPlayer()->y+stoi(parameters.at(3)),
 						stoi(parameters.at(4)));
+					} else {
+						parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+						Object* obj=engine->objectsManager->GetNpc(wStringToString(parameters.at(1)));
+						engine->objectsManager->AddMover(obj,
+						obj->x+stoi(parameters.at(2)),
+						obj->y+stoi(parameters.at(3)),
+						stoi(parameters.at(4)));
+					};
 				};
-			};
-		} while (false);
 		return true;
-	} else if (command==L"setPlayerDirection") {
-		engine->objectsManager->GetPlayer()->SetDirection(stoi(parameters.at(1)));
+	} else if (command==L"setDirection") {
+		if (parameters.at(1)==L"player") engine->objectsManager->GetPlayer()->SetDirection(stoi(parameters.at(2)));
 		return true;
-	} else if (command==L"getPlayerDirection") {
+	} else if (command==L"getDirection") {
 		std::wstring str=L"varSet(";
-		str+=parameters.at(1);
+		str+=parameters.at(2);
 		str+=L",";
-		str+=ToWString(engine->objectsManager->GetPlayer()->GetDirection());
+		if (parameters.at(1)==L"player") str+=ToWString(engine->objectsManager->GetPlayer()->GetDirection());
 		str+=L");";
 		ExecuteString(str);
 		return true;
-	} else if (command==L"deleteTrigger") {
+	} else if (command==L"addNpc") {
+		parameters.at(3)=parameters.at(3).substr(1,parameters.at(3).length()-2);
+		parameters.at(4)=parameters.at(4).substr(1,parameters.at(4).length()-2);
+		engine->objectsManager->AddNpc(stoi(parameters.at(1)),stoi(parameters.at(2)),
+			wStringToString(parameters.at(3)),engine->resourcesManager->GetTexture(wStringToString(parameters.at(4))));
+		return true;
+	} else if (command==L"deleteNpc") {
+		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+		engine->objectsManager->DeleteNpc(wStringToString(parameters.at(1)));
+		return true;
+	} else if (command==L"deleteLastTrigger") {
 		if (engine->objectsManager->GetPlayer()->collisionTrigger!=NULL) {
 			engine->objectsManager->DeleteObject(engine->objectsManager->GetPlayer()->collisionTrigger);
 		};
@@ -315,6 +338,13 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		};
 		engine->camera->xView=stoi(parameters.at(1));
 		engine->camera->yView=stoi(parameters.at(2));
+		return true;
+	} else if (command==L"addToQueue") {
+		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+		engine->queue->Add(parameters.at(1),parameters.at(2));
+		return true;
+	} else if (command==L"call") {
+		engine->scripting.ExecuteFunction(parameters.at(1));
 		return true;
 	} else if (command==L"debug") {
 		engine->debug = true;

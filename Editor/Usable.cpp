@@ -4,7 +4,7 @@
 extern Engine* engine;
 
 Usable::Usable():Object() {
-	SetBBox(-14,-14,28,28);
+	SetBBox(-28,-28,56,56);
 	objectIndex=2;
 	functionIndex=0;
 	function="none";
@@ -17,11 +17,11 @@ bool Usable::Update() {
 	if (grabbed) {
 	if (engine->GetInputEvent().type==sf::Event::MouseMoved) {
 		if (!engine->input->GetKeyIsPressed(sf::Keyboard::LShift)) {
-		x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/32)*32+16;
-		y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/32)*32+16;
+		x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/64)*64+32;
+		y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/64)*64+32;
 		} else {
-		x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/16)*16+16;
-		y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/16)*16+16;
+		x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/32)*32+32;
+		y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/32)*32+32;
 		};
 	};
 	};

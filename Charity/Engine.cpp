@@ -4,10 +4,11 @@ Engine::Engine() {
 	//System Stuff
 	debug=false;
 	delta = clock.restart().asSeconds();
-	windowSize.x=640;
-	windowSize.y=480;
+	windowSize.x=800;
+	windowSize.y=600;
 	volumeSounds=80;
 	volumeBGM=80;
+	screenScale=1;
 	setVsync=false;
 	setBloom=true;
 	setFullscreen=false;
@@ -46,9 +47,9 @@ void Engine::Begin() {
 	tilesManager=new TilesManager();
 	textBox=NULL;
 	resourcesManager=new ResourcesManager();
+	queue=new Queue(scripting);
 	scripting.ExecuteFile("Data/Resources.script");
 	LoadMap("Map");
-	scripting.ExecuteFunction(L"Init");
 
 	if (debug) {
 		debugText=new sf::Text();
@@ -80,6 +81,7 @@ bool Engine::Update() {
 	objectsManager->Update();
 	camera->Update();
 	if (textBox!=NULL) textBox->Update();
+	queue->Update(delta);
 	return true;
 };
 
@@ -152,6 +154,7 @@ Engine::~Engine() {
 	delete tilesManager;
 	delete resourcesManager;
 	if (debug) delete debugText;
+	delete queue;
 };
 
 bool Engine::LoadMap(std::string name) {
@@ -163,7 +166,9 @@ bool Engine::LoadMap(std::string name) {
 	path="Data/Maps/";
 	path+=name;
 	path+=".map";
-	return objectsManager->LoadMap(path);
+	bool done = objectsManager->LoadMap(path);
+	if (done) scripting.ExecuteFunction(L"Init");
+	return done;
 };
 
 std::ifstream Engine::IniOpen(std::string filename) {

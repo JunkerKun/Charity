@@ -1,6 +1,14 @@
 Map {
 function(Init);
 setCameraPosition();
+addNpc(416,384,"npcPlayer","sprPlayer");
+addToQueue("call(MoveNpcRight)",2);
+addToQueue("call(MoveNpcLeft)",2);
+addToQueue("call(MoveNpcRight)",2);
+addToQueue("call(MoveNpcLeft)",2);
+addToQueue("call(MoveNpcRight)",2);
+addToQueue("call(MoveNpcLeft)",2);
+addToQueue("call(MoveNpcRight)",2);
 end();
 
 function(Bed);
@@ -33,20 +41,36 @@ end();
 function(CornerBad);
 showText("Charity","It's... a bad corner.");
 showText("Charity","Let's not do... things... here...");
-getPlayerDirection(pDir);
+getDirection(player,pDir);
 if($pDir == 0) 
-setPlayerDirection(2);
-moveObject(player,0,-32,70);
+setDirection(player,2);
+moveObject(player,0,-64,1);
 fi
 if($pDir == 1)
-setPlayerDirection(3);
-moveObject(player,32,0,70);
+setDirection(player,3);
+moveObject(player,64,0,1);
 fi
 varDel(pDir);
 end();
 
 function(CornerGood);
-deleteTrigger();
+deleteLastTrigger();
 showText("Charity","Hey, that's a good corner!");
+addToQueue("call(MoveNpcRight)",2);
+addToQueue("call(MoveNpcLeft)",2);
+addToQueue("call(MoveNpcRight)",2);
+addToQueue("call(MoveNpcLeft)",2);
+addToQueue("call(MoveNpcRight)",2);
+addToQueue("call(MoveNpcLeft)",2);
+addToQueue("call(MoveNpcRight)",2);
 end();
+
+function(MoveNpcRight);
+moveObject("npcPlayer",64,0,1);
+end();
+
+function(MoveNpcLeft);
+moveObject("npcPlayer",-64,0,1);
+end();
+
 }
