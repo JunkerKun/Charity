@@ -252,12 +252,22 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		return true;
 	} else if (command==L"setDirection") {
 		if (parameters.at(1)==L"player") engine->objectsManager->GetPlayer()->SetDirection(stoi(parameters.at(2)));
+		else {
+			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+			Npc* obj=static_cast<Npc*>(engine->objectsManager->GetNpc(wStringToString(parameters.at(1))));
+			obj->SetDirection(stoi(parameters.at(2)));
+		};
 		return true;
 	} else if (command==L"getDirection") {
 		std::wstring str=L"varSet(";
 		str+=parameters.at(2);
 		str+=L",";
 		if (parameters.at(1)==L"player") str+=ToWString(engine->objectsManager->GetPlayer()->GetDirection());
+		else {
+			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+			Npc* obj=static_cast<Npc*>(engine->objectsManager->GetNpc(wStringToString(parameters.at(1))));
+			str+=ToWString(obj->GetDirection());
+		};
 		str+=L");";
 		ExecuteString(str);
 		return true;

@@ -11,9 +11,11 @@ public:
 	bool Update();
 	bool Draw(sf::RenderTarget& RT);
 	int index;
-	float direction;
+	void SetDirection(int dir);
+	int GetDirection();
 private:
 	sf::Sprite sprShadow;
+	float direction;
 };
 
 #endif

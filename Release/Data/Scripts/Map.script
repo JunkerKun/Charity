@@ -66,10 +66,12 @@ addToQueue("call(MoveNpcRight)",2);
 end();
 
 function(MoveNpcRight);
+setDirection("npcPlayer",3);
 moveObject("npcPlayer",64,0,1);
 end();
 
 function(MoveNpcLeft);
+setDirection("npcPlayer",1);
 moveObject("npcPlayer",-64,0,1);
 end();
 

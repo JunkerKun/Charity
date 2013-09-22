@@ -45,3 +45,11 @@ bool Npc::Draw(sf::RenderTarget &RT) {
 	Image::Draw(RT);
 	return true;
 };
+
+void Npc::SetDirection(int dir) {
+	direction=dir;
+};
+
+int Npc::GetDirection() {
+	return direction;
+};
