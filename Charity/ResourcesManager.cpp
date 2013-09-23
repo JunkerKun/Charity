@@ -7,9 +7,9 @@ ResourcesManager::ResourcesManager() {
 	texturesList= new std::map<std::string,sf::Texture*>;
 	fontText= new Font(14,255,255,255);
 	sf::Image img;
-	img.create(engine->windowSize.x,engine->windowSize.y);
-	for (int i=0;i<engine->windowSize.x;i++) {
-		for (int j=0;j<engine->windowSize.y;j++) {
+	img.create(engine->windowSize.x/2,engine->windowSize.y/2);
+	for (int i=0;i<engine->windowSize.x/2;i++) {
+		for (int j=0;j<engine->windowSize.y/2;j++) {
 			int chance=rand()%50;
 			if (chance==1) {
 				img.setPixel(i,j,sf::Color(128,128,128,255));
@@ -121,4 +121,15 @@ Font* ResourcesManager::GetFont(int type) {
 	default:
 		return fontText;
 	};
+};
+
+void ResourcesManager::ClearTextures() {
+	for (std::map<std::string,sf::Texture*>::iterator it=texturesList->begin(); it!=texturesList->end(); it++) {
+		delete it->second;
+	};
+	texturesList->clear();
+};
+
+void ResourcesManager::ClearAll() {
+	ClearTextures();
 };

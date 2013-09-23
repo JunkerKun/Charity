@@ -7,8 +7,9 @@ bool SortTilesPredicate(const Tile* o1, const Tile* o2) {
 };
 
 TilesManager::TilesManager() {
-	chunkSize=engine->windowSize;
+	chunkSize=engine->objectsManager->chunkSize;
 	chunks=NULL;
+	scaleFactor=engine->objectsManager->scaleFactor;
 	Clear(1,1);
 };
 
@@ -22,8 +23,8 @@ void TilesManager::Draw(sf::RenderTarget &rt) {
 	int chunkY = floor(engine->yView/chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
 	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(chunksNumber.x,chunkXStart+3);
-	int chunkYEnd = std::min(chunksNumber.y,chunkYStart+3);
+	int chunkXEnd = std::min(chunksNumber.x,(chunkX+2)*scaleFactor);
+	int chunkYEnd = std::min(chunksNumber.y,(chunkY+2)*scaleFactor);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			int size=chunks->at(i)->at(j)->list->size();
@@ -112,8 +113,8 @@ Tile* TilesManager::GetTileAt(int x, int y) {
 	int chunkY = floor(engine->yView/engine->tilesManager->chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
 	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(engine->tilesManager->chunksNumber.x,chunkX+2);
-	int chunkYEnd = std::min(engine->tilesManager->chunksNumber.y,chunkY+2);
+	int chunkXEnd = std::min(engine->tilesManager->chunksNumber.x,(chunkX+2)*scaleFactor);
+	int chunkYEnd = std::min(engine->tilesManager->chunksNumber.y,(chunkY+2)*scaleFactor);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			int size=engine->tilesManager->GetChunks()->at(i)->at(j)->list->size();

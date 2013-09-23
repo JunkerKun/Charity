@@ -10,9 +10,10 @@ bool SortObjectsPredicate(const Object* o1, const Object* o2) {
 };
 
 ObjectsManager::ObjectsManager() {
-	chunkSize=engine->windowSize;
+	scaleFactor=3;
+	chunkSize=engine->windowSize/scaleFactor;
 	chunks=NULL;
-	Clear(1,1);
+	Clear(3,3);
 };
 
 void ObjectsManager::Resize(int sizeX, int sizeY) {
@@ -38,8 +39,8 @@ void ObjectsManager::Update() {
 	int chunkY = floor(engine->yView/chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
 	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(chunksNumber.x,chunkXStart+3);
-	int chunkYEnd = std::min(chunksNumber.y,chunkYStart+3);
+	int chunkXEnd = std::min(chunksNumber.x,(chunkXStart+3)*3);
+	int chunkYEnd = std::min(chunksNumber.y,(chunkYStart+3)*3);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			int size=chunks->at(i)->at(j)->list->size();
@@ -56,8 +57,8 @@ void ObjectsManager::Draw(sf::RenderTarget &rt) {
 	int chunkY = floor(engine->yView/chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
 	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(chunksNumber.x,chunkXStart+3);
-	int chunkYEnd = std::min(chunksNumber.y,chunkYStart+3);
+	int chunkXEnd = std::min(chunksNumber.x,(chunkXStart+3)*3);
+	int chunkYEnd = std::min(chunksNumber.y,(chunkYStart+3)*3);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			int size=chunks->at(i)->at(j)->list->size();

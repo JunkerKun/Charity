@@ -10,7 +10,8 @@ Player::Player(sf::Texture* tex):Image(tex) {
 	objectIndex=1;
 	direction=0;
 	canMove=true;
-	SetBBox(-14*2,-9*2,28*2,18*2);
+	drawExclamation=false;
+	SetBBox(-28,-18,56,36);
 	SetOrigin(imageWidth/2,imageHeight-7*2);
 
 	AddSequence(0,0,0.25);
@@ -28,11 +29,14 @@ Player::Player(sf::Texture* tex):Image(tex) {
 	engine->objectsManager->SetPlayer(this);
 	sprShadow.setTexture(*engine->resourcesManager->GetTexture("sprShadow"),true);
 	sprShadow.setOrigin(engine->resourcesManager->GetTexture("sprShadow")->getSize().x/2,
-		engine->resourcesManager->GetTexture("sprShadow")->getSize().y/2-1*2);
+		engine->resourcesManager->GetTexture("sprShadow")->getSize().y/2-2);
+	sprExclamation.setTexture(*engine->resourcesManager->GetTexture("sprExclamation"),true);
+	sprExclamation.setOrigin(engine->resourcesManager->GetTexture("sprExclamation")->getSize().x/2,
+		engine->resourcesManager->GetTexture("sprExclamation")->getSize().y/2);
 };
 
 bool Player::Update() {
-	if (!isControlled) {
+	if (!isControlled && !isBlocked) {
 		isMoving=false;
 	if (canMove) {
 		if (engine->input->GetKeyIsPressed(sf::Keyboard::Left)) {
@@ -74,9 +78,17 @@ bool Player::Update() {
 		};
 		//};
 
-		if (engine->input->GetKeyPressed(sf::Keyboard::Z)) {
-			Block blk;
+		Object* collision=CollisionCheckRadius(82,x,y,2);
+		if (collision!=NULL) {
+			drawExclamation=true;
+		} else {
+			drawExclamation=false;
+		};
+
+		/*Block blk;
 			blk.SetBBox(-26,-14,52,28);
+			blk.chunk.x=chunk.x;
+			blk.chunk.y=chunk.y;
 		switch(static_cast<int>(direction)) {
 		case 0: {
 			blk.SetBBox(-14,-26,28,52);
@@ -103,6 +115,42 @@ bool Player::Update() {
 		};
 			Object* collision=CollisionCheckIntersect(&blk,2);
 			if (collision!=NULL) {
+			drawExclamation=true;
+		} else {
+			drawExclamation=false;
+		};*/
+
+		if (engine->input->GetKeyPressed(sf::Keyboard::Z)) {
+			Block blk;
+			blk.SetBBox(-26,-14,52,28);
+			blk.chunk.x=chunk.x;
+			blk.chunk.y=chunk.y;
+		switch(static_cast<int>(direction)) {
+		case 0: {
+			blk.SetBBox(-14,-26,28,52);
+			blk.x=x;
+			blk.y=y+20;
+			break;
+				};
+		case 1: {
+			blk.x=x-28;
+			blk.y=y;
+			break;
+				};
+		case 2: {
+			blk.SetBBox(-14,-26,28,52);
+			blk.x=x;
+			blk.y=y-20;
+			break;
+				};
+		case 3: {
+			blk.x=x+28;
+			blk.y=y;
+			break;
+				};
+		};
+			collision=CollisionCheckIntersect(&blk,2);
+			if (collision!=NULL) {
 				Usable* use=static_cast<Usable*>(collision);
 				if (use->function!="none") engine->scripting.ExecuteFunction(engine->scripting.StringToWString(use->function));
 			};
@@ -124,6 +172,10 @@ bool Player::Draw(sf::RenderTarget &RT) {
 	if (!visible) return true;
 	RT.draw(sprShadow);
 	Image::Draw(RT);
+	if (drawExclamation) {
+		sprExclamation.setPosition(x,y-72);
+		RT.draw(sprExclamation);
+	};
 
 	if (engine->debug) {
 		Block blk;

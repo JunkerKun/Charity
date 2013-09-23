@@ -13,6 +13,8 @@ public:
 	bool Update();
 	Object* target;
 	sf::Vector2f viewTo;
+	sf::IntRect borders;
+	void SetBorders(int left, int top, int right, int bottom);
 };
 
 #endif

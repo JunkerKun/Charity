@@ -70,6 +70,7 @@ public:
 	sf::Vector2i chunksNumber;
 	std::vector<std::vector<Chunk*>*>* chunks;
 	std::vector<Mover*> movers;
+	int scaleFactor;
 private:
 	Player* player;
 	std::map<std::string,Object*> npcList;

@@ -30,6 +30,7 @@ public:
 	Tile* GetTileAt(int x, int y);
 	bool SaveTiles(std::ofstream& file);
 	bool LoadTiles(std::ifstream& file);
+	int scaleFactor;
 private:
 	sf::Vector2i chunkSize;
 	sf::Vector2i chunksNumber;

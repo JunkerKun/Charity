@@ -34,14 +34,18 @@ Engine::Engine() {
 
 	drawNoise=false;
 	playerSpriteName="sprPlayer";
+	fadeAlpha=0;
+	fadeColor=sf::Color(0,0,0,255);
+	fadeMode=0;
+	fadeSpeed=255;
 };
 
 void Engine::Begin() {
 	commands = new std::vector<std::wstring>;
 	variables = new std::map<std::wstring,float>;
 	commandFunctions = new std::map<std::wstring,int>;
-	input=new Input(&inputEvent);
 	camera=new Camera();
+	input=new Input(&inputEvent);
 	renderWindow.setView(camera->view);
 	objectsManager = new ObjectsManager();
 	tilesManager=new TilesManager();
@@ -82,6 +86,7 @@ bool Engine::Update() {
 	camera->Update();
 	if (textBox!=NULL) textBox->Update();
 	queue->Update(delta);
+	fadeAlpha=Increment(fadeAlpha,fadeMode*255,fadeSpeed);
 	return true;
 };
 
@@ -93,18 +98,28 @@ bool Engine::Draw() {
 
 	if (drawNoise) {
 	sf::Sprite spr;
-	spr.setTexture(*resourcesManager->GetTexture("sprNoise"));
-	spr.setTextureRect(sf::IntRect(rand()%windowSize.x,rand()%windowSize.y,windowSize.x,windowSize.y));
+	sf::Texture* tex=resourcesManager->GetTexture("sprNoise");
+	sf::Vector2u vec=tex->getSize();
+	spr.setTexture(*tex);
+	spr.setTextureRect(sf::IntRect(rand()%vec.x,rand()%vec.y,vec.x,vec.y));
 	spr.setPosition(camera->xView,camera->yView);
+	spr.setScale(2,2);
 	renderWindow.draw(spr);
 	};
-
+	if (fadeAlpha!=0) {
+		sf::RectangleShape rs;
+		rs.setSize(sf::Vector2f(windowSize.x,windowSize.y));
+		rs.setFillColor(sf::Color(fadeColor.r,fadeColor.g,fadeColor.b,fadeAlpha));
+		rs.setPosition(camera->xView,camera->yView);
+		renderWindow.draw(rs);
+	};
 	if (textBox!=NULL) textBox->Draw(renderWindow);
 	if (debug) {
 		debugText->setPosition(camera->xView,camera->yView);
 		debugText->setString(scripting.ToString(delta));
 		renderWindow.draw(*debugText);
 	};
+	
 	renderWindow.display();
 	return true;
 };
@@ -159,12 +174,24 @@ Engine::~Engine() {
 
 bool Engine::LoadMap(std::string name) {
 	std::string path;
-	path="Data/Scripts/";
-	path+=name;
-	path+=".script";
-	scripting.LoadFile(path);
 	path="Data/Maps/";
 	path+=name;
+	//path+="/";
+	//path+=name;
+	path+=".resources";
+	scripting.ExecuteFile(path);
+
+	path="Data/Maps/";
+	path+=name;
+	//path+="/";
+	//path+=name;
+	path+=".script";
+	scripting.LoadFile(path);
+
+	path="Data/Maps/";
+	path+=name;
+	//path+="/";
+	//path+=name;
 	path+=".map";
 	bool done = objectsManager->LoadMap(path);
 	if (done) scripting.ExecuteFunction(L"Init");
@@ -224,4 +251,14 @@ void Engine::LoadSettings() {
 		IniClose(File);
 		printf("Settings loaded\n");
 	};
+};
+
+void Engine::Fade(int mode, float speed) {
+	fadeMode=mode;
+	if (speed==-1) fadeAlpha=fadeMode*255;
+	fadeSpeed=255/speed;
+};
+
+void Engine::SetFadeColor(sf::Color color) {
+	fadeColor=color;
 };

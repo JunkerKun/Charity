@@ -6,7 +6,7 @@ extern Engine* engine;
 Player::Player(char* path):Image(path) {
 	objectIndex=1;
 	direction=0;
-	SetBBox(-28,-24,56,48);
+	SetBBox(-28,-18,56,36);
 	AddSequence(0,0,0.25);
 };
 

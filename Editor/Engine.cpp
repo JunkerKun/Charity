@@ -48,7 +48,20 @@ void Engine::Begin() {
 	objectsManager = new ObjectsManager();
 	tilesManager=new TilesManager();
 	resourcesManager=new ResourcesManager();
-	resourcesManager->AddTexture("TileSet","Data/Tiles/TileSet.png");
+
+	std::ifstream load("Data/ResourcesEditor.script");
+	if (load) {
+		std::string str;
+		std::string str2;
+		while(load) {
+		load>>str;
+		load>>str2;
+		resourcesManager->AddTexture(str,str2);
+		};
+		load.close();
+	}
+
+	//resourcesManager->AddTexture("TileSet","Data/Tiles/TileSet.png");
 	editorTileName=resourcesManager->GetTextureName(editorTilesIndex);
 };
 
@@ -440,7 +453,7 @@ void Engine::MouseCheck() {
 bool Engine::Draw() {
 	renderWindow.clear();
 	sf::RectangleShape rs;
-	rs.setSize(sf::Vector2f(windowSize.x*objectsManager->chunksNumber.x,windowSize.y*objectsManager->chunksNumber.y));
+	rs.setSize(sf::Vector2f(windowSize.x/3*objectsManager->chunksNumber.x,windowSize.y/3*objectsManager->chunksNumber.y));
 	rs.setFillColor(sf::Color(55,95,170,0));
 	rs.setOutlineColor(sf::Color(55,95,170,255));
 	rs.setOutlineThickness(1);
@@ -461,6 +474,11 @@ bool Engine::Draw() {
 	str+="|";
 	str+=ToString(yView);
 	str+="\n";
+	if (marker!=NULL) {
+	str+="Texture name: ";
+	str+=resourcesManager->GetTextureName(marker->tex);
+	str+="\n";
+	};
 	if (marker!=NULL) {
 		str+=ToString(marker->x);
 		str+="|";

@@ -28,6 +28,8 @@ public:
 	int GetTexturesNumber();
 	bool AddFont(int type, std::string path, int size=16, int r=255, int g=255, int b=255);
 	Font* GetFont(int type); 
+	void ClearTextures();
+	void ClearAll();
 private:
 	std::map<std::string,sf::Texture*>* texturesList;
 	Font* fontText;

@@ -1,0 +1,57 @@
+Map {
+function(Init);
+setCameraPosition();
+setCanMove(player,0);
+fade(out,-1);
+fade(in,2);
+setCameraBorders(0,0,800,900);
+addNpc(416,544,"npcLeFleur","sprLeFleurBW");
+setDirection("npcLeFleur",2);
+addToQueue("moveObject(player,288,416,1.5,1)",2.5);
+addToQueue("setDirection(player,3)",1.5);
+addToQueue("moveObject(player,416,416,1,1)",0);
+addToQueue("setDirection(player,0)",1);
+addToQueue("moveObject(player,416,480,0.5,1)",0);
+addToQueue("call(Cutscene1_1)",1);
+setTexture(player,"sprPlayerBW");
+setEffect(noise,1);
+end();
+
+function(Cutscene1_1);
+showText("Charity","Mommy!");
+showText("Mom","Hello my dear. Did you miss me?");
+showText("Charity","Lots and lots, I don't like it when you're not here.");
+showText("Charity","It's so lonely.");
+showText("Mom","I know my darling, but in here you're safe. In this room, no pony can hurt you.");
+showText("Mom","You must never leave this room, or the bad ponies will get you.");
+showText("Charity","Okay, just please... stay with me awhile.");
+showText("Mom","Only for a little while. I have to be going soon and I don't know when I'll be back.");
+showText("Charity","Okay...");
+showText("Mom","Oh don't cry my little one. I didn't raise a cry-baby did I?");
+showText("Mom","Dry those tears. We're going to play a game.");
+textCallback(Cutscene1_2);
+end();
+
+function(Cutscene1_2);
+addToQueue("fade(out,1)",2);
+addToQueue("call(Cutscene1_3)",2);
+end();
+
+function(Cutscene1_3);
+loadMap("Map");
+end();
+
+function(Bed);
+showText("Charity","I don't want to sleep.");
+showText("Charity","At least not now.");
+end();
+
+function(Table);
+showText("Charity","My table. It's so old...");
+end();
+
+function(Nightstand);
+showText("Charity","The nightstand is broken; the drawer doesn't want to open.");
+showText("Charity","My dairy is stuck in there...");
+end();
+}

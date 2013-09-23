@@ -14,9 +14,11 @@ bool SortObjectsPredicate(const Object* o1, const Object* o2) {
 };
 
 ObjectsManager::ObjectsManager() {
-	chunkSize=engine->windowSize;
+	scaleFactor=3;
+	chunkSize=sf::Vector2i(engine->windowSize.x/3,engine->windowSize.y/scaleFactor);
 	chunks=NULL;
 	Clear(1,1);
+	engine->camera->SetBorders(0,0,engine->windowSize.x,engine->windowSize.y);
 };
 
 void ObjectsManager::Resize(int sizeX, int sizeY) {
@@ -42,8 +44,8 @@ void ObjectsManager::Update() {
 	int chunkY = floor(engine->camera->yView/chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
 	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(chunksNumber.x,chunkXStart+2);
-	int chunkYEnd = std::min(chunksNumber.y,chunkYStart+2);
+	int chunkXEnd = std::min(chunksNumber.x,(chunkX+2)*scaleFactor);
+	int chunkYEnd = std::min(chunksNumber.y,(chunkY+2)*scaleFactor);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			//int size=;
@@ -71,8 +73,8 @@ void ObjectsManager::Draw(sf::RenderTarget &rt) {
 	int chunkY = floor(engine->camera->yView/chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
 	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(chunksNumber.x,chunkXStart+2);
-	int chunkYEnd = std::min(chunksNumber.y,chunkYStart+2);
+	int chunkXEnd = std::min(chunksNumber.x,(chunkX+2)*scaleFactor);
+	int chunkYEnd = std::min(chunksNumber.y,(chunkY+2)*scaleFactor);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			int size=chunks->at(i)->at(j)->list->size();
@@ -219,7 +221,7 @@ void ObjectsManager::Clear(int sizeX, int sizeY) {
 		delete chunks;
 		chunks=NULL;
 	};
-	if (sizeX!=-1 && sizeY!=-1) {
+	if (sizeX>-1 && sizeY>-1) {
 		chunksNumber.x=sizeX;
 		chunksNumber.y=sizeY;
 		chunks = new std::vector<std::vector<Chunk*>*>;
@@ -257,6 +259,7 @@ bool ObjectsManager::LoadMap(std::string name) {
 	};
 	engine->tilesManager->LoadTiles(load);
 	load.close();
+	engine->camera->SetBorders(0,0,chunkSize.x*chunksNumber.x,chunkSize.y*chunksNumber.y);
 	return true;
 };
 

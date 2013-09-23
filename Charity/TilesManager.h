@@ -29,6 +29,7 @@ public:
 	std::vector<std::vector<TileChunk*>*>* GetChunks();
 	Tile* GetTileAt(int x, int y);
 	void DeleteAt(int x, int y);
+	int scaleFactor;
 private:
 	sf::Vector2i chunkSize;
 	sf::Vector2i chunksNumber;

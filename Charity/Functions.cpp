@@ -3,6 +3,10 @@
 
 extern Engine* engine;
 
+float Distance(int x1, int y1, int x2, int y2) {
+	return sqrt(pow(static_cast<double>(x2-x1),2)+pow(static_cast<double>(y2-y1),2));
+};
+
 float Increment(float start, float end, float speed) {
 	float val = start;
 	if (val!=end) {

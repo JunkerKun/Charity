@@ -17,6 +17,7 @@ Marker::~Marker() {
 };
 
 void Marker::SetTexture(sf::Texture* tex) {
+	this->tex=tex;
 	sprite.setTexture(*tex, false);
 	sprite.setTextureRect(sf::IntRect(0,0,64,64));
 	draw=true;

@@ -7,9 +7,10 @@ bool SortTilesPredicate(const Tile* o1, const Tile* o2) {
 };
 
 TilesManager::TilesManager() {
-	chunkSize=engine->windowSize;
+	chunkSize=engine->objectsManager->chunkSize;
+	scaleFactor=engine->objectsManager->scaleFactor;
 	chunks=NULL;
-	Clear(1,1);
+	Clear(3,3);
 };
 
 void TilesManager::Resize(int sizeX, int sizeY) {
@@ -22,12 +23,12 @@ void TilesManager::Draw(sf::RenderTarget &rt) {
 	int chunkY = floor(engine->camera->yView/chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
 	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(chunksNumber.x,chunkXStart+3);
-	int chunkYEnd = std::min(chunksNumber.y,chunkYStart+3);
+	int chunkXEnd = std::min(chunksNumber.x,(chunkX+2)*scaleFactor);
+	int chunkYEnd = std::min(chunksNumber.y,(chunkY+2)*scaleFactor);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			int size=chunks->at(i)->at(j)->list->size();
-			std::sort(chunks->at(i)->at(j)->list->begin(),chunks->at(i)->at(j)->list->end(),SortTilesPredicate);
+			//std::sort(chunks->at(i)->at(j)->list->begin(),chunks->at(i)->at(j)->list->end(),SortTilesPredicate);
 			for(int k=0;k<size;k++) {
 				chunks->at(i)->at(j)->list->at(k)->Draw(rt);
 			};
@@ -43,6 +44,8 @@ Tile* TilesManager::AddTile(std::string texName,int x, int y, int col, int row) 
 	temp->chunk.y=floor(static_cast<float>(temp->y)/chunkSize.y);
 	temp->depth=temp->y;
 	chunks->at(temp->chunk.x)->at(temp->chunk.y)->list->push_back(temp);
+	std::sort(chunks->at(temp->chunk.x)->at(temp->chunk.y)->list->begin(),
+		chunks->at(temp->chunk.x)->at(temp->chunk.y)->list->end(),SortTilesPredicate);
 	return temp;
 };
 
@@ -118,8 +121,8 @@ Tile* TilesManager::GetTileAt(int x, int y) {
 	int chunkY = floor(engine->camera->yView/engine->tilesManager->chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
 	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(engine->tilesManager->chunksNumber.x,chunkX+2);
-	int chunkYEnd = std::min(engine->tilesManager->chunksNumber.y,chunkY+2);
+	int chunkXEnd = std::min(engine->tilesManager->chunksNumber.x,(chunkX+2)*scaleFactor);
+	int chunkYEnd = std::min(engine->tilesManager->chunksNumber.y,(chunkY+2)*scaleFactor);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			int size=engine->tilesManager->GetChunks()->at(i)->at(j)->list->size();

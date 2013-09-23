@@ -83,6 +83,10 @@ bool Image::Draw(sf::RenderTarget& RT) {
 	return true;
 };
 
+void Image::SetTexture(sf::Texture* tex) {
+	sprite.setTexture(*tex);
+};
+
 bool Image::SetFrame(int frame) {
 	sprite.setTextureRect(sf::IntRect(imageWidth*frame,0,imageWidth,imageHeight));
 	return true;

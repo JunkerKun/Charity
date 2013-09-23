@@ -17,6 +17,7 @@ public:
 	bool AddSequence(float first, float last, float speed);
 	bool SetSequence(int sequence, bool force=false);
 	int imageWidth, imageHeight;
+	void SetTexture(sf::Texture* tex);
 	~Image();
 private:
 	sf::Texture texture;

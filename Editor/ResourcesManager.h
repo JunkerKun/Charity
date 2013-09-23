@@ -13,6 +13,7 @@ public:
 	sf::Texture* GetTexture(int index);
 	std::string GetTextureName(int index);
 	int GetTexturesNumber();
+	std::string GetTextureName(sf::Texture* tex);
 private:
 	std::map<std::string,sf::Texture*>* texturesList;
 };

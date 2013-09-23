@@ -8,7 +8,7 @@ public:
 	virtual ~Object()=0;
 	unsigned int objectIndex; //0-Block; 1-Player; 2-Usable; 3-Decoration; 4-Trigger;
 	sf::Vector2i chunk;
-	bool visible, canMove, solid, isMoving, isControlled;
+	bool visible, canMove, solid, isMoving, isControlled, isBlocked;
 	int depth;
 	virtual bool Update()=0;
 	virtual bool Draw(sf::RenderTarget& RT)=0;

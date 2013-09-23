@@ -39,6 +39,13 @@ std::string ResourcesManager::GetTextureName(int index) {
 	return it->first;
 };
 
+std::string ResourcesManager::GetTextureName(sf::Texture* tex) {
+	for(std::map<std::string,sf::Texture*>::iterator it=texturesList->begin();it!=texturesList->end();it++) {
+		if (it->second==tex) return it->first;
+	};
+	return "";
+};
+
 int ResourcesManager::GetTexturesNumber() {
 	return texturesList->size();
 };

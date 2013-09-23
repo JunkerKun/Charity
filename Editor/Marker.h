@@ -11,6 +11,7 @@ public:
 	void SetTexture(sf::Texture* tex);
 	void SetCell(int col, int row);
 	~Marker();
+	sf::Texture* tex;
 private:
 	int mode;
 	sf::Sprite sprite;

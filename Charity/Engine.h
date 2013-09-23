@@ -56,9 +56,9 @@ struct Queue {
 			if (timer.time>=timer.endTime) {
 				scripting.ExecuteString(queue.at(index));
 				if (index+2<queue.size()) {
+				index+=2;
 				timer.endTime=stof(queue.at(index+1));
 				timer.time=0;
-				index+=2;
 				} else {
 					index=0;
 					queue.clear();
@@ -108,6 +108,8 @@ public:
 	void IniClose(std::ifstream &ini);
 	float IniFindValue(std::ifstream &ini, std::string group, std::string key, float defaultValue);
 	void LoadSettings();
+	void Fade(int mode,float speed);
+	void SetFadeColor(sf::Color color);
 
 	//Settings
 	bool debug, setVsync, setBloom, setFullscreen, setOutline;
@@ -118,6 +120,9 @@ private:
 	sf::Clock clock;
 	sf::Event inputEvent;
 	sf::Text* debugText;
+	sf::Color fadeColor;
+	float fadeAlpha, fadeSpeed;
+	int fadeMode;
 	
 	bool isFocused, drawNoise;
 	float delta;

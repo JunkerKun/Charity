@@ -14,6 +14,7 @@ Object::Object() {
 	canMove=true;
 	isMoving=false;
 	isControlled=false;
+	isBlocked=false;
 };
 
 Object::~Object() {

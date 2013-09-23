@@ -17,6 +17,8 @@ private:
 	float direction;
 	int hp;
 	sf::Sprite sprShadow;
+	sf::Sprite sprExclamation;
+	bool drawExclamation;
 };
 
 #endif

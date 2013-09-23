@@ -33,6 +33,7 @@ public:
 	sf::Vector2i chunkSize;
 	sf::Vector2i chunksNumber;
 	std::vector<std::vector<Chunk*>*>* chunks;
+	int scaleFactor;
 };
 
 #endif
