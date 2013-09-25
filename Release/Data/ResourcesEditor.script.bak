@@ -1,21 +1,2 @@
-Resources {
-//Required
-addTexture("UITextBox","Data/UI/TextBox.png");
-addTexture("sprExclamation","Data/Sprites/Exclamation.png");
-addTexture("sprPlayer","Data/Sprites/Charity.png");
-addTexture("sprShadow","Data/Sprites/Shadow.png");
-addFont(1,"Data/Fonts/STREET.ttf",19);
-
-//Additional
-addTexture("sprPlayerBW","Data/Sprites/Charity.png");
-desaturateTexture("sprPlayerBW");
-addTexture("sprLeFleurBW","Data/Sprites/Charity.png");
-desaturateTexture("sprLeFleurBW");
-addTexture("imgBook","Data/Images/Book.png");
-addTexture("TileSet","Data/Tiles/TileSet.png");
-addTexture("TileSetBW","Data/Tiles/TileSet.png");
-desaturateTexture("TileSetBW");
-addTexture("sprTable","Data/Sprites/Table.png");
-addTexture("sprTableBW","Data/Sprites/Table.png");
-desaturateTexture("sprTableBW");
-};
+TileSet Data/Tiles/TileSet.png
+TileSetBW Data/Tiles/TileSet.png

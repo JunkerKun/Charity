@@ -25,14 +25,14 @@ void ObjectsManager::Resize(int sizeX, int sizeY) {
 	Clear(sizeX,sizeY);
 };
 
-Object* ObjectsManager::GetObjectAt(int x, int y) {
-	Object* collision=CollisionCheckPoint(x,y,-1);
+Object* ObjectsManager::GetObjectAt(int x, int y, int index) {
+	Object* collision=CollisionCheckPoint(x,y,index);
 	if (collision!=NULL) return collision;
 	return NULL;
 };
 
 void ObjectsManager::DeleteAt(int x, int y) {
-	Object* collision=GetObjectAt(x,y);
+	Object* collision=GetObjectAt(x,y,-1);
 	if (collision!=NULL) {
 		DeleteObject(collision);
 	};
@@ -166,17 +166,6 @@ void ObjectsManager::DeleteMover(int index) {
 	movers[index]->object->isMoving=false;
 	delete movers[index];
 	movers.erase(movers.begin()+index);
-};
-
-Object* ObjectsManager::FindObject(Object* obj) {
-	for (int i=0;i<chunks->at(obj->chunk.x)->at(obj->chunk.y)->list->size();i++) {
-		if (chunks->at(obj->chunk.x)->at(obj->chunk.y)->list->at(i)==obj) {
-			chunks->at(obj->chunk.x)->at(obj->chunk.y)->list->erase(
-				chunks->at(obj->chunk.x)->at(obj->chunk.y)->list->begin()+i);
-			return obj;
-		};
-	};
-	return NULL;
 };
 
 Player* ObjectsManager::GetPlayer() {

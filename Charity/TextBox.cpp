@@ -5,10 +5,12 @@ extern Engine* engine;
 
 TextBox::TextBox(int xx, int yy, sf::Texture* texture):Object() {
 	nvlMode=false;
-	xAdv=20*engine->screenScale;
-	yAdv=418*engine->screenScale;
-	xNvl=0*engine->screenScale;
-	yNvl=0*engine->screenScale;
+	textCenter=false;
+	drawSprite=true;
+	xAdv=20;
+	yAdv=418;
+	xNvl=0;
+	yNvl=0;
 	//toDelete=false;
 	textImage=texture;
 	objectIndex=10001;
@@ -23,8 +25,8 @@ TextBox::TextBox(int xx, int yy, sf::Texture* texture):Object() {
 	bBox.top=0;
 	bBox.width=tex->getSize().x;
 	bBox.height=tex->getSize().y;
-	//xAdv=20*engine->screenScale;
-	//yAdv=engine->windowSize.y-tex->getSize().y-20*engine->screenScale;
+	//xAdv=20;
+	//yAdv=engine->windowSize.y-tex->getSize().y-20;
 	} else {
 		nvlMode=true;
 		sprite.setTexture(*textImage,true);
@@ -56,7 +58,9 @@ bool TextBox::Update() {
 	int xx=engine->camera->xView+floor(x);
 	int yy=engine->camera->yView+floor(y);
 	sprite.setPosition(xx,yy);
-	text.setPosition(xx+10*engine->screenScale,yy+10*engine->screenScale);
+	if (!textCenter) text.setPosition(xx+10,yy+10);
+	else text.setPosition(engine->camera->xView+floor(engine->windowSize.x/2-(text.getLocalBounds().width-text.getLocalBounds().left)/2),
+		engine->camera->yView+floor(engine->windowSize.y/2-(text.getLocalBounds().height+text.getLocalBounds().top)/2));
 	if (!locked) {
 		if (text.getString().getSize()!=strings.at(index).size()) {
 			timer+=engine->setTextSpeed*engine->GetDelta();
@@ -77,8 +81,9 @@ bool TextBox::Update() {
 				if (text.getString().getSize()>=strings.at(index).size()) {
 					//toDelete=true;
 					if (callback!=L"") {
+						std::wstring temp=callback;
 						engine->scripting.ExecuteFunction(callback);
-						callback=L"";
+						if (callback==temp) callback=L"";
 						if (index<strings.size()-1) {
 							index+=1;
 							text.setString(L"");
@@ -120,7 +125,7 @@ void TextBox::Unlock() {
 
 bool TextBox::Draw(sf::RenderTarget &RT) {
 	if (!visible) return false;
-	RT.draw(sprite);
+	if (drawSprite) RT.draw(sprite);
 	if (nvlMode) {
 		sf::RectangleShape RS;
 		RS.setPosition(engine->camera->xView,engine->camera->yView);

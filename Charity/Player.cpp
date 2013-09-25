@@ -73,14 +73,17 @@ bool Player::Update() {
 		//if (collisionTrigger==NULL) {
 		collisionTrigger=CollisionCheckIntersect(this,4);
 		if (collisionTrigger!=NULL) {
+			if (collisionTrigger->active) {
 			Trigger* trg=static_cast<Trigger*>(collisionTrigger);
 			if (trg->function!="none") engine->scripting.ExecuteFunction(engine->scripting.StringToWString(trg->function));
+			};
 		};
 		//};
 
-		Object* collision=CollisionCheckRadius(82,x,y,2);
+		Object* collision=CollisionCheckRadius(72,x,y,2);
 		if (collision!=NULL) {
-			drawExclamation=true;
+			if (collision->active) drawExclamation=true;
+			else drawExclamation=false;
 		} else {
 			drawExclamation=false;
 		};
@@ -151,8 +154,10 @@ bool Player::Update() {
 		};
 			collision=CollisionCheckIntersect(&blk,2);
 			if (collision!=NULL) {
+				if (collision->active) {
 				Usable* use=static_cast<Usable*>(collision);
 				if (use->function!="none") engine->scripting.ExecuteFunction(engine->scripting.StringToWString(use->function));
+				};
 			};
 		};
 	};

@@ -184,11 +184,11 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 			str+=parameters.at(1).substr(1,parameters.at(1).length()-2);
 			str+=L"]\n";
 			parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
-			str+=WrapString(parameters.at(2),engine->textBox->GetBBox().width*engine->screenScale-20*engine->screenScale);
+			str+=WrapString(parameters.at(2),engine->textBox->GetBBox().width-20);
 			parameters.at(1)=str;
 		} else {
 			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
-			parameters.at(1)=WrapString(parameters.at(1),engine->textBox->GetBBox().width*engine->screenScale-20*engine->screenScale);
+			parameters.at(1)=WrapString(parameters.at(1),engine->textBox->GetBBox().width-20);
 		};
 		engine->textBox->AddText(parameters.at(1));
 		if (first) {
@@ -204,11 +204,24 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		if (engine->textBox!=NULL) {
 			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
 			engine->textBox->ExtendText(WrapString(parameters.at(1),
-				engine->textBox->GetBBox().width*engine->screenScale-engine->textBox->xAdv));
+				engine->textBox->GetBBox().width-engine->textBox->xAdv));
 		};
 		return true;
 	} else if (command==L"textCallback") {
 		engine->textBox->SetCallback(parameters.at(1));
+		return true;
+	} else if (command==L"setTextDrawSprite") {
+		engine->textBox->drawSprite=stoi(parameters.at(1));
+		return true;
+	} else if (command==L"setTextCentered") {
+		engine->textBox->textCenter=stoi(parameters.at(1));
+		return true;
+	} else if (command==L"setTextPosition") {
+		if (parameters.at(1)==L"" && parameters.at(2)==L"-1") {
+			engine->textBox->SetPosition(20,418);
+			return true;
+		};
+		engine->textBox->SetPosition(stoi(parameters.at(1)),stoi(parameters.at(2)));
 		return true;
 	} else if (command==L"setTextNvl") {
 		if (parameters.at(2)!=L"-1") {
@@ -218,13 +231,13 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		};
 		return true;
 	} else if (command==L"setFadeColor") {
-				engine->SetFadeColor(sf::Color(stoi(parameters.at(1)),stoi(parameters.at(2)),stoi(parameters.at(3)),255));
+		engine->SetFadeColor(sf::Color(stoi(parameters.at(1)),stoi(parameters.at(2)),stoi(parameters.at(3)),255));
 		return true;
 	} else if (command==L"fade") {
-			if (parameters.at(1)==L"in") {
-				engine->Fade(0,stof(parameters.at(2)));
-				return true;
-			} else
+		if (parameters.at(1)==L"in") {
+			engine->Fade(0,stof(parameters.at(2)));
+			return true;
+		} else
 			if (parameters.at(1)==L"out") {
 				engine->Fade(1,stof(parameters.at(2)));
 				return true;
@@ -241,38 +254,60 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		if (parameters.at(1)==L"player") {
 			parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
 			engine->objectsManager->GetPlayer()->SetTexture(engine->resourcesManager->GetTexture(wStringToString(parameters.at(2))));
-					} else {
-						parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
-						parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
-						Npc* obj=static_cast<Npc*>(engine->objectsManager->GetNpc(wStringToString(parameters.at(1))));
-						obj->SetTexture(engine->resourcesManager->GetTexture(wStringToString(parameters.at(2))));
-					};
+		} else {
+			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+			parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
+			Npc* obj=static_cast<Npc*>(engine->objectsManager->GetNpc(wStringToString(parameters.at(1))));
+			obj->SetTexture(engine->resourcesManager->GetTexture(wStringToString(parameters.at(2))));
+		};
 		return true;
 	} else if (command==L"moveObject") {
-				if (parameters.at(5)!=L"-1") {
-					if (parameters.at(1)==L"player") {
-					engine->objectsManager->AddMover(engine->objectsManager->GetPlayer(),
-						stoi(parameters.at(2)),stoi(parameters.at(3)),stof(parameters.at(4)));
-					} else {
-						parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
-						Object* obj=engine->objectsManager->GetNpc(wStringToString(parameters.at(1)));
-						engine->objectsManager->AddMover(obj,stoi(parameters.at(2)),stof(parameters.at(3)),stoi(parameters.at(4)));
-					};
-				} else {
-					if (parameters.at(1)==L"player") {
-					engine->objectsManager->AddMover(engine->objectsManager->GetPlayer(),
-						engine->objectsManager->GetPlayer()->x+stoi(parameters.at(2)),
-						engine->objectsManager->GetPlayer()->y+stoi(parameters.at(3)),
-						stof(parameters.at(4)));
-					} else {
-						parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
-						Object* obj=engine->objectsManager->GetNpc(wStringToString(parameters.at(1)));
-						engine->objectsManager->AddMover(obj,
-						obj->x+stoi(parameters.at(2)),
-						obj->y+stoi(parameters.at(3)),
-						stof(parameters.at(4)));
-					};
+		if (parameters.at(5)!=L"-1") {
+			if (parameters.at(1)==L"player") {
+				if (parameters.at(4)==L"-1") {
+					engine->objectsManager->GetPlayer()->SetPosition(stoi(parameters.at(2)),stoi(parameters.at(3)));
+					return true;
 				};
+				engine->objectsManager->AddMover(engine->objectsManager->GetPlayer(),
+					stoi(parameters.at(2)),stoi(parameters.at(3)),stof(parameters.at(4)));
+				return true;
+			} else {
+				parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+				Object* obj=engine->objectsManager->GetNpc(wStringToString(parameters.at(1)));
+				if (parameters.at(4)==L"-1") {
+					obj->SetPosition(stoi(parameters.at(2)),stoi(parameters.at(3)));
+					return true;
+				};
+				engine->objectsManager->AddMover(obj,stoi(parameters.at(2)),stoi(parameters.at(3)),stoi(parameters.at(4)));
+				return true;
+			};
+		} else {
+			if (parameters.at(1)==L"player") {
+				if (parameters.at(4)==L"-1") {
+					engine->objectsManager->GetPlayer()->SetPosition(
+						engine->objectsManager->GetPlayer()->x+stoi(parameters.at(2)),
+						engine->objectsManager->GetPlayer()->y+stoi(parameters.at(3)));
+					return true;
+				};
+				engine->objectsManager->AddMover(engine->objectsManager->GetPlayer(),
+					engine->objectsManager->GetPlayer()->x+stoi(parameters.at(2)),
+					engine->objectsManager->GetPlayer()->y+stoi(parameters.at(3)),
+					stof(parameters.at(4)));
+				return true;
+			} else {
+				parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+				Object* obj=engine->objectsManager->GetNpc(wStringToString(parameters.at(1)));
+				if (parameters.at(4)==L"-1") {
+					obj->SetPosition(obj->x+stoi(parameters.at(2)),obj->y+stoi(parameters.at(3)));
+					return true;
+				};
+				engine->objectsManager->AddMover(obj,
+					obj->x+stoi(parameters.at(2)),
+					obj->y+stoi(parameters.at(3)),
+					stof(parameters.at(4)));
+				return true;
+			};
+		};
 		return true;
 	} else if (command==L"setDirection") {
 		if (parameters.at(1)==L"player") engine->objectsManager->GetPlayer()->SetDirection(stoi(parameters.at(2)));
@@ -371,11 +406,11 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 	} else if (command==L"setCameraPosition") {
 		if (parameters.at(1)==L"" && parameters.at(2)==L"-1") {
 			if (engine->camera->target!=NULL) {
-			engine->camera->xView=engine->camera->target->x-(engine->windowSize.x/2);
-			engine->camera->yView=engine->camera->target->y-(engine->windowSize.y/2);
-			engine->camera->viewTo.x=engine->camera->target->x-(engine->windowSize.x/2);
-			engine->camera->viewTo.y=engine->camera->target->y-(engine->windowSize.y/2);
-			return true;
+				engine->camera->xView=engine->camera->target->x-(engine->windowSize.x/2);
+				engine->camera->yView=engine->camera->target->y-(engine->windowSize.y/2);
+				engine->camera->viewTo.x=engine->camera->xView;
+				engine->camera->viewTo.y=engine->camera->yView;
+				return true;
 			};
 		};
 		engine->camera->xView=stoi(parameters.at(1));
@@ -383,6 +418,12 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		return true;
 	} else if (command==L"setCameraBorders") {
 		engine->camera->SetBorders(stoi(parameters.at(1)),stoi(parameters.at(2)),stoi(parameters.at(3)),stoi(parameters.at(4)));
+		return true;
+	} else if (command==L"setActive") {
+		int index=0;
+		if (parameters.at(1)==L"usable") index=2;
+		Object* obj=engine->objectsManager->GetObjectAt(stoi(parameters.at(2)),stoi(parameters.at(3)),index);
+		obj->active=stoi(parameters.at(4));
 		return true;
 	} else if (command==L"addToQueue") {
 		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
@@ -405,6 +446,9 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		return true;
 	} else if (command==L"end") {
 		engine->commandPause = true;
+		return true;
+	} else if (command==L"endGame") {
+		engine->gameEnd=true;
 		return true;
 	}
 	//Resources add

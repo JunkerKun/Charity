@@ -8,7 +8,6 @@ Engine::Engine() {
 	windowSize.y=600;
 	volumeSounds=80;
 	volumeBGM=80;
-	screenScale=1;
 	setVsync=false;
 	setBloom=true;
 	setFullscreen=false;
@@ -38,6 +37,8 @@ Engine::Engine() {
 	fadeColor=sf::Color(0,0,0,255);
 	fadeMode=0;
 	fadeSpeed=255;
+
+	gameEnd=false;
 };
 
 void Engine::Begin() {
@@ -127,10 +128,10 @@ bool Engine::Draw() {
 bool Engine::Tick() {
 	while (renderWindow.isOpen())
 	{
+		if (gameEnd) renderWindow.close();
 		while (renderWindow.pollEvent(inputEvent))
 		{
-			if (inputEvent.type == sf::Event::Closed)
-				renderWindow.close();
+			if (inputEvent.type == sf::Event::Closed) renderWindow.close();
 			switch (inputEvent.type) {
 			case sf::Event::KeyPressed:
 				if (inputEvent.key.code==sf::Keyboard::Escape) {

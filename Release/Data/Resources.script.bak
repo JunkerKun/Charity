@@ -18,6 +18,4 @@ desaturateTexture("TileSetBW");
 addTexture("sprTable","Data/Sprites/Table.png");
 addTexture("sprTableBW","Data/Sprites/Table.png");
 desaturateTexture("sprTableBW");
-
-
 };

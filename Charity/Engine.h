@@ -112,9 +112,9 @@ public:
 	void SetFadeColor(sf::Color color);
 
 	//Settings
-	bool debug, setVsync, setBloom, setFullscreen, setOutline;
+	bool debug, setVsync, setBloom, setFullscreen, setOutline, gameEnd;
 	int setTextSpeed, setFramerateLimit, volumeSounds, volumeBGM;
-	float screenScale;
+
 private:
 	sf::RenderWindow renderWindow;
 	sf::Clock clock;
