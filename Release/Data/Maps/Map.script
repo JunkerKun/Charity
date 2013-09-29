@@ -1,8 +1,9 @@
 Map {
 function(Init);
-//debug();
 setCameraPosition();
 setCameraBorders(0,0,800,900);
+//loadMap("Map02");
+//end();
 setActive(usable,288,192,0);
 setActive(usable,608,192,0);
 setActive(usable,416,352,0);
@@ -93,12 +94,17 @@ textCallback(Nightstand1_4);
 end();
 
 function(Nightstand1_4);
-endGame();
+addToQueue("call(ToMap02)",2);
+end();
+
+function(ToMap02);
+varClear();
+loadMap("Map02");
 end();
 
 function(Bookshelf);
 showText("Equestrian History - The Trixie wars.",-1,"imgBook");
-extendText("# #In the year 40 after the Day of Coronation, Princess Twilight Sparkle defeated the Great and Powerful Trixie and took her title. Now officially named the Great and Powerful Princess Twilight Sparkle, she has demonstrated time and time again that she is the greatest pony to have ever lead an imperial army, save perhaps the holy god-empress herself. ");
+extendText("# #In the year 40 after the Day of Coronation, Princess Twilight Sparkle defeated the Great and Powerful Trixie and took her title. Now officially named the Great and Powerful Princess Twilight Sparkle, she has demonstrated time and time again that she is the greatest pony to have ever lead an imperial army, save perhaps the holy god-empress herself.");
 extendText("# #As the only surviving element of harmony, she is the symbol of the Solar empire's cause and it's side to righteousness. Forever may she guide us, for as long as the sun lives on, her light will be burning forever brightly.");
 extendText("# #And let her accolades heap ever more for her invaluable service to our goddess.");
 varSet(bookChecked,1);

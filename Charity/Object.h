@@ -19,6 +19,7 @@ public:
 	void MoveToChunk();
 protected:
 	sf::Rect<sf::Int16> bBox;
+	bool locked;
 };
 
 #endif

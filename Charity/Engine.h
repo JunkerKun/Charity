@@ -23,6 +23,7 @@
 #include "Decoration.h"
 #include "Trigger.h"
 #include "Npc.h"
+#include "ChoiceBox.h"
 
 struct Timer {
 	float time, endTime;
@@ -62,6 +63,7 @@ struct Queue {
 				} else {
 					index=0;
 					queue.clear();
+					timer.time=0;
 					timer.endTime=-1;
 				};
 			};
@@ -93,6 +95,7 @@ public:
 	std::string scriptName;
 	sf::Vector2i windowSize;
 	TextBox* textBox;
+	ChoiceBox* choiceBox;
 	Camera* camera;
 	Input* input;
 	ObjectsManager* objectsManager;
@@ -110,6 +113,8 @@ public:
 	void LoadSettings();
 	void Fade(int mode,float speed);
 	void SetFadeColor(sf::Color color);
+
+	sf::Text* textGame;
 
 	//Settings
 	bool debug, setVsync, setBloom, setFullscreen, setOutline, gameEnd;

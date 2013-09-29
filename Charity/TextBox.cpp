@@ -36,12 +36,12 @@ TextBox::TextBox(int xx, int yy, sf::Texture* texture):Object() {
 		bBox.height=textImage->getSize().y;
 	};
 	
-	Font* fnt=engine->resourcesManager->GetFont(1);
-	text.setColor(fnt->color);
-	text.setCharacterSize(fnt->size);
-	text.setFont(fnt->font);
+	/*Font* fnt=engine->resourcesManager->GetFont(1);
+	text->setColor(fnt->color);
+	text->setCharacterSize(fnt->size);
+	text->setFont(fnt->font);*/
+	text=engine->textGame;
 	index=0;
-	engine->objectsManager->GetPlayer()->canMove=false;
 	locked=true;
 	timer=0;
 };
@@ -55,30 +55,26 @@ int TextBox::GetIndex() {
 };
 
 bool TextBox::Update() {
-	int xx=engine->camera->xView+floor(x);
-	int yy=engine->camera->yView+floor(y);
-	sprite.setPosition(xx,yy);
-	if (!textCenter) text.setPosition(xx+10,yy+10);
-	else text.setPosition(engine->camera->xView+floor(engine->windowSize.x/2-(text.getLocalBounds().width-text.getLocalBounds().left)/2),
-		engine->camera->yView+floor(engine->windowSize.y/2-(text.getLocalBounds().height+text.getLocalBounds().top)/2));
+	engine->objectsManager->GetPlayer()->canMove=false;
+	if (engine->choiceBox==NULL) {
 	if (!locked) {
-		if (text.getString().getSize()!=strings.at(index).size()) {
+		if (text->getString().getSize()!=strings.at(index).size()) {
 			timer+=engine->setTextSpeed*engine->GetDelta();
 			if (timer>1) {
-				SetText(strings.at(index).substr(0,text.getString().getSize()+1));
+				SetText(strings.at(index).substr(0,text->getString().getSize()+1));
 				timer=0;
 			};
 		};
 		if (engine->input->GetKeyPressed(sf::Keyboard::Z)) {
 			if (index<strings.size()-1) {
-				if (text.getString().getSize()>=strings.at(index).size()) {
+				if (text->getString().getSize()>=strings.at(index).size()) {
 					index+=1;
 					SetText(strings.at(index).substr(0,strings.at(index).find_first_of(L"]")+2));
 				} else {
 					SetText(strings.at(index));
 				};
 			} else {
-				if (text.getString().getSize()>=strings.at(index).size()) {
+				if (text->getString().getSize()>=strings.at(index).size()) {
 					//toDelete=true;
 					if (callback!=L"") {
 						std::wstring temp=callback;
@@ -86,18 +82,21 @@ bool TextBox::Update() {
 						if (callback==temp) callback=L"";
 						if (index<strings.size()-1) {
 							index+=1;
-							text.setString(L"");
+							text->setString(L"");
 						} else {
 							delete this;
+							return true;
 						};
 					} else {
 						delete this;
+						return true;
 					};
 				} else {
 					SetText(strings.at(index));
 				};
 			};
 		};
+	};
 	};
 	return true;
 };
@@ -123,8 +122,18 @@ void TextBox::Unlock() {
 	locked=false;
 };
 
+void TextBox::Complete() {
+	SetText(strings.at(index));
+};
+
 bool TextBox::Draw(sf::RenderTarget &RT) {
-	if (!visible) return false;
+	if (!visible || locked) return false;
+	int xx=engine->camera->xView+floor(x);
+	int yy=engine->camera->yView+floor(y);
+	sprite.setPosition(xx,yy);
+	if (!textCenter) text->setPosition(xx+10,yy+10);
+	else text->setPosition(engine->camera->xView+floor(engine->windowSize.x/2-(text->getLocalBounds().width-text->getLocalBounds().left)/2),
+		engine->camera->yView+floor(engine->windowSize.y/2-(text->getLocalBounds().height+text->getLocalBounds().top)/2));
 	if (drawSprite) RT.draw(sprite);
 	if (nvlMode) {
 		sf::RectangleShape RS;
@@ -133,12 +142,12 @@ bool TextBox::Draw(sf::RenderTarget &RT) {
 		RS.setFillColor(sf::Color(0,0,0,200));
 		RT.draw(RS);
 	};
-	RT.draw(text);
+	RT.draw(*text);
 	return true;
 };
 
 void TextBox::SetText(std::wstring str) {
-	text.setString(str);
+	text->setString(str);
 };
 
 void TextBox::AddText(std::wstring string) {
@@ -150,7 +159,7 @@ void TextBox::ExtendText(std::wstring string) {
 };
 
 sf::Text TextBox::GetTextBox() {
-	return text;
+	return *text;
 };
 
 TextBox::~TextBox() {

@@ -51,9 +51,17 @@ void Engine::Begin() {
 	objectsManager = new ObjectsManager();
 	tilesManager=new TilesManager();
 	textBox=NULL;
+	choiceBox=NULL;
 	resourcesManager=new ResourcesManager();
-	queue=new Queue(scripting);
 	scripting.ExecuteFile("Data/Resources.script");
+
+	queue=new Queue(scripting);
+	textGame=new sf::Text();
+	Font* fnt=resourcesManager->GetFont(1);
+	textGame->setColor(fnt->color);
+	textGame->setCharacterSize(fnt->size);
+	textGame->setFont(fnt->font);
+
 	LoadMap("Map");
 
 	if (debug) {
@@ -85,6 +93,7 @@ bool Engine::Update() {
 	input->Update();
 	objectsManager->Update();
 	camera->Update();
+	if (choiceBox!=NULL) choiceBox->Update();
 	if (textBox!=NULL) textBox->Update();
 	queue->Update(delta);
 	fadeAlpha=Increment(fadeAlpha,fadeMode*255,fadeSpeed);
@@ -115,9 +124,18 @@ bool Engine::Draw() {
 		renderWindow.draw(rs);
 	};
 	if (textBox!=NULL) textBox->Draw(renderWindow);
+	if (choiceBox!=NULL) choiceBox->Draw(renderWindow);
 	if (debug) {
 		debugText->setPosition(camera->xView,camera->yView);
-		debugText->setString(scripting.ToString(delta));
+		std::string str;
+		str+=scripting.ToString(delta);
+		if (queue!=NULL) {
+		str+="\n";
+		str+=scripting.ToString(queue->timer.time);
+		str+="|";
+		str+=scripting.ToString(queue->timer.endTime);
+		};
+		debugText->setString(str);
 		renderWindow.draw(*debugText);
 	};
 	

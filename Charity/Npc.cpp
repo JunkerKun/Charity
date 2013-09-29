@@ -4,6 +4,7 @@
 extern Engine* engine;
 
 Npc::Npc(sf::Texture* tex):Image(tex) {
+	locked=true;
 	direction=0;
 	objectIndex=6;
 	index=0;
@@ -36,11 +37,12 @@ bool Npc::Update() {
 	sprShadow.setPosition(floor(x),floor(y));
 	xPrev=x;
 	xPrev=y;
+	locked=false;
 	return true;
 };
 
 bool Npc::Draw(sf::RenderTarget &RT) {
-	if (!visible) return true;
+	if (!visible || locked) return true;
 	RT.draw(sprShadow);
 	Image::Draw(RT);
 	return true;

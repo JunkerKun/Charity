@@ -15,7 +15,7 @@ public:
 private:
 	float speed;
 	float direction;
-	int hp;
+	int hp, maxHp;
 	sf::Sprite sprShadow;
 	sf::Sprite sprExclamation;
 	bool drawExclamation;

@@ -176,6 +176,10 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 				engine->textBox->x=engine->textBox->xNvl;
 				engine->textBox->y=engine->textBox->yNvl;
 				engine->textBox->SetNvl(true, engine->resourcesManager->GetTexture(wStringToString(parameters.at(3))));
+			} else {
+				engine->textBox->x=engine->textBox->xNvl;
+				engine->textBox->y=engine->textBox->yNvl;
+				engine->textBox->SetNvl(false);
 			};
 		};
 		//engine->textBox->toDelete=false;
@@ -228,6 +232,27 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 			engine->textBox->SetNvl(false,engine->resourcesManager->GetTexture(wStringToString(parameters.at(2))));
 		} else {
 			engine->textBox->SetNvl(false);
+		};
+		return true;
+	} else if (command==L"completeText") {
+		engine->textBox->Complete();
+		return true;
+	} else if (command==L"showChoice") {
+		if(engine->choiceBox==NULL) {
+			engine->choiceBox=new ChoiceBox();
+			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+			parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
+			engine->choiceBox->AddChoice(parameters.at(1),L"");
+			engine->choiceBox->AddChoice(parameters.at(2),parameters.at(3));
+			engine->choiceBox->index=1;
+			return true;	
+		};
+		return true;
+	} else if (command==L"addChoice") {
+		if(engine->choiceBox!=NULL) {
+			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+			engine->choiceBox->AddChoice(parameters.at(1),parameters.at(2));
+			return true;	
 		};
 		return true;
 	} else if (command==L"setFadeColor") {
@@ -401,7 +426,13 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		return true;
 	} else if (command==L"setCameraTarget") {
 		if (parameters.at(1)==L"-1") engine->camera->target=NULL;
-		if (parameters.at(1)==L"player") engine->camera->target=engine->objectsManager->GetPlayer();
+		if (parameters.at(1)==L"player") {
+			engine->camera->target=engine->objectsManager->GetPlayer();
+		} else {
+			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+			Object* obj=engine->objectsManager->GetNpc(wStringToString(parameters.at(1)));
+			engine->camera->target=obj;
+		};
 		return true;
 	} else if (command==L"setCameraPosition") {
 		if (parameters.at(1)==L"" && parameters.at(2)==L"-1") {
@@ -435,6 +466,9 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 	} else if (command==L"loadMap") {
 		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
 		engine->LoadMap(wStringToString(parameters.at(1)));
+		if (parameters.at(2)!=L"-1") engine->placeIndex=stoi(parameters.at(2));
+		else engine->placeIndex=0;
+
 		return true;
 	} else if (command==L"clearResources") {
 		if (parameters.at(1)==L"all") {

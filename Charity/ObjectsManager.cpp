@@ -118,6 +118,7 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 	case 5: {
 		if (stoi(function)==engine->placeIndex) {
 			temp=new Player(engine->resourcesManager->GetTexture(engine->playerSpriteName));
+			engine->placeIndex=0;
 			break;
 		};
 		done=false;
@@ -193,6 +194,7 @@ void ObjectsManager::DeleteObject(Object* obj) {
 };
 
 void ObjectsManager::Clear(int sizeX, int sizeY) {
+	player=NULL;
 	int size=npcList.size();
 	for(int i=0;i<size;i++) {
 		npcList.erase(npcList.begin());

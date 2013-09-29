@@ -16,6 +16,7 @@ public:
 	std::vector<std::wstring> GetStrings();
 	int GetIndex();
 	void Unlock();
+	void Complete();
 	sf::Text GetTextBox();
 	void SetCallback(std::wstring callback);
 	void SetNvl(bool enabled, sf::Texture* tex=NULL);
@@ -25,7 +26,7 @@ public:
 private:
 	std::wstring callback;
 	sf::Sprite sprite;
-	sf::Text text;
+	sf::Text* text;
 	sf::Texture* textImage;
 	std::vector<std::wstring> strings; 
 	int index;
