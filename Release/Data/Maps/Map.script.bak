@@ -2,8 +2,8 @@ Map {
 function(Init);
 setCameraPosition();
 setCameraBorders(0,0,800,900);
-loadMap("Map02");
-end();
+// loadMap("Map02");
+// end();
 setActive(usable,288,192,0);
 setActive(usable,608,192,0);
 setActive(usable,416,352,0);

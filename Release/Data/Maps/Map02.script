@@ -103,13 +103,13 @@ end();
 
 function(ConvEnd1_1);
 showText("Pinkie","Anyway... I have to go now. I'll talk to you tomorrow.");
-showText("Pinkie","Here, you look hungry. Have this one on me.");
+//showText("Pinkie","Here, you look hungry. Have this one on me.");
 textCallback(ConvEnd1_2);
 end();
 
 function(ConvEnd1_2);
 deleteNpc("npcPinkie");
-showText("Charity","It's an apple.");
+//showText("Charity","It's an apple.");
 setActive(usable,288,192,1);
 setActive(usable,416,608,0);
 end();

@@ -9,7 +9,7 @@ Npc::Npc(sf::Texture* tex):Image(tex) {
 	objectIndex=6;
 	index=0;
 
-	SetOrigin(imageWidth/2,imageHeight-7*2);
+	SetOrigin(imageWidth/2,imageHeight-11);
 
 	AddSequence(0,0,0.25);
 	AddSequence(5,5,0.25);

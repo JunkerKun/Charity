@@ -5,6 +5,7 @@ extern Engine* engine;
 
 ResourcesManager::ResourcesManager() {
 	texturesList= new std::map<std::string,sf::Texture*>;
+	soundsList= new std::map<std::string,Sound*>;
 	fontText= new Font(14,255,255,255);
 	sf::Image img;
 	img.create(engine->windowSize.x/2,engine->windowSize.y/2);
@@ -29,6 +30,13 @@ ResourcesManager::~ResourcesManager() {
 	};
 	texturesList->clear();
 	delete texturesList;
+
+	for (std::map<std::string,Sound*>::iterator it=soundsList->begin(); it!=soundsList->end(); it++) {
+		delete it->second;
+	};
+	soundsList->clear();
+	delete soundsList;
+
 	delete fontText;
 };
 
@@ -40,11 +48,25 @@ bool ResourcesManager::AddTexture(std::string name, std::string path) {
 	return true;
 };
 
+bool ResourcesManager::AddSound(std::string name, std::string path) {
+	Sound* snd=new Sound(path);
+	soundsList->insert(std::pair<std::string,Sound*>(name,snd));
+	return true;
+};
+
 bool ResourcesManager::DeleteTexture(std::string name) {
 	std::map<std::string,sf::Texture*>::iterator it=texturesList->find(name);
 	if (it==texturesList->end()) return false;
 	delete it->second;
 	texturesList->erase(it);
+	return true;
+};
+
+bool ResourcesManager::DeleteSound(std::string name) {
+	std::map<std::string,Sound*>::iterator it=soundsList->find(name);
+	if (it==soundsList->end()) return false;
+	delete it->second;
+	soundsList->erase(it);
 	return true;
 };
 
@@ -68,9 +90,37 @@ void ResourcesManager::DesaturateTexture(std::string name) {
 	texturesList->insert(std::pair<std::string,sf::Texture*>(name,tex2));
 };
 
+void ResourcesManager::ColorizeTexture(std::string name, int mode, sf::Color color) {
+	sf::Texture* tex=GetTexture(name);
+	sf::Image img=tex->copyToImage();
+	for (int i=0;i<img.getSize().x;i++) {
+		for (int j=0;j<img.getSize().y;j++) {
+			sf::Color pixel=img.getPixel(i,j);
+			sf::Color saturation;
+			if (mode==0) {
+			saturation.r=(pixel.r*color.r)/255;
+			saturation.g=(pixel.g*color.g)/255;
+			saturation.b=(pixel.b*color.b)/255;
+			saturation.a=pixel.a;
+			};
+			img.setPixel(i,j,saturation);
+		};
+	};
+	DeleteTexture(name);
+	sf::Texture* tex2=new sf::Texture();
+	tex2->loadFromImage(img);
+	texturesList->insert(std::pair<std::string,sf::Texture*>(name,tex2));
+};
+
 sf::Texture* ResourcesManager::GetTexture(std::string name) {
 	std::map<std::string,sf::Texture*>::iterator it=texturesList->find(name);
 	if (it==texturesList->end()) return NULL;
+	return it->second;
+};
+
+Sound* ResourcesManager::GetSound(std::string name) {
+	std::map<std::string,Sound*>::iterator it=soundsList->find(name);
+	if (it==soundsList->end()) return NULL;
 	return it->second;
 };
 

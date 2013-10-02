@@ -301,6 +301,7 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 				Object* obj=engine->objectsManager->GetNpc(wStringToString(parameters.at(1)));
 				if (parameters.at(4)==L"-1") {
 					obj->SetPosition(stoi(parameters.at(2)),stoi(parameters.at(3)));
+					obj->depth=obj->y+16;
 					return true;
 				};
 				engine->objectsManager->AddMover(obj,stoi(parameters.at(2)),stoi(parameters.at(3)),stoi(parameters.at(4)));
@@ -324,6 +325,7 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 				Object* obj=engine->objectsManager->GetNpc(wStringToString(parameters.at(1)));
 				if (parameters.at(4)==L"-1") {
 					obj->SetPosition(obj->x+stoi(parameters.at(2)),obj->y+stoi(parameters.at(3)));
+					obj->depth=obj->y+16;
 					return true;
 				};
 				engine->objectsManager->AddMover(obj,
@@ -460,6 +462,22 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
 		engine->queue->Add(parameters.at(1),parameters.at(2));
 		return true;
+	} else if (command==L"playSound") {
+		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+		Sound* snd=engine->resourcesManager->GetSound(wStringToString(parameters.at(1)));
+		snd->sound->setLoop(stoi(parameters.at(2)));
+		if (parameters.at(2)==L"-1") snd->sound->setLoop(false);
+		snd->sound->play();
+		return true;
+	} else if (command==L"playMusic") {
+		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+		engine->resourcesManager->bgMusic.openFromFile(wStringToString(parameters.at(1)));
+		engine->resourcesManager->bgMusic.setLoop(true);
+		engine->resourcesManager->bgMusic.play();
+		return true;
+	} else if (command==L"stopMusic") {
+		engine->resourcesManager->bgMusic.stop();
+		return true;
 	} else if (command==L"call") {
 		engine->scripting.ExecuteFunction(parameters.at(1));
 		return true;
@@ -491,9 +509,24 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
 		engine->resourcesManager->AddTexture(wStringToString(parameters.at(1)),wStringToString(parameters.at(2)));
 		return true;
-	}else if(command==L"desaturateTexture") {
+	} else if(command==L"addSound") {
+		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+		parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
+		engine->resourcesManager->AddSound(wStringToString(parameters.at(1)),wStringToString(parameters.at(2)));
+		return true;
+	} else if(command==L"desaturateTexture") {
 		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
 		engine->resourcesManager->DesaturateTexture(wStringToString(parameters.at(1)));
+		return true;
+	} else if(command==L"colorizeTexture") {
+		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+		int mode=0;
+		do {
+			if (parameters.at(2)==L"multiply") {
+				break;
+			};
+		} while(false);
+		engine->resourcesManager->ColorizeTexture(wStringToString(parameters.at(1)),mode,sf::Color(stoi(parameters.at(3)),stoi(parameters.at(4)),stoi(parameters.at(5)),255));
 		return true;
 	} else if(command==L"addFont") {
 		parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);

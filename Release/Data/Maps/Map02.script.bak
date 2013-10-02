@@ -50,6 +50,7 @@ function(Cutscene1_2);
 addNpc(480,256,"npcPinkie","sprPinkie");
 setDirection("npcPinkie",3);
 showText("???","Hi!");
+setActive(usable,608,192,0);
 textCallback(Cutscene1_3);
 end();
 

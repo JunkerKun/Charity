@@ -2,6 +2,7 @@
 #define __RESOURCESMANAGER
 
 #include <SFML\Graphics.hpp>
+#include <SFML\Audio.hpp>
 #include <map>
 
 struct Font {
@@ -14,15 +15,34 @@ struct Font {
 	};
 };
 
+struct Sound {
+	sf::SoundBuffer* buffer;
+	sf::Sound* sound;
+	Sound(std::string path) {
+		buffer = new sf::SoundBuffer();
+		buffer->loadFromFile(path);
+		sound = new sf::Sound();
+		sound->setBuffer(*buffer);
+	};
+	~Sound() {
+		delete sound;
+		delete buffer;
+	};
+};
+
 class ResourcesManager {
 public:
 	ResourcesManager();
 	~ResourcesManager();
 	bool AddTexture(std::string name, std::string path);
+	bool AddSound(std::string name, std::string path);
 	void DesaturateTexture(std::string name);
+	void ColorizeTexture(std::string name, int mode, sf::Color color);
 	sf::Texture* GetTexture(std::string name);
 	sf::Texture* GetTexture(int index);
+	Sound* GetSound(std::string name);
 	bool DeleteTexture(std::string name);
+	bool DeleteSound(std::string name);
 	std::string GetTextureName(int index);
 	std::string GetTextureName(sf::Texture* tex);
 	int GetTexturesNumber();
@@ -30,8 +50,11 @@ public:
 	Font* GetFont(int type); 
 	void ClearTextures();
 	void ClearAll();
+
+	sf::Music bgMusic;
 private:
 	std::map<std::string,sf::Texture*>* texturesList;
+	std::map<std::string,Sound*>* soundsList;
 	Font* fontText;
 };
 

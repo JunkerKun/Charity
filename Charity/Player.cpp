@@ -7,13 +7,13 @@ Player::Player(sf::Texture* tex):Image(tex) {
 	collisionTrigger=NULL;
 	maxHp=100;
 	hp=maxHp;
-	speed=70*2;
+	speed=105;
 	objectIndex=1;
 	direction=0;
 	canMove=true;
 	drawExclamation=false;
 	SetBBox(-28,-18,56,36);
-	SetOrigin(imageWidth/2,imageHeight-7*2);
+	SetOrigin(imageWidth/2,imageHeight-11);
 
 	AddSequence(0,0,0.25);
 	AddSequence(5,5,0.25);
@@ -55,7 +55,7 @@ bool Player::Update() {
 				if (CollisionCheckIntersect(this,0)) {
 					x-=speed*engine->GetDelta();
 				};
-			};
+			} else
 			if (engine->input->GetKeyIsPressed(sf::Keyboard::Up)) {
 				isMoving=true;
 				y-=speed*0.8*engine->GetDelta();
