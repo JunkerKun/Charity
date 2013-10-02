@@ -1,0 +1,21 @@
+Resources {
+//Required
+addTexture("UITextBox","Data/UI/TextBox.png");
+addTexture("UIChoiceBox","Data/UI/ChoiceBox.png");
+addTexture("UIChoiceLine","Data/UI/ChoiceLine.png");
+addTexture("sprExclamation","Data/Sprites/Exclamation.png");
+addTexture("sprPlayer","Data/Sprites/Charity.png");
+addTexture("sprShadow","Data/Sprites/Shadow.png");
+addFont(1,"Data/Fonts/STREET.ttf",19);
+
+//Additional
+addTexture("sprLeFleur","Data/Sprites/LeFleur.png");
+addTexture("sprPinkie","Data/Sprites/Pinkie.png");
+addTexture("imgBook","Data/Images/Book.png");
+addTexture("TileSet","Data/Tiles/TileSet.png");
+addTexture("TileSetPink","Data/Tiles/TileSet.png");
+colorizeTexture("TileSetPink",multiply,244,19,154);
+addTexture("sprTable","Data/Sprites/Table.png");
+addTexture("sprTablePink","Data/Sprites/Table.png");
+colorizeTexture("sprTablePink",multiply,244,19,154);
+};
