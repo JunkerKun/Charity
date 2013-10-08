@@ -17,11 +17,10 @@
 0 512 192 none 
 2 288 192 Nightstand 
 5 288 256 0 
-3 416 352 sprTable 
+3 416 352 sprTablePink 
 0 288 544 none 
 0 352 544 none 
 0 480 544 none 
-4 416 576 TrigDoor 
 2 416 608 Door1_1 
 0 416 608 none 
 0 544 160 none 
@@ -50,19 +49,21 @@ TileSetPink 256 0 1 1 0
 TileSetPink 128 64 0 1 0 
 TileSetPink 128 128 0 1 0 
 TileSetPink 128 192 0 1 0 
-TileSetPink 128 0 4 2 0 
+TileSetPink 128 0 4 0 0 
+TileSet 256 160 3 6 0 
 TileSetPink 256 160 2 5 1 
 TileSetPink 192 128 1 4 1 
 TileSetPink 192 192 1 5 1 
+TileSet 256 160 3 6 2 
 TileSetPink 256 256 0 4 0 
 TileSetPink 192 256 0 4 0 
 TileSetPink 192 320 0 4 0 
 TileSetPink 256 320 0 4 0 
-TileSetPink 256 384 0 4 0 
 TileSetPink 192 384 0 4 0 
 TileSetPink 128 256 0 1 0 
 TileSetPink 128 320 0 1 0 
 TileSetPink 128 384 0 1 0 
+TileSetPink 256 384 0 5 0 
 TileSetPink 192 256 1 6 1 
 TileSetPink 192 448 0 4 0 
 TileSetPink 256 448 0 4 0 
@@ -150,40 +151,40 @@ TileSetPink 320 256 0 4 0
 TileSetPink 320 320 0 4 0 
 TileSetPink 384 320 0 4 0 
 TileSetPink 448 320 0 4 0 
-TileSetPink 512 320 0 4 0 
 TileSetPink 512 384 0 4 0 
 TileSetPink 448 384 0 4 0 
 TileSetPink 384 384 0 4 0 
 TileSetPink 320 384 0 4 0 
+TileSetPink 512 320 0 5 0 
 TileSetPink 320 448 0 4 0 
 TileSetPink 384 448 0 4 0 
 TileSetPink 448 448 0 4 0 
 TileSetPink 512 448 0 4 0 
-TileSetPink 384 512 0 4 0 
 TileSetPink 512 512 1 0 0 
 TileSetPink 448 512 2 0 0 
 TileSetPink 320 512 3 0 0 
 TileSetPink 384 576 0 4 0 
+TileSetPink 384 512 0 4 0 
 TileSetPink 320 544 3 1 1 
 TileSetPink 448 544 2 1 1 
 TileSetPink 512 544 1 1 1 
-TileSetPink 384 576 5 4 1 
-TileSetPink 384 704 0 4 0 
+TileSetPink 384 576 4 2 1 
 TileSetPink 320 768 0 4 0 
 TileSetPink 384 768 0 4 0 
 TileSetPink 448 768 0 4 0 
 TileSetPink 512 768 0 4 0 
-TileSetPink 384 640 0 4 0 
 TileSetPink 448 704 0 4 0 
 TileSetPink 512 704 0 4 0 
 TileSetPink 320 704 0 4 0 
 TileSetPink 320 672 3 3 0 
 TileSetPink 448 672 2 3 0 
 TileSetPink 512 672 1 3 0 
+TileSetPink 384 704 0 4 0 
+TileSetPink 384 640 0 4 0 
 TileSetPink 448 608 2 2 1 
 TileSetPink 320 608 3 2 1 
 TileSetPink 512 608 1 2 1 
-TileSetPink 384 640 5 5 1 
+TileSetPink 384 640 4 3 1 
 TileSetPink 320 832 0 4 0 
 TileSetPink 384 832 0 4 0 
 TileSetPink 448 832 0 4 0 
@@ -215,7 +216,7 @@ TileSetPink 576 0 1 1 0
 TileSetPink 640 64 0 0 0 
 TileSetPink 640 128 0 0 0 
 TileSetPink 640 192 0 0 0 
-TileSetPink 640 0 5 2 0 
+TileSetPink 640 0 5 0 0 
 TileSetPink 576 96 3 4 1 
 TileSetPink 576 160 3 5 1 
 TileSetPink 576 256 0 4 0 

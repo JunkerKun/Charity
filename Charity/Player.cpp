@@ -12,8 +12,11 @@ Player::Player(sf::Texture* tex):Image(tex) {
 	direction=0;
 	canMove=true;
 	drawExclamation=false;
-	SetBBox(-28,-18,56,36);
-	SetOrigin(imageWidth/2,imageHeight-11);
+	canPlaySound=true;
+	SetBBox(-engine->gridSize/2+engine->gridSize/32*2,-engine->gridSize/2+engine->gridSize/32*7,
+		engine->gridSize-engine->gridSize/32*4,engine->gridSize-engine->gridSize/32*12);
+	//SetBBox(-28,-18,56,36);
+	SetOrigin(imageWidth/2,imageHeight-6*engine->gridSize/32);
 
 	AddSequence(0,0,0.25);
 	AddSequence(5,5,0.25);
@@ -34,9 +37,16 @@ Player::Player(sf::Texture* tex):Image(tex) {
 	sprExclamation.setTexture(*engine->resourcesManager->GetTexture("sprExclamation"),true);
 	sprExclamation.setOrigin(engine->resourcesManager->GetTexture("sprExclamation")->getSize().x/2,
 		engine->resourcesManager->GetTexture("sprExclamation")->getSize().y/2);
+
+	sndStep[0]=engine->resourcesManager->GetSound("sndStep1")->sound;
+	sndStep[1]=engine->resourcesManager->GetSound("sndStep2")->sound;
+	sndStep[2]=engine->resourcesManager->GetSound("sndStep3")->sound;
+	sndStep[3]=engine->resourcesManager->GetSound("sndStep4")->sound;
 };
 
 bool Player::Update() {
+	xPrev=x;
+	yPrev=y;
 	drawExclamation=false;
 	if (!isControlled && !isBlocked) {
 		isMoving=false;
@@ -45,31 +55,62 @@ bool Player::Update() {
 				isMoving=true;
 				x-=speed*engine->GetDelta();
 				direction=1;
-				if (CollisionCheckIntersect(this,0)) {
+				/*if (CollisionCheckIntersect(this,0)) {
 					x+=speed*engine->GetDelta();
-				};
+				};*/
 			} else if (engine->input->GetKeyIsPressed(sf::Keyboard::Right)) {
 				isMoving=true;
 				x+=speed*engine->GetDelta();
 				direction=3;
-				if (CollisionCheckIntersect(this,0)) {
+				/*if (CollisionCheckIntersect(this,0)) {
 					x-=speed*engine->GetDelta();
-				};
+				};*/
 			} else
 			if (engine->input->GetKeyIsPressed(sf::Keyboard::Up)) {
 				isMoving=true;
 				y-=speed*0.8*engine->GetDelta();
 				direction=2;
-				if (CollisionCheckIntersect(this,0)) {
+				/*if (CollisionCheckIntersect(this,0)) {
 					y+=speed*0.8*engine->GetDelta();
-				};
+				};*/
 			} else if (engine->input->GetKeyIsPressed(sf::Keyboard::Down)) {
 				isMoving=true;
 				y+=speed*0.8*engine->GetDelta();
 				direction=0;
-				if (CollisionCheckIntersect(this,0)) {
+				/*if (CollisionCheckIntersect(this,0)) {
 					y-=speed*0.8*engine->GetDelta();
+				};*/
+			};
+
+			if (isMoving) {
+				if (CollisionCheckIntersect(this,0)) {
+					switch(direction) {
+					case 0:
+						y-=speed*0.8*engine->GetDelta();
+						isMoving=false;
+						break;
+					case 1:
+						x+=speed*engine->GetDelta();
+						isMoving=false;
+						break;
+					case 2:
+						y+=speed*0.8*engine->GetDelta();
+						isMoving=false;
+						break;
+					case 3:
+						x-=speed*engine->GetDelta();
+						isMoving=false;
+						break;
+					};
 				};
+			};
+			if (isMoving) {
+				if (direction==1) engine->camera->angleTo=-1;
+				else
+				if (direction==3) engine->camera->angleTo=1;
+				else engine->camera->angleTo=0;
+			} else {
+				engine->camera->angleTo=0;
 			};
 
 			Object* collision=CollisionCheckRadius(72,x,y,2);
@@ -85,7 +126,7 @@ bool Player::Update() {
 				blk.SetBBox(-26,-14,52,28);
 				blk.chunk.x=chunk.x;
 				blk.chunk.y=chunk.y;
-				switch(static_cast<int>(direction)) {
+				switch(direction) {
 				case 0: {
 					blk.SetBBox(-14,-26,28,52);
 					blk.x=x;
@@ -121,12 +162,22 @@ bool Player::Update() {
 	};
 	MoveToChunk();
 
-	SetSequence(floor(direction)+4*(isMoving));
+	SetSequence(direction+4*(isMoving));
 	Image::Update();
 	sprShadow.setPosition(floor(x),floor(y));
 
-	xPrev=x;
-	xPrev=y;
+	if (canPlaySound) {
+		if ((imageFrame>=1+5*direction && imageFrame<2+5*direction) || 
+			(imageFrame>=3+5*direction && imageFrame<4+5*direction)) {
+			int sound=rand()%3;
+			sndStep[sound]->play();
+			canPlaySound=false;
+		};
+	} else {
+		if ((imageFrame>=2+5*direction && imageFrame<3+5*direction) || imageFrame>=4+5*direction || imageFrame<1+5*direction) {
+			canPlaySound=true;
+		};
+	};
 
 	//if (collisionTrigger==NULL) {
 	collisionTrigger=CollisionCheckIntersect(this,4);
@@ -150,11 +201,10 @@ bool Player::Draw(sf::RenderTarget &RT) {
 		sprExclamation.setPosition(x,y-72);
 		RT.draw(sprExclamation);
 	};
-
 	if (engine->debug) {
 		Block blk;
 		blk.SetBBox(-26,-14,52,28);
-		switch(static_cast<int>(direction)) {
+		switch(direction) {
 		case 0: {
 			blk.SetBBox(-14,-26,28,52);
 			blk.x=x;

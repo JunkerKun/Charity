@@ -14,7 +14,11 @@ TilesManager::TilesManager() {
 };
 
 void TilesManager::Resize(int sizeX, int sizeY) {
-	Clear(sizeX,sizeY);
+	int sX=sizeX;
+	if (sX<3) sX=3;
+	int sY=sizeY;
+	if (sY<3) sY=3;
+	Clear(sX,sY);
 };
 
 void TilesManager::Draw(sf::RenderTarget &rt) {
@@ -36,13 +40,14 @@ void TilesManager::Draw(sf::RenderTarget &rt) {
 	};
 };
 
-Tile* TilesManager::AddTile(std::string texName,int x, int y, int col, int row) {
+Tile* TilesManager::AddTile(std::string texName,int x, int y, int col, int row, int layer) {
 	if (chunks==NULL) return NULL;
 	Tile* temp;
 	temp=new Tile(texName, x, y, col, row);
 	temp->chunk.x=floor(static_cast<float>(temp->x)/chunkSize.x);
 	temp->chunk.y=floor(static_cast<float>(temp->y)/chunkSize.y);
 	temp->depth=temp->y;
+	temp->layer=layer;
 	chunks->at(temp->chunk.x)->at(temp->chunk.y)->list->push_back(temp);
 	std::sort(chunks->at(temp->chunk.x)->at(temp->chunk.y)->list->begin(),
 		chunks->at(temp->chunk.x)->at(temp->chunk.y)->list->end(),SortTilesPredicate);
@@ -106,8 +111,7 @@ bool TilesManager::LoadTiles(std::ifstream& load) {
 		load>>col;
 		load>>row;
 		load>>layer;
-		Tile* tile = AddTile(texName,x,y,col,row);
-		tile->layer=layer;
+		Tile* tile = AddTile(texName,x,y,col,row, layer);
 	};
 	return true;
 };

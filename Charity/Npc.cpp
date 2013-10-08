@@ -32,11 +32,11 @@ Npc::~Npc() {
 };
 
 bool Npc::Update() {
+	xPrev=x;
+	yPrev=y;
 	SetSequence(floor(direction)+4*(isMoving));
 	Image::Update();
 	sprShadow.setPosition(floor(x),floor(y));
-	xPrev=x;
-	xPrev=y;
 	locked=false;
 	return true;
 };

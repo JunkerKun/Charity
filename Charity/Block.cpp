@@ -4,7 +4,8 @@
 extern Engine* engine;
 
 Block::Block():Object() {
-	SetBBox(-32,-32,64,64);
+	SetBBox(-engine->gridSize/2,-engine->gridSize/2,engine->gridSize,engine->gridSize);
+	//SetBBox(-32,-32,64,64);
 	objectIndex=0;
 	visible=false;
 	solid=true;

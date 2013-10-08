@@ -21,7 +21,7 @@ public:
 	TilesManager();
 	~TilesManager();
 	void Draw(sf::RenderTarget &rt);
-	Tile* AddTile(std::string texName,int x, int y, int col, int row);
+	Tile* AddTile(std::string texName,int x, int y, int col, int row, int layer);
 	void DeleteTile(Tile* obj);
 	void Clear(int sizeX, int sizeY);
 	void Resize(int sizeX, int sizeY);

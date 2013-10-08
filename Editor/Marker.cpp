@@ -4,7 +4,7 @@
 extern Engine* engine;
 
 Marker::Marker(int mode):Object() {
-	SetBBox(-32,-32,64,64);
+	SetBBox(-gridSize/2,-gridSize/2,gridSize,gridSize);
 	objectIndex=0;
 	this->mode=mode;
 	draw=false;
@@ -19,25 +19,25 @@ Marker::~Marker() {
 void Marker::SetTexture(sf::Texture* tex) {
 	this->tex=tex;
 	sprite.setTexture(*tex, false);
-	sprite.setTextureRect(sf::IntRect(0,0,64,64));
+	sprite.setTextureRect(sf::IntRect(0,0,gridSize,gridSize));
 	draw=true;
 };
 
 void Marker::SetCell(int col, int row) {
-	sprite.setTextureRect(sf::IntRect(col*64,row*64,64,64));
+	sprite.setTextureRect(sf::IntRect(col*gridSize,row*gridSize,gridSize,gridSize));
 };
 
 bool Marker::Update() {
 	if (grabbed) {
 		if (engine->GetInputEvent().type==sf::Event::MouseMoved) {
 			if (!engine->input->GetKeyIsPressed(sf::Keyboard::LShift)) {
-				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/64)*64+32;
-				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/64)*64+32;
-				sprite.setPosition(x-32,y-32);
+				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/gridSize)*gridSize+(gridSize/2);
+				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/gridSize)*gridSize+(gridSize/2);
+				sprite.setPosition(x-gridSize/2,y-gridSize/2);
 			} else {
-				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/32)*32+32;
-				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/32)*32+32;
-				sprite.setPosition(x-32,y-32);
+				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/(gridSize/2))*(gridSize/2)+(gridSize/2);
+				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/(gridSize/2))*(gridSize/2)+(gridSize/2);
+				sprite.setPosition(x-gridSize/2,y-gridSize/2);
 			};
 		};
 	};
@@ -59,6 +59,10 @@ bool Marker::Draw(sf::RenderTarget& RT) {
 		RS.setFillColor(sf::Color(0,0,255,60));
 	};
 	RT.draw(RS);
+	RS.setPosition(x,y);
+	RS.setSize(sf::Vector2f(2,2));
+	RS.setFillColor(sf::Color(255,255,255,255));
+	RT.draw(RS);
 	switch(engine->editorObjectIndex) {
 	case 0:
 		text.setString("Blk");
@@ -79,7 +83,7 @@ bool Marker::Draw(sf::RenderTarget& RT) {
 		text.setString("Plc");
 		break;
 	};
-	text.setPosition(x-8*2,y-10*2);
+	text.setPosition(x-8*gridSize/32,y-10*gridSize/32);
 	RT.draw(text);
 	return true;
 };

@@ -10,11 +10,15 @@ TilesManager::TilesManager() {
 	chunkSize=engine->objectsManager->chunkSize;
 	chunks=NULL;
 	scaleFactor=engine->objectsManager->scaleFactor;
-	Clear(1,1);
+	Clear(3,3);
 };
 
 void TilesManager::Resize(int sizeX, int sizeY) {
-	Clear(sizeX,sizeY);
+	int sX=sizeX;
+	if (sX<3) sX=3;
+	int sY=sizeY;
+	if (sY<3) sY=3;
+	Clear(sX,sY);
 };
 
 void TilesManager::Draw(sf::RenderTarget &rt) {

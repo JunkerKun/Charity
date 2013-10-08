@@ -2,6 +2,7 @@
 #define __PLAYER
 
 #include "Image.h"
+#include <SFML/Audio.hpp>
 
 class Player: public Image {
 public:
@@ -14,11 +15,12 @@ public:
 	Object* collisionTrigger;
 private:
 	float speed;
-	float direction;
+	int direction;
 	int hp, maxHp;
 	sf::Sprite sprShadow;
 	sf::Sprite sprExclamation;
-	bool drawExclamation;
+	bool drawExclamation, canPlaySound;
+	sf::Sound* sndStep[4];
 };
 
 #endif

@@ -47,16 +47,17 @@ public:
 	sf::Texture tex;
 	sf::Font font;
 	int editorObjectIndex, editorUsablesNumber, editorPlaceIndex;
+	int editorGridSize;
 
 	char* pathPlayerSprite;
 private:
 	sf::RenderWindow renderWindow;
-	sf::View windowView;
+	sf::View windowView, miniView;
 	sf::Clock clock;
 	sf::Event inputEvent;
 	float delta;
 	void MouseCheck();
-	bool isFocused;
+	bool isFocused, drawChunks, drawGrid;
 	bool save, load, create, resize, enter, tiling, addinfo;
 	int addinfotype;
 	std::string path;
@@ -66,5 +67,21 @@ private:
 	std::string editorTileName, editorFuncString;
 	sf::Text text;
 	Object* editorCollision;
+
+	void EditorSpace();
+	void EditorF2();
+	void EditorF5();
+	void EditorF9();
+	void EditorT();
+	void EditorNum1();
+	void EditorNum2();
+	void EditorNum3();
+	void EditorNum4();
+	void EditorNum5();
+	void EditorNum6();
+	void EditorNum7();
+	void EditorNum8();
+	void EditorNum9();
+	void EditorNum0();
 };
 #endif

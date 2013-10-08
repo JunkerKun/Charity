@@ -5,7 +5,9 @@ extern Engine* engine;
 
 Usable::Usable():Object() {
 	objectIndex=2;
-	SetBBox(-28,-28,56,56);
+	SetBBox(-engine->gridSize/2+engine->gridSize/32*2,-engine->gridSize/2+engine->gridSize/32*2,
+		engine->gridSize-engine->gridSize/32*4,engine->gridSize-engine->gridSize/32*4);
+	//SetBBox(-28,-28,56,56);
 	function="";
 };
 

@@ -1,0 +1,97 @@
+Map03 {
+
+function(Init);
+//debug();
+addObject(416,672,decoration,"sprJailDoor","JailDoor");
+loadSequences("JailDoor","Data/Sequences/Door.seq");
+setSequence("JailDoor",0);
+//setSolid("JailDoor",0);
+setCameraPosition();
+setCameraBorders(0,0,800,900);
+fade(out,-1);
+setCanMove(player,0);
+addToQueue("fade(in,2)",2);
+addToQueue("call(Cutscene1_1)",2.5);
+end();
+
+function(Cutscene1_1);
+showText("Charity","Oh no I left the room!");
+showText("Charity","I'm a bad pony. Mommy will never come back now!");
+textCallback(Cutscene1_2);
+end();
+
+function(Cutscene1_2);
+playMusic("Data/BGM/BGM002.ogg");
+addToQueue("setDirection(player,3)",1);
+addToQueue("setDirection(player,0)",1);
+addToQueue("call(Cutscene1_3)",1);
+end();
+
+function(Cutscene1_3);
+showText("Charity","Where am I?");
+showText("Charity","What happened?");
+textCallback(Cutscene1_End);
+end();
+
+function(Cutscene1_End);
+addToQueue("setCanMove(player,1)",1);
+end();
+
+function(Diary);
+showText("Charity","It's my diary.");
+textCallback(Diary_2);
+end();
+
+function(Diary_2);
+showText("I'm so hungry. I haven't eaten in days. # #I haven't seen mommy in weeks and the servants stopped coming to feed me awhile ago. # #I'm scared. # #I don't want to die.",-1,"imgBook");
+textCallback(Diary_3);
+end();
+
+function(Diary_3);
+showText("Charity","No! I didn't write this! This isn't mine!");
+textCallback(Cutscene2_1);
+end();
+
+function(Cutscene2_1);
+addToQueue("call(Cutscene2_2)",1);
+setCanMove(player,0);
+end();
+
+function(Cutscene2_2);
+addNpc(416,736,"npcRarity","sprRarity");
+setDirection("npcRarity",0);
+setSequence("JailDoor",1);
+setSolid("JailDoor",0);
+playSound("sndOpenMetal");
+addToQueue("call(Cutscene2_3)",0.5);
+end();
+
+function(Cutscene2_3);
+setDirection(player,0);
+showText("Charity","?");
+textCallback(Cutscene2_4);
+end();
+
+function(Cutscene2_4);
+setCameraTarget("npcRarity");
+addToQueue("call(Cutscene2_5)",2);
+end();
+
+function(Cutscene2_5);
+showText("Charity","Mom?");
+textCallback(Cutscene2_6);
+end();
+
+function(Cutscene2_6);
+moveObject("npcRarity",416,1120,6,1);
+addToQueue("call(Cutscene2_7)",4);
+end();
+
+function(Cutscene2_7);
+setCameraTarget(player);
+setActive(usable,352,192,0);
+showText("Charity","Mom wait!");
+setCanMove(player,1);
+end();
+
+}

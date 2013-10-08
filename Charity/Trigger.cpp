@@ -5,7 +5,8 @@ extern Engine* engine;
 
 Trigger::Trigger():Object() {
 	objectIndex=4;
-	SetBBox(-32,-32,64,64);
+	SetBBox(-engine->gridSize/2,-engine->gridSize/2,engine->gridSize,engine->gridSize);
+	//SetBBox(-32,-32,64,64);
 	function="";
 };
 

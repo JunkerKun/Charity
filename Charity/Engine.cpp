@@ -2,6 +2,7 @@
 
 Engine::Engine() {
 	//System Stuff
+	gridSize=64;
 	debug=false;
 	delta = clock.restart().asSeconds();
 	windowSize.x=800;
@@ -9,21 +10,21 @@ Engine::Engine() {
 	volumeSounds=80;
 	volumeBGM=80;
 	setVsync=false;
-	setBloom=true;
+	setBloom=false;
 	setFullscreen=false;
 	setTextSpeed=120;
 	setOutline=true;
 	setFramerateLimit=0;
 	LoadSettings();
-	
+
 	if (setFullscreen) 
 		renderWindow.create(sf::VideoMode(windowSize.x, windowSize.y), "Charity",sf::Style::Fullscreen);
 	else
 		renderWindow.create(sf::VideoMode(windowSize.x, windowSize.y), "Charity",sf::Style::Close);
 	renderWindow.setVerticalSyncEnabled(setVsync);
 	if (setFramerateLimit)
-	renderWindow.setFramerateLimit(setFramerateLimit);
-	
+		renderWindow.setFramerateLimit(setFramerateLimit);
+
 	commandNumber = 0;
 	commandLastText = 0;
 	commandPause = false;
@@ -44,6 +45,7 @@ Engine::Engine() {
 void Engine::Begin() {
 	commands = new std::vector<std::wstring>;
 	variables = new std::map<std::wstring,float>;
+	variablesGlobal = new std::map<std::wstring,float>;
 	commandFunctions = new std::map<std::wstring,int>;
 	camera=new Camera();
 	input=new Input(&inputEvent);
@@ -78,7 +80,7 @@ void Engine::End() {
 };
 
 bool Engine::GetIsFocused() {
-		return isFocused;
+	return isFocused;
 };
 
 bool Engine::Update() {
@@ -105,40 +107,60 @@ bool Engine::Draw() {
 	renderWindow.clear();
 	tilesManager->Draw(renderWindow);
 	objectsManager->Draw(renderWindow);
-
+	renderWindow.setView(renderWindow.getDefaultView());
 	if (drawNoise) {
-	sf::Sprite spr;
-	sf::Texture* tex=resourcesManager->GetTexture("sprNoise");
-	sf::Vector2u vec=tex->getSize();
-	spr.setTexture(*tex);
-	spr.setTextureRect(sf::IntRect(rand()%vec.x,rand()%vec.y,vec.x,vec.y));
-	spr.setPosition(camera->xView,camera->yView);
-	spr.setScale(2,2);
-	renderWindow.draw(spr);
+		sf::Sprite spr;
+		sf::Texture* tex=resourcesManager->GetTexture("sprNoise");
+		sf::Vector2u vec=tex->getSize();
+		spr.setTexture(*tex);
+		spr.setTextureRect(sf::IntRect(rand()%vec.x,rand()%vec.y,vec.x,vec.y));
+		spr.setPosition(0,0);//camera->xView,camera->yView);
+		spr.setScale(2,2);
+		renderWindow.draw(spr);
 	};
 	if (fadeAlpha!=0) {
 		sf::RectangleShape rs;
 		rs.setSize(sf::Vector2f(windowSize.x,windowSize.y));
 		rs.setFillColor(sf::Color(fadeColor.r,fadeColor.g,fadeColor.b,fadeAlpha));
-		rs.setPosition(camera->xView,camera->yView);
+		rs.setPosition(0,0);//camera->xView,camera->yView);
 		renderWindow.draw(rs);
 	};
 	if (textBox!=NULL) textBox->Draw(renderWindow);
 	if (choiceBox!=NULL) choiceBox->Draw(renderWindow);
 	if (debug) {
-		debugText->setPosition(camera->xView,camera->yView);
+		debugText->setPosition(0,0);//camera->xView,camera->yView);
 		std::string str;
 		str+=scripting.ToString(delta);
 		if (queue!=NULL) {
-		str+="\n";
-		str+=scripting.ToString(queue->timer.time);
-		str+="|";
-		str+=scripting.ToString(queue->timer.endTime);
+			str+="\n";
+			str+=scripting.ToString(queue->timer.time);
+			str+="|";
+			str+=scripting.ToString(queue->timer.endTime);
 		};
+		str+="\n";
+		str+=scripting.ToString(camera->xViewPrev-camera->xView);
+		str+="\n";
 		debugText->setString(str);
 		renderWindow.draw(*debugText);
+		renderWindow.setView(camera->view);
+		sf::RectangleShape rs;
+		rs.setSize(static_cast<sf::Vector2f>(objectsManager->chunkSize));
+		rs.setFillColor(sf::Color::Transparent);
+		rs.setOutlineColor(sf::Color::Cyan);
+		rs.setOutlineThickness(1);
+		int chunkX = floor(camera->xView/objectsManager->chunkSize.x);
+		int chunkY = floor(camera->yView/objectsManager->chunkSize.y);
+		int chunkXStart = std::max(0,chunkX-1);
+		int chunkYStart = std::max(0,chunkY-1);
+		int chunkXEnd = std::min(objectsManager->chunksNumber.x,(chunkX+3)*3);
+		int chunkYEnd = std::min(objectsManager->chunksNumber.y,(chunkY+3)*3);
+		for(int i=chunkXStart;i<chunkXEnd;i++) {
+			for(int j=chunkYStart;j<chunkYEnd;j++) {
+				rs.setPosition(rs.getSize().x*i,rs.getSize().y*j);
+				renderWindow.draw(rs);
+			};
+		};
 	};
-	
 	renderWindow.display();
 	return true;
 };
@@ -180,6 +202,7 @@ sf::Event Engine::GetInputEvent() {
 Engine::~Engine() {
 	delete commands;
 	delete variables;
+	delete variablesGlobal;
 	delete commandFunctions;
 	delete input;
 	delete camera;
@@ -259,7 +282,7 @@ void Engine::LoadSettings() {
 
 		//Graphics settings
 		setVsync = IniFindValue(File,"Video","Vsync",0);
-		setBloom = IniFindValue(File,"Video","Bloom",1);
+		setBloom = IniFindValue(File,"Video","Bloom",0);
 		setFullscreen = IniFindValue(File,"Video","Fullscreen",0);
 		setFramerateLimit = IniFindValue(File,"Video","FramerateLimit",0);
 

@@ -16,10 +16,13 @@ public:
 	bool SetOrigin(int left, int top);
 	bool AddSequence(float first, float last, float speed);
 	bool SetSequence(int sequence, bool force=false);
+	void ClearSequences();
+	bool LoadSequences(std::string path);
+	bool LoadSettings(std::string path);
 	int imageWidth, imageHeight;
 	void SetTexture(sf::Texture* tex);
 	~Image();
-private:
+protected:
 	sf::Texture texture;
 	sf::Sprite sprite;
 	float imageFrame, imageSpeed;

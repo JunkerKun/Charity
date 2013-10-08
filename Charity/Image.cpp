@@ -16,12 +16,12 @@ bool Image::Load(sf::Texture* tex) {
 	texture=*tex;
 	imageWidth=texture.getSize().y;
 	imageHeight=texture.getSize().y;
-	imageSpeed=0.25;
+	imageSpeed=0;
 	imageFrame=0;
 	sprite.setTexture(texture);
 	sprite.setTextureRect(sf::IntRect(0,0,imageWidth,imageHeight));
 	firstFrame=0;
-	lastFrame=0;
+	lastFrame=static_cast<int>(texture.getSize().x/imageHeight);
 	seq=0;
 	seqOld=-1;
 	x=0;
@@ -35,7 +35,7 @@ bool Image::Load(char* path) {
 	texture.loadFromFile(path);
 	imageWidth=texture.getSize().y;
 	imageHeight=texture.getSize().y;
-	imageSpeed=0.25;
+	imageSpeed=0;
 	imageFrame=0;
 	sprite.setTexture(texture);
 	sprite.setTextureRect(sf::IntRect(0,0,imageWidth,imageHeight));
@@ -92,6 +92,16 @@ bool Image::SetFrame(int frame) {
 	return true;
 };
 
+void Image::ClearSequences() {
+	sequences.clear();
+	seq=0;
+	seqOld=0;
+	imageFrame=0;
+	firstFrame=0;
+	lastFrame=0;
+	imageSpeed=0.25;
+};
+
 bool Image::AddSequence(float first, float last, float speed) {
 	std::vector<float> temp;
 	temp.push_back(floor(first));
@@ -111,6 +121,33 @@ bool Image::SetSequence(int sequence, bool force) {
 		return true;
 	};
 	return false;
+};
+
+bool Image::LoadSequences(std::string path) {
+	ClearSequences();
+	std::wifstream file(path);
+	if (!file) return false;
+	while (!file.eof()) {
+		int first, last, speed;
+		file>>first;
+		file>>last;
+		file>>speed;
+		AddSequence(first,last,speed);
+	};
+	file.close();
+	return true;
+};
+
+bool Image::LoadSettings(std::string path) {
+	std::wifstream file(path);
+	if (!file) return false;
+		int width, height;
+		file>>width;
+		file>>height;
+		imageWidth=width;
+		imageHeight=height;
+	file.close();
+	return true;
 };
 
 Image::~Image() {

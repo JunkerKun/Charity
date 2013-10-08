@@ -106,25 +106,33 @@ std::wstring Scripting::WrapString(std::wstring sstr, int linewidth) {
 void Scripting::SplitString(std::wstring str, std::vector<std::wstring> &stringsarray) {
 	//Parsing a string
 	int pos,temp,qpos;
-	bool quotes = false;
+	bool screen = false;
 	std::wstring tempstr;
 	pos=str.find_first_of(L"(");
 	stringsarray.push_back(str.substr(0,pos));
 	while(pos!=str.npos) {
 		str=str.erase(0,pos+1);
 		temp=str.find_first_of(L",");
-		qpos=str.find_first_of(L'"');
+		qpos=str.find_first_of(L"\\");
+		screen=true;
+		if (qpos==str.npos) {
+			qpos=str.find_first_of(L'"');
+			screen=false;
+		};
 		if (temp>qpos && qpos!=str.npos) {
 			str.erase(0,qpos+1);
-			qpos=str.find_first_of(L'"');
+			if (screen) qpos=str.find_first_of(L"\\");
+			else qpos=str.find_first_of(L'"');
 			/*if (qpos==str.find_first_of(L")")-1) {
 			str.insert(0,L"\"");
 			break;
 			};*/
-			tempstr=L'"';
+			if (screen) tempstr=L"\\";
+				else tempstr=L'"';
 			tempstr.append(str.substr(0,qpos+1));
 			stringsarray.push_back(tempstr);
 			pos=qpos+1;
+			screen=false;
 			continue;
 		};
 		if (temp==str.npos) break; 
@@ -144,9 +152,12 @@ void Scripting::SplitString(std::wstring str, std::vector<std::wstring> &strings
 		if (pos1==wstring.npos) continue;
 		int pos2 = wstring.find_first_of(L" ", pos1);
 		if (pos2==wstring.npos) {
-			int pos2 = wstring.find_first_of(L"\"", pos1);
+			int pos2 = wstring.find_first_of(L'\"', pos1);
 			if (pos2==wstring.npos) {
-				pos2 = wstring.length();
+				int pos2 = wstring.find_first_of(L"'", pos1);
+				if (pos2==wstring.npos) {
+					pos2 = wstring.length();
+				};
 			};
 		};
 		std::wstring name = wstring.substr(pos1+1,pos2-pos1-1);
@@ -154,7 +165,10 @@ void Scripting::SplitString(std::wstring str, std::vector<std::wstring> &strings
 		if (it!=engine->variables->end()) {
 			stringsarray.at(i).replace(pos1,pos2-pos1,ToWString(it->second));
 		} else {
-			stringsarray.at(i).replace(pos1,pos2-pos1,L"0");
+			std::map<std::wstring,float>::iterator it = engine->variablesGlobal->find(name);
+			if (it!=engine->variablesGlobal->end()) {
+				stringsarray.at(i).replace(pos1,pos2-pos1,ToWString(it->second));
+			} else	stringsarray.at(i).replace(pos1,pos2-pos1,L"0");
 		};
 	};
 };
@@ -229,9 +243,9 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		return true;
 	} else if (command==L"setTextNvl") {
 		if (parameters.at(2)!=L"-1") {
-			engine->textBox->SetNvl(false,engine->resourcesManager->GetTexture(wStringToString(parameters.at(2))));
+			engine->textBox->SetNvl(stoi(parameters.at(1)),engine->resourcesManager->GetTexture(wStringToString(parameters.at(2))));
 		} else {
-			engine->textBox->SetNvl(false);
+			engine->textBox->SetNvl(stoi(parameters.at(1)));
 		};
 		return true;
 	} else if (command==L"completeText") {
@@ -268,12 +282,10 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 				return true;
 			};
 	} else if (command==L"setEffect") {
-		do {
 			if (parameters.at(1)==L"noise") {
 				engine->SetDrawNoise(stoi(parameters.at(2)));
-				break;
+				return true;
 			};
-		} while(false);
 		return true;
 	} else if (command==L"setTexture") {
 		if (parameters.at(1)==L"player") {
@@ -344,6 +356,19 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 			obj->SetDirection(stoi(parameters.at(2)));
 		};
 		return true;
+	} else if (command==L"setSequence") {
+			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+			Object* obj=engine->objectsManager->GetObjectByName(wStringToString(parameters.at(1)));
+			if (obj->objectName!="none") {
+				Decoration* dec=static_cast<Decoration*>(obj);
+				dec->SetSequence(stoi(parameters.at(2)));
+			};
+		return true;
+	} else if (command==L"setSolid") {
+			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+			Object* obj=engine->objectsManager->GetObjectByName(wStringToString(parameters.at(1)));
+			obj->solid = stoi(parameters.at(2));
+		return true;
 	} else if (command==L"setCanMove") {
 		if (parameters.at(1)==L"player") engine->objectsManager->GetPlayer()->isBlocked=!(stoi(parameters.at(2)));
 		else {
@@ -351,6 +376,15 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 			Npc* obj=static_cast<Npc*>(engine->objectsManager->GetNpc(wStringToString(parameters.at(1))));
 			obj->isBlocked=!(stoi(parameters.at(2)));
 		};
+		return true;
+	} else if (command==L"loadSequences") {
+			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+			parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
+			Object* obj=engine->objectsManager->GetObjectByName(wStringToString(parameters.at(1)));
+			if (obj->objectName!="none") {
+				Image* dec=static_cast<Image*>(obj);
+				dec->LoadSequences(wStringToString(parameters.at(2)));
+			};
 		return true;
 	} else if (command==L"getDirection") {
 		std::wstring str=L"varSet(";
@@ -368,8 +402,37 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 	} else if (command==L"addNpc") {
 		parameters.at(3)=parameters.at(3).substr(1,parameters.at(3).length()-2);
 		parameters.at(4)=parameters.at(4).substr(1,parameters.at(4).length()-2);
-		engine->objectsManager->AddNpc(stoi(parameters.at(1)),stoi(parameters.at(2)),
-			wStringToString(parameters.at(3)),engine->resourcesManager->GetTexture(wStringToString(parameters.at(4))));
+		Npc* npc = static_cast<Npc*>(engine->objectsManager->AddNpc(stoi(parameters.at(1)),stoi(parameters.at(2)),
+			wStringToString(parameters.at(3)),engine->resourcesManager->GetTexture(wStringToString(parameters.at(4)))));
+		std::vector<int>* sets=engine->resourcesManager->GetTextureSettings(wStringToString(parameters.at(4)));
+		if (sets->at(0)!=-1) npc->imageWidth=sets->at(0);
+		if (sets->at(1)!=-1) npc->imageHeight=sets->at(1);
+		npc->SetOrigin(npc->imageWidth/2,npc->imageHeight-10*2);
+		return true;
+	} else if (command==L"addObject") {
+		parameters.at(4)=parameters.at(4).substr(1,parameters.at(4).length()-2);
+		parameters.at(5)=parameters.at(5).substr(1,parameters.at(5).length()-2);
+		int index=0;
+		do {
+			if (parameters.at(3)==L"block") {
+				index=0;
+				break;
+			};
+			if (parameters.at(3)==L"usable") {
+				index=2;
+				break;
+			};
+			if (parameters.at(3)==L"decoration") {
+				index=3;
+				break;
+			};
+			if (parameters.at(3)==L"trigger") {
+				index=4;
+				break;
+			};
+		} while (false);
+		Object* obj=engine->objectsManager->AddObject(stoi(parameters.at(1)),stoi(parameters.at(2)),index,wStringToString(parameters.at(4)));
+		obj->objectName=wStringToString(parameters.at(5));
 		return true;
 	} else if (command==L"deleteNpc") {
 		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
@@ -381,15 +444,18 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		};
 		return true;
 	} else if (command==L"varSet") {
-		//varSet(variable, value);
-		std::map<std::wstring,float>::iterator it = engine->variables->find(parameters.at(1));
-		if (it!=engine->variables->end()) {
+		//varSet(variable, value, global);
+		std::map<std::wstring,float>* map;
+		if (parameters.at(3)==L"1") map = engine->variables;
+		else map = engine->variablesGlobal;
+		std::map<std::wstring,float>::iterator it = map->find(parameters.at(1));
+		if (it!=map->end()) {
 			if (parameters.at(2)==L"++") {it->second+=1; printf("Variable %s incremented\n",parameters.at(1).c_str()); return true;}
 			else
 				if (parameters.at(2)==L"--") {it->second-=1; printf("Variable %s decremented\n",parameters.at(1).c_str()); return true;}
 				else
 					if (parameters.at(2)==L"random") {
-						std::map<std::wstring,float>::iterator it = engine->variables->find(parameters.at(1));
+						std::map<std::wstring,float>::iterator it = map->find(parameters.at(1));
 						if (parameters.at(3)==L"-1" || parameters.at(3)==L"0") parameters.at(3)=L"100";
 						it->second = rand() % stoi(parameters.at(3));
 						printf("Variable %s set to %f\n",parameters.at(1).c_str(),it->second);
@@ -403,28 +469,34 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 			if (parameters.at(2)==L"random") {
 				srand (time(NULL));
 				if (parameters.at(3)==L"-1" || parameters.at(3)==L"0") parameters.at(3)=L"100";
-				engine->variables->insert(engine->variables->end(),
+				map->insert(map->end(),
 					std::pair<std::wstring,float>(parameters.at(1),rand() % stoi(parameters.at(3))));
-				printf("Variable %s set to %f\n",parameters.at(1).c_str(),engine->variables->find(parameters.at(1))->second);
+				printf("Variable %s set to %f\n",parameters.at(1).c_str(),map->find(parameters.at(1))->second);
 				return true;
 			} else
 				parameters.at(2)=Calculate(parameters.at(2));
-			engine->variables->insert(engine->variables->end(),std::pair<std::wstring,float>(parameters.at(1),stof(parameters.at(2))));
+			map->insert(map->end(),std::pair<std::wstring,float>(parameters.at(1),stof(parameters.at(2))));
 			printf("Variable %s set to %f\n",parameters.at(1).c_str(),stof(parameters.at(2)));
 			return true;
 		};
 		return true;
 	} else if (command==L"varDel") {
-		//varDel(variable);
-		std::map<std::wstring,float>::iterator it = engine->variables->find(parameters.at(1));
-		if (it!=engine->variables->end()) {
-			engine->variables->erase(it);
+		//varDel(variable, global);
+		std::map<std::wstring,float>* map;
+		if (parameters.at(2)==L"1") map = engine->variables;
+		else map = engine->variablesGlobal;
+		std::map<std::wstring,float>::iterator it = map->find(parameters.at(1));
+		if (it!=map->end()) {
+			map->erase(it);
 		};
 		printf("Variable %s was deleted\n",parameters.at(1).c_str());
 		return true;
 	} else if (command==L"varClear") {
-		//varClear();
-		engine->variables->clear();
+		//varClear(global);
+		std::map<std::wstring,float>* map;
+		if (parameters.at(1)==L"1") map = engine->variables;
+		else map = engine->variablesGlobal;
+		map->clear();
 		return true;
 	} else if (command==L"setCameraTarget") {
 		if (parameters.at(1)==L"-1") engine->camera->target=NULL;
@@ -466,6 +538,7 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
 		Sound* snd=engine->resourcesManager->GetSound(wStringToString(parameters.at(1)));
 		snd->sound->setLoop(stoi(parameters.at(2)));
+		snd->sound->setVolume(engine->volumeSounds);
 		if (parameters.at(2)==L"-1") snd->sound->setLoop(false);
 		snd->sound->play();
 		return true;
@@ -473,6 +546,7 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
 		engine->resourcesManager->bgMusic.openFromFile(wStringToString(parameters.at(1)));
 		engine->resourcesManager->bgMusic.setLoop(true);
+		engine->resourcesManager->bgMusic.setVolume(engine->volumeBGM);
 		engine->resourcesManager->bgMusic.play();
 		return true;
 	} else if (command==L"stopMusic") {
@@ -507,12 +581,17 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 	else if(command==L"addTexture") {
 		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
 		parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
-		engine->resourcesManager->AddTexture(wStringToString(parameters.at(1)),wStringToString(parameters.at(2)));
+		std::vector<int>* vec = new std::vector<int>;
+		vec->push_back(stoi(parameters.at(3)));
+		vec->push_back(stoi(parameters.at(4)));
+		if (parameters.at(5)==L"-1") parameters.at(5)=L"0";
+		engine->resourcesManager->AddTexture(wStringToString(parameters.at(1)),wStringToString(parameters.at(2)), vec, stoi(parameters.at(3)));
 		return true;
 	} else if(command==L"addSound") {
 		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
 		parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
-		engine->resourcesManager->AddSound(wStringToString(parameters.at(1)),wStringToString(parameters.at(2)));
+		if (parameters.at(3)==L"-1") parameters.at(3)=L"0";
+		engine->resourcesManager->AddSound(wStringToString(parameters.at(1)),wStringToString(parameters.at(2)),stoi(parameters.at(3)));
 		return true;
 	} else if(command==L"desaturateTexture") {
 		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);

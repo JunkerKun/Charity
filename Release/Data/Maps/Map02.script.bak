@@ -30,15 +30,20 @@ addToQueue("call(Nightstand1_2)",2);
 end();
 
 function(Nightstand1_2);
+if($Corrupt == 1)
 showText("Today, I met a new friend named Pinkie Pie.");
 extendText("# #Tomorrow we're going to play a game.");
+fi
+if($Corrupt == 0)
+showText("Today, I met a new pony named Pinkie Pie.");
+fi
 setTextCentered(1);
 setTextDrawSprite(0);
 textCallback(Nightstand1_3);
 end();
 
 function(Nightstand1_3);
-endGame();
+call(ToMap03);
 end();
 
 function(Cutscene1_1);
@@ -47,20 +52,30 @@ addToQueue("call(Cutscene1_2)",1.5);
 end();
 
 function(Cutscene1_2);
+playSound("sndWhiteNoiseShort");
+setEffect(noise,1);
 addNpc(480,256,"npcPinkie","sprPinkie");
 setDirection("npcPinkie",3);
+addToQueue("call(Cutscene1_2_2)",0.5);
+end();
+
+function(Cutscene1_2_2);
+setEffect(noise,0);
 showText("???","Hi!");
 setActive(usable,608,192,0);
 textCallback(Cutscene1_3);
 end();
 
 function(Cutscene1_3);
+playSound("sndWhiteNoiseShort");
+setEffect(noise,1);
 moveObject("npcPinkie",416,736,-1,1);
 setDirection("npcPinkie",2);
 addToQueue("call(Cutscene1_4)",0.5);
 end();
 
 function(Cutscene1_4);
+setEffect(noise,0);
 addToQueue("setDirection(player,1)",0.5);
 addToQueue("setDirection(player,0)",1);
 addToQueue("call(Cutscene1_5)",1);
@@ -92,6 +107,7 @@ end();
 function(ChoiceYes);
 showText("Charity","Yes.");
 showText("Pinkie","Really!? Okay! Let's have a lot of fun!");
+varSet(Corrupt,1);
 textCallback(ConvEnd1_1);
 end();
 
@@ -103,14 +119,26 @@ end();
 
 function(ConvEnd1_1);
 showText("Pinkie","Anyway... I have to go now. I'll talk to you tomorrow.");
-showText("Pinkie","Here, you look hungry. Have this one on me.");
+//showText("Pinkie","Here, you look hungry. Have this one on me.");
 textCallback(ConvEnd1_2);
 end();
 
 function(ConvEnd1_2);
+playSound("sndWhiteNoiseShort");
+setEffect(noise,1);
 deleteNpc("npcPinkie");
-showText("Charity","It's an apple.");
-setActive(usable,288,192,1);
 setActive(usable,416,608,0);
+addToQueue("call(ConvEnd1_3)",0.5);
+end();
+
+function(ConvEnd1_3);
+setEffect(noise,0);
+//showText("Charity","It's an apple.");
+setActive(usable,288,192,1);
+end();
+
+function(ToMap03);
+varClear();
+loadMap("Map03");
 end();
 }

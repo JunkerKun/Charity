@@ -46,8 +46,10 @@ Object* CollisionCheckRadius(float rad, float x, float y, unsigned int index) {
 			for(int k=0;k<size;k++) {
 				Object* obj = engine->objectsManager->chunks->at(i)->at(j)->list->at(k);
 				if (obj->objectIndex==index || index==-1) {
+					if (obj->solid || obj->objectIndex==2 || obj->objectIndex==4) {
 					bool collision = CollisionRadius(rad,x,y,obj);
 					if (collision) return obj;
+					};
 				};
 			};
 		};
@@ -68,8 +70,10 @@ Object* CollisionCheckPoint(float x, float y, unsigned int index) {
 			for(int k=0;k<size;k++) {
 				Object* obj = engine->objectsManager->chunks->at(i)->at(j)->list->at(k);
 				if (obj->objectIndex==index || index==-1) {
+					if (obj->solid || obj->objectIndex==2 || obj->objectIndex==4) {
 					bool collision = CollisionPoint(x,y,obj);
 					if (collision) return obj;
+					};
 				};
 			};
 		};
@@ -90,8 +94,10 @@ Object* CollisionCheckIntersect(Object* o1, unsigned int index) {
 			for(int k=0;k<size;k++) {
 				Object* obj = engine->objectsManager->chunks->at(i)->at(j)->list->at(k);
 				if (obj->objectIndex==index || index==-1) {
+					if (obj->solid || obj->objectIndex==2 || obj->objectIndex==4) {
 					bool collision = CollisionIntersect(o1,obj);
 					if (collision) return obj;
+					};
 				};
 			};
 		};

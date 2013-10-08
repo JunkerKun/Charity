@@ -6,7 +6,7 @@ class Object {
 public:
 	Object();
 	virtual ~Object()=0;
-	unsigned int objectIndex; //0-Block; 1-Player; 2-Usable; 3-Decoration; 4-Trigger;
+	unsigned int objectIndex; //0-Block; 1-Player; 2-Usable; 3-Decoration; 4-Trigger; 6-Npc;
 	sf::Vector2i chunk;
 	bool visible, canMove, solid, isMoving, isControlled, isBlocked, active;
 	int depth;
@@ -17,6 +17,7 @@ public:
 	float x,y, xPrev, yPrev;
 	void SetPosition(float xx, float yy);
 	void MoveToChunk();
+	std::string objectName;
 protected:
 	sf::Rect<sf::Int16> bBox;
 	bool locked;

@@ -6,6 +6,9 @@ extern Engine* engine;
 ResourcesManager::ResourcesManager() {
 	texturesList= new std::map<std::string,sf::Texture*>;
 	soundsList= new std::map<std::string,Sound*>;
+	texturesListGlobal= new std::map<std::string,sf::Texture*>;
+	soundsListGlobal= new std::map<std::string,Sound*>;
+	texturesSettings= new std::map<std::string,std::vector<int>*>;
 	fontText= new Font(14,255,255,255);
 	sf::Image img;
 	img.create(engine->windowSize.x/2,engine->windowSize.y/2);
@@ -37,19 +40,46 @@ ResourcesManager::~ResourcesManager() {
 	soundsList->clear();
 	delete soundsList;
 
+	for (std::map<std::string,sf::Texture*>::iterator it=texturesListGlobal->begin(); it!=texturesListGlobal->end(); it++) {
+		delete it->second;
+	};
+	texturesListGlobal->clear();
+	delete texturesListGlobal;
+
+	for (std::map<std::string,Sound*>::iterator it=soundsListGlobal->begin(); it!=soundsListGlobal->end(); it++) {
+		delete it->second;
+	};
+	soundsListGlobal->clear();
+	delete soundsListGlobal;
+
+	for (std::map<std::string,std::vector<int>*>::iterator it=texturesSettings->begin(); it!=texturesSettings->end(); it++) {
+		delete it->second;
+	};
+	texturesSettings->clear();
+	delete texturesSettings;
+
 	delete fontText;
 };
 
-bool ResourcesManager::AddTexture(std::string name, std::string path) {
+bool ResourcesManager::AddTexture(std::string name, std::string path, std::vector<int>* settings, bool global) {
 	sf::Texture* tex=new sf::Texture;
 	tex->setSmooth(false);
 	tex->loadFromFile(path);
+	texturesSettings->insert(std::pair<std::string,std::vector<int>*>(name,settings));
+	if (global) {
+		texturesListGlobal->insert(std::pair<std::string,sf::Texture*>(name,tex));
+		return true;
+	};
 	texturesList->insert(std::pair<std::string,sf::Texture*>(name,tex));
 	return true;
 };
 
-bool ResourcesManager::AddSound(std::string name, std::string path) {
+bool ResourcesManager::AddSound(std::string name, std::string path, bool global) {
 	Sound* snd=new Sound(path);
+	if (global) {
+		soundsListGlobal->insert(std::pair<std::string,Sound*>(name,snd));
+		return true;
+	};
 	soundsList->insert(std::pair<std::string,Sound*>(name,snd));
 	return true;
 };
@@ -114,13 +144,33 @@ void ResourcesManager::ColorizeTexture(std::string name, int mode, sf::Color col
 
 sf::Texture* ResourcesManager::GetTexture(std::string name) {
 	std::map<std::string,sf::Texture*>::iterator it=texturesList->find(name);
-	if (it==texturesList->end()) return NULL;
+	if (it==texturesList->end()) {
+		std::map<std::string,sf::Texture*>::iterator it=texturesListGlobal->find(name);
+		if (it!=texturesListGlobal->end()) {
+		return it->second;
+		};
+		return NULL;
+	};
+	return it->second;
+};
+
+std::vector<int>* ResourcesManager::GetTextureSettings(std::string name) {
+	std::map<std::string,std::vector<int>*>::iterator it=texturesSettings->find(name);
+	if (it==texturesSettings->end()) {
+		return NULL;
+	};
 	return it->second;
 };
 
 Sound* ResourcesManager::GetSound(std::string name) {
 	std::map<std::string,Sound*>::iterator it=soundsList->find(name);
-	if (it==soundsList->end()) return NULL;
+	if (it==soundsList->end()) {
+		std::map<std::string,Sound*>::iterator it=soundsListGlobal->find(name);
+		if (it!=soundsListGlobal->end()) {
+			return it->second;
+		};
+		return NULL;
+	};
 	return it->second;
 };
 
@@ -175,11 +225,24 @@ Font* ResourcesManager::GetFont(int type) {
 
 void ResourcesManager::ClearTextures() {
 	for (std::map<std::string,sf::Texture*>::iterator it=texturesList->begin(); it!=texturesList->end(); it++) {
+		std::map<std::string,std::vector<int>*>::iterator it2=texturesSettings->find(it->first);
+		if (it2!=texturesSettings->end()) {
+			delete it2->second;
+			texturesSettings->erase(it2);
+		};
 		delete it->second;
 	};
 	texturesList->clear();
 };
 
+void ResourcesManager::ClearSounds() {
+	for (std::map<std::string,Sound*>::iterator it=soundsList->begin(); it!=soundsList->end(); it++) {
+		delete it->second;
+	};
+	soundsList->clear();
+};
+
 void ResourcesManager::ClearAll() {
 	ClearTextures();
+	ClearSounds();
 };

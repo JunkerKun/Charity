@@ -5,6 +5,7 @@ extern bool SortObjectsPredicate(const Object* o1, const Object* o2);
 extern Engine* engine;
 
 Object::Object() {
+	gridSize=engine->editorGridSize;
 	grabbed=false;
 	visible=true;
 	depth=0;

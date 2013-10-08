@@ -21,6 +21,7 @@ public:
 	bool grabbed;
 protected:
 	sf::Rect<sf::Int16> bBox;
+	int gridSize;
 };
 
 #endif

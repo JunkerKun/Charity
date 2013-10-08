@@ -27,3 +27,9 @@ sf::Vector2f Interpolate2D(sf::Vector2f vec1, sf::Vector2f vec2, float scalar) {
 	result.y = vec1.y*(1-scalar*engine->GetDelta())+vec2.y*scalar*engine->GetDelta();
 	return result;
 };
+
+float Interpolate2D(float begin, float end, float scalar) {
+	float result;
+	result = begin*(1-scalar*engine->GetDelta())+end*scalar*engine->GetDelta();
+	return result;
+};

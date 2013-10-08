@@ -86,6 +86,7 @@ public:
 	std::map<std::wstring,int>* commandFunctions;
 	std::vector<std::wstring>* commands;
 	std::map<std::wstring,float>* variables;
+	std::map<std::wstring,float>* variablesGlobal;
 	unsigned int commandNumber;
 	unsigned int commandLastText;
 	bool commandPause;
@@ -119,6 +120,7 @@ public:
 	//Settings
 	bool debug, setVsync, setBloom, setFullscreen, setOutline, gameEnd;
 	int setTextSpeed, setFramerateLimit, volumeSounds, volumeBGM;
+	int gridSize;
 
 private:
 	sf::RenderWindow renderWindow;

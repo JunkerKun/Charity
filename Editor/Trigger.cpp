@@ -5,7 +5,7 @@ extern Engine* engine;
 
 Trigger::Trigger():Object() {
 	objectIndex=4;
-	SetBBox(-32,-32,64,64);
+	SetBBox(-gridSize/2,-gridSize/2,gridSize,gridSize);
 	function="none";
 	text.setColor(sf::Color::Black);
 	text.setCharacterSize(14);
@@ -14,15 +14,15 @@ Trigger::Trigger():Object() {
 
 bool Trigger::Update() {
 	if (grabbed) {
-	if (engine->GetInputEvent().type==sf::Event::MouseMoved) {
-		if (!engine->input->GetKeyIsPressed(sf::Keyboard::LShift)) {
-		x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/64)*64+32;
-		y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/64)*64+32;
-		} else {
-		x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/32)*32+32;
-		y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/32)*32+32;
+		if (engine->GetInputEvent().type==sf::Event::MouseMoved) {
+			if (!engine->input->GetKeyIsPressed(sf::Keyboard::LShift)) {
+				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/gridSize)*gridSize+(gridSize/2);
+				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/gridSize)*gridSize+(gridSize/2);
+			} else {
+				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/(gridSize/2))*(gridSize/2)+(gridSize/2);
+				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/(gridSize/2))*(gridSize/2)+(gridSize/2);
+			};
 		};
-	};
 	};
 	return true;
 };

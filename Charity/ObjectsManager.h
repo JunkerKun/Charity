@@ -61,6 +61,7 @@ public:
 	void Resize(int sizeX, int sizeY);
 	bool LoadMap(std::string path);
 	void DeleteAt(int x, int y);
+	Object* GetObjectByName(std::string name);
 	Object* GetObjectAt(int x, int y, int index);
 	Player* GetPlayer();
 	Npc* GetNpc(std::string name);

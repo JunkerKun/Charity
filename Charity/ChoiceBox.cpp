@@ -30,29 +30,42 @@ bool ChoiceBox::Update() {
 	if (engine->input->GetKeyPressed(sf::Keyboard::Up)) {
 		if (index>1) index--;
 	} else
-	if (engine->input->GetKeyPressed(sf::Keyboard::Down)) {
-		if (index<choices.size()-1) index++;
-	} else
-	if (engine->input->GetKeyPressed(sf::Keyboard::Z)) {
-		if (choices.at(index)->function!=L"") {
-			engine->scripting.ExecuteFunction(choices.at(index)->function);
-			delete this;
-		};
-	};
-	return true;
+		if (engine->input->GetKeyPressed(sf::Keyboard::Down)) {
+			if (index<choices.size()-1) index++;
+		} else
+			if (engine->input->GetKeyPressed(sf::Keyboard::Z)) {
+				if (choices.at(index)->function!=L"") {
+					engine->scripting.ExecuteFunction(choices.at(index)->function);
+					delete this;
+				};
+			};
+		return true;
 };
 
 bool ChoiceBox::Draw(sf::RenderTarget &RT) {
-	sprBG.setPosition(engine->camera->xView+x,engine->camera->yView+y);
+	sprBG.setPosition(x,y);
 	RT.draw(sprBG);
 	int textX=0, textY=0, size=choices.size(), height=static_cast<int>(texBG->getSize().y)/size;
-	sprLine.setPosition(engine->camera->xView+x,engine->camera->yView+y+height/2-texLine->getSize().y/2+height*index);
+	sprLine.setPosition(x,y+height/2-texLine->getSize().y/2+height*index);
 	RT.draw(sprLine);
 
 	for (int i=0;i<size;i++) {
 		text->setString(choices.at(i)->title);
-		textX=engine->camera->xView+floor(engine->windowSize.x/2-text->getLocalBounds().width/2);
-		textY=engine->camera->yView+y+height/2-(text->getLocalBounds().top+text->getLocalBounds().height)/2+height*i;
+		textX=floor(engine->windowSize.x/2-text->getLocalBounds().width/2);
+		textY=y+height/2-(text->getLocalBounds().top+text->getLocalBounds().height)/2+height*i;
+
+		if (engine->setOutline) {
+			text->setColor(sf::Color::Black);
+			text->setPosition(textX-1,textY);
+			RT.draw(*text);
+			text->setPosition(textX+1,textY);
+			RT.draw(*text);
+			text->setPosition(textX,textY-1);
+			RT.draw(*text);
+			text->setPosition(textX,textY+1);
+			RT.draw(*text);
+		};
+		text->setColor(sf::Color::White);
 		text->setPosition(textX,textY);
 		RT.draw(*text);
 	};

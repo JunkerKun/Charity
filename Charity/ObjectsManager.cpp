@@ -22,7 +22,25 @@ ObjectsManager::ObjectsManager() {
 };
 
 void ObjectsManager::Resize(int sizeX, int sizeY) {
-	Clear(sizeX,sizeY);
+	int sX=sizeX;
+	if (sX<3) sX=3;
+	int sY=sizeY;
+	if (sY<3) sY=3;
+	Clear(sX,sY);
+};
+
+Object* ObjectsManager::GetObjectByName(std::string name) {
+	for(int i=0;i<chunksNumber.x;i++) {
+			for(int j=0;j<chunksNumber.y;j++) {
+				for (int k=0;k<chunks->at(i)->at(j)->list->size();k++) {
+					Object* obj = chunks->at(i)->at(j)->list->at(k);
+					if (obj->objectName==name) {
+						return obj;
+					};
+				};
+			};
+		};
+	return NULL;
 };
 
 Object* ObjectsManager::GetObjectAt(int x, int y, int index) {
@@ -44,8 +62,8 @@ void ObjectsManager::Update() {
 	int chunkY = floor(engine->camera->yView/chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
 	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(chunksNumber.x,(chunkX+2)*scaleFactor);
-	int chunkYEnd = std::min(chunksNumber.y,(chunkY+2)*scaleFactor);
+	int chunkXEnd = std::min(chunksNumber.x,(chunkX+3)*scaleFactor);
+	int chunkYEnd = std::min(chunksNumber.y,(chunkY+3)*scaleFactor);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			//int size=;
@@ -73,8 +91,8 @@ void ObjectsManager::Draw(sf::RenderTarget &rt) {
 	int chunkY = floor(engine->camera->yView/chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
 	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(chunksNumber.x,(chunkX+2)*scaleFactor);
-	int chunkYEnd = std::min(chunksNumber.y,(chunkY+2)*scaleFactor);
+	int chunkXEnd = std::min(chunksNumber.x,(chunkX+3)*scaleFactor);
+	int chunkYEnd = std::min(chunksNumber.y,(chunkY+3)*scaleFactor);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			int size=chunks->at(i)->at(j)->list->size();
@@ -94,9 +112,16 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 	case 0:
 		temp=new Block();
 		break;
-	case 1:
+	case 1: {
 		temp=new Player(engine->resourcesManager->GetTexture(engine->playerSpriteName));
+		Player* plr = static_cast<Player*>(temp);
+		std::vector<int>* sets=engine->resourcesManager->GetTextureSettings(engine->playerSpriteName);
+		if (sets->at(0)!=-1) plr->imageWidth=sets->at(0);
+		if (sets->at(1)!=-1) plr->imageHeight=sets->at(1);
+		//plr->SetOrigin(plr->imageWidth/2,plr->imageHeight-static_cast<int>(plr->imageHeight/7.63));
+		plr->SetOrigin(plr->imageWidth/2,plr->imageHeight-6*engine->gridSize/32);
 		break;
+			};
 	case 2: {
 		temp=new Usable();
 		Usable* use = static_cast<Usable*>(temp);
@@ -106,7 +131,12 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 	case 3: {
 		temp=new Decoration(engine->resourcesManager->GetTexture(function));
 		Decoration* dec = static_cast<Decoration*>(temp);
+		std::vector<int>* sets=engine->resourcesManager->GetTextureSettings(function);
+		if (sets->at(0)!=-1) dec->imageWidth=sets->at(0);
+		if (sets->at(1)!=-1) dec->imageHeight=sets->at(1);
+		dec->SetOrigin(dec->imageWidth/2,dec->imageHeight-6*engine->gridSize/32);
 		dec->spriteName=function;
+		dec->objectName=function;
 		break;
 			};
 	case 4: {
@@ -118,6 +148,12 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 	case 5: {
 		if (stoi(function)==engine->placeIndex) {
 			temp=new Player(engine->resourcesManager->GetTexture(engine->playerSpriteName));
+			Player* plr = static_cast<Player*>(temp);
+			std::vector<int>* sets=engine->resourcesManager->GetTextureSettings(engine->playerSpriteName);
+			if (sets->at(0)!=-1) plr->imageWidth=sets->at(0);
+			if (sets->at(1)!=-1) plr->imageHeight=sets->at(1);
+			//plr->SetOrigin(plr->imageWidth/2,plr->imageHeight-static_cast<int>(plr->imageHeight/7.63));
+			plr->SetOrigin(plr->imageWidth/2,plr->imageHeight-6*engine->gridSize/32);
 			engine->placeIndex=0;
 			break;
 		};

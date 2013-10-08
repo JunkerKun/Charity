@@ -4,7 +4,8 @@
 extern Engine* engine;
 
 Usable::Usable():Object() {
-	SetBBox(-28,-28,56,56);
+	SetBBox(-gridSize/2+gridSize/32*2,-gridSize/2+gridSize/32*2,gridSize-gridSize/32*4,gridSize-gridSize/32*4);
+	//SetBBox(-28,-28,56,56);
 	objectIndex=2;
 	functionIndex=0;
 	function="none";
@@ -15,15 +16,15 @@ Usable::Usable():Object() {
 
 bool Usable::Update() {
 	if (grabbed) {
-	if (engine->GetInputEvent().type==sf::Event::MouseMoved) {
-		if (!engine->input->GetKeyIsPressed(sf::Keyboard::LShift)) {
-		x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/64)*64+32;
-		y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/64)*64+32;
-		} else {
-		x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/32)*32+32;
-		y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/32)*32+32;
+		if (engine->GetInputEvent().type==sf::Event::MouseMoved) {
+			if (!engine->input->GetKeyIsPressed(sf::Keyboard::LShift)) {
+				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/gridSize)*gridSize+(gridSize/2);
+				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/gridSize)*gridSize+(gridSize/2);
+			} else {
+				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/(gridSize/2))*(gridSize/2)+(gridSize/2);
+				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/(gridSize/2))*(gridSize/2)+(gridSize/2);
+			};
 		};
-	};
 	};
 	return true;
 };

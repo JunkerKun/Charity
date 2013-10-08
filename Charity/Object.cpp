@@ -17,6 +17,7 @@ Object::Object() {
 	isControlled=false;
 	isBlocked=false;
 	active=true;
+	objectName="none";
 };
 
 Object::~Object() {

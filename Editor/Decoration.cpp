@@ -6,7 +6,8 @@ extern Engine* engine;
 Decoration::Decoration():Block() {
 	objectIndex=3;
 	spriteName="none";
-	SetBBox(-28,-24,56,48);
+	SetBBox(-gridSize/2+gridSize/32*2,-gridSize/2+gridSize/32*4,gridSize-gridSize/32*4,gridSize-gridSize/32*8);
+	//SetBBox(-28,-24,56,48);
 	text.setColor(sf::Color::Black);
 	text.setCharacterSize(14);
 	text.setFont(engine->font);
@@ -17,16 +18,16 @@ Decoration::~Decoration() {
 };
 
 bool Decoration::Update() {
-	if (grabbed) {
-	if (engine->GetInputEvent().type==sf::Event::MouseMoved) {
-		if (!engine->input->GetKeyIsPressed(sf::Keyboard::LShift)) {
-		x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/64)*64+32;
-		y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/64)*64+32;
-		} else {
-		x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/32)*32+32;
-		y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/32)*32+32;
+if (grabbed) {
+		if (engine->GetInputEvent().type==sf::Event::MouseMoved) {
+			if (!engine->input->GetKeyIsPressed(sf::Keyboard::LShift)) {
+				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/gridSize)*gridSize+(gridSize/2);
+				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/gridSize)*gridSize+(gridSize/2);
+			} else {
+				x=std::floor(static_cast<float>(engine->input->GetMousePosition(true).x)/(gridSize/2))*(gridSize/2)+(gridSize/2);
+				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/(gridSize/2))*(gridSize/2)+(gridSize/2);
+			};
 		};
-	};
 	};
 	return true;
 };

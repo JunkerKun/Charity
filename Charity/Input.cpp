@@ -15,6 +15,8 @@ Input::Input(sf::Event *evnt) {
 	};
 	mousePosition.x=0;
 	mousePosition.y=0;
+	mousePositionLast.x=0;
+	mousePositionLast.y=0;
 	letters.insert(std::pair<char,sf::Keyboard::Key>('a',(sf::Keyboard::A)));
 	letters.insert(std::pair<char,sf::Keyboard::Key>('b',(sf::Keyboard::B)));
 	letters.insert(std::pair<char,sf::Keyboard::Key>('c',(sf::Keyboard::C)));
@@ -63,6 +65,16 @@ sf::Vector2i Input::GetMousePosition(bool absolute) {
 		return mousePosition;
 };
 
+sf::Vector2i Input::GetLastMousePosition(bool absolute) {
+	if (absolute) {
+		sf::Vector2i vec;
+		vec.x=engine->camera->xView+mousePositionLast.x;
+		vec.y=engine->camera->yView+mousePositionLast.y;
+		return vec;
+	};
+		return mousePositionLast;
+};
+
 bool Input::GetMousePressed(int button) {
 	return mouseStates[1][button];
 };
@@ -108,6 +120,9 @@ bool Input::GetAnyKeyIsPressed(bool letter) {
 char Input::GetLetterPressed() {
 	for (std::map<char, sf::Keyboard::Key>::iterator i=letters.begin();i!=letters.end();i++) {
 		if (GetKeyPressed(i->second)) {
+			if (GetKeyIsPressed(sf::Keyboard::LShift)) {
+				return (i->first-32);
+			};
 			return (i->first);
 		};
 	};
@@ -115,6 +130,7 @@ char Input::GetLetterPressed() {
 };
 
 void Input::Update() {
+	mousePositionLast=mousePosition;
 	for(int i=0;i<100;i++) {
 		keyStates[1][i]=false;
 	};

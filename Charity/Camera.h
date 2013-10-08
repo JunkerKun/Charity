@@ -9,7 +9,7 @@ public:
 	Camera();
 	~Camera();
 	sf::View view;
-	float xView, yView;
+	float xView, yView, xViewPrev, yViewPrev, angle, angleTo, angleSpeed;
 	bool Update();
 	Object* target;
 	sf::Vector2f viewTo;

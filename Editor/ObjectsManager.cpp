@@ -17,7 +17,11 @@ ObjectsManager::ObjectsManager() {
 };
 
 void ObjectsManager::Resize(int sizeX, int sizeY) {
-	Clear(sizeX,sizeY);
+	int sX=sizeX;
+	if (sX<3) sX=3;
+	int sY=sizeY;
+	if (sY<3) sY=3;
+	Clear(sX,sY);
 };
 
 Object* ObjectsManager::GetObjectAt(int x, int y) {
@@ -39,8 +43,8 @@ void ObjectsManager::Update() {
 	int chunkY = floor(engine->yView/chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
 	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(chunksNumber.x,(chunkXStart+3)*3);
-	int chunkYEnd = std::min(chunksNumber.y,(chunkYStart+3)*3);
+	int chunkXEnd = std::min(chunksNumber.x,(chunkX+3)*3);
+	int chunkYEnd = std::min(chunksNumber.y,(chunkY+3)*3);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			int size=chunks->at(i)->at(j)->list->size();
@@ -57,8 +61,8 @@ void ObjectsManager::Draw(sf::RenderTarget &rt) {
 	int chunkY = floor(engine->yView/chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
 	int chunkYStart = std::max(0,chunkY-1);
-	int chunkXEnd = std::min(chunksNumber.x,(chunkXStart+3)*3);
-	int chunkYEnd = std::min(chunksNumber.y,(chunkYStart+3)*3);
+	int chunkXEnd = std::min(chunksNumber.x,(chunkX+3)*3);
+	int chunkYEnd = std::min(chunksNumber.y,(chunkY+3)*3);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
 			int size=chunks->at(i)->at(j)->list->size();

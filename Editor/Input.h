@@ -7,6 +7,7 @@ class Input {
 public:
 	Input(sf::Event *evnt);
 	sf::Vector2i GetMousePosition(bool absolute=false);
+	sf::Vector2i GetLastMousePosition(bool absolute=false);
 	bool GetMousePressed(int button);
 	bool GetMouseIsPressed(int button);
 	bool GetKeyPressed(int key);
@@ -20,6 +21,7 @@ private:
 	bool keyStates[2][255];
 	bool mouseStates[2][10];
 	sf::Vector2i mousePosition;
+	sf::Vector2i mousePositionLast;
 	sf::Event* event;
 };
 
