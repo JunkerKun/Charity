@@ -48,6 +48,7 @@ public:
 	sf::Font font;
 	int editorObjectIndex, editorUsablesNumber, editorPlaceIndex;
 	int editorGridSize;
+	bool load, save;
 
 	char* pathPlayerSprite;
 private:
@@ -58,7 +59,7 @@ private:
 	float delta;
 	void MouseCheck();
 	bool isFocused, drawChunks, drawGrid;
-	bool save, load, create, resize, enter, tiling, addinfo;
+	bool create, resize, enter, tiling, addinfo;
 	int addinfotype;
 	std::string path;
 	Marker* marker;

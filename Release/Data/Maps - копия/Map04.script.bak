@@ -1,0 +1,26 @@
+Map04 {
+
+function(OnEnter);
+fade(in,1);
+setCameraPosition();
+setCameraBorders(-1,-1,-1,600);
+addObject(608,128,decoration,"sprJailDoor","JailDoor");
+loadSequences("JailDoor","Data/Sequences/Door.seq");
+setSequence("JailDoor",1);
+setSolid("JailDoor",0);
+end();
+
+function(Init);
+call(OnLoad);
+end();
+
+function(ToMap03);
+setCanMove(player,0);
+fade(out,1);
+addToQueue("call(GoToMap03)",1);
+end();
+
+function(GoToMap03);
+loadMap("Map03",1);
+end();
+}

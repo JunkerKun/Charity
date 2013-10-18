@@ -75,6 +75,9 @@
     <ClInclude Include="ChoiceBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Overlay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -138,6 +141,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChoiceBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Overlay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

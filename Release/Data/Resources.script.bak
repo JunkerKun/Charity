@@ -16,7 +16,7 @@ addSound("sndStep4","Data/Sounds/SE005.wav",1);
 addTexture("sprLeFleur","Data/Sprites/LeFleur.png",-1,-1);
 addTexture("sprRarity","Data/Sprites/Rarity.png",-1,-1);
 addTexture("sprPinkie","Data/Sprites/Pinkie.png",-1,-1);
-addTexture("sprJailDoor","Data/Sprites/JailDoor.png",-1,-1);
+addTexture("sprJailDoor","Data/Sprites/JailDoor.png",64,-1);
 addTexture("imgBook","Data/Images/Book.png",-1,-1);
 addTexture("TileSet","Data/Tiles/TileSet.png",-1,-1);
 addTexture("TileSet2","Data/Tiles/TileSet2.png",-1,-1);

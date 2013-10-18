@@ -118,6 +118,7 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 		temp=new Place();
 		Place* plc = static_cast<Place*>(temp);
 		plc->place=stoi(function);
+		if (engine->load) engine->editorPlaceIndex+=1;
 		break;
 	};
 	temp->SetPosition(x, y);

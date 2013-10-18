@@ -11,6 +11,9 @@ Npc::Npc(sf::Texture* tex):Image(tex) {
 
 	SetOrigin(imageWidth/2,imageHeight-11);
 
+	SetBBox(-engine->gridSize/2+engine->gridSize/32*2,-engine->gridSize/2+engine->gridSize/32*7,
+		engine->gridSize-engine->gridSize/32*4,engine->gridSize-engine->gridSize/32*12);
+
 	AddSequence(0,0,0.25);
 	AddSequence(5,5,0.25);
 	AddSequence(10,10,0.25);

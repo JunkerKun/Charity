@@ -1,7 +1,13 @@
 Map {
-function(Init);
-loadMap("Map02");
+function(OnLoad);
+fade(out,-1);
+fade(in,1);
 end();
+
+function(Init);
+//debug();
+//loadMap("Map03");
+//end();
 playMusic("Data/BGM/BGM001.ogg");
 setCameraPosition();
 setCameraBorders(0,0,800,900);
@@ -33,7 +39,7 @@ showText("Charity","Mommy!");
 showText("Le Fleur","Hello my dear. Did you miss me?");
 showText("Charity","Lots and lots, I don't like it when you're not here.");
 showText("Charity","It's so lonely.");
-showText("Le Fleur","I know my darling, but in here you're safe. In this room, no pony can hurt you.");
+showText("Le Fleur","I know my darling, but in here you're safe. In this room no pony can hurt you.");
 showText("Le Fleur","You must never leave this room, or the bad ponies will get you.");
 showText("Charity","Okay, just please... stay with me awhile.");
 showText("Le Fleur","Only for a little while. I have to be going soon and I don't know when I'll be back.");
@@ -52,6 +58,7 @@ function(Cutscene1_3);
 deleteNpc("npcLeFleur");
 setDirection(player,3);
 moveObject(player,288,256,-1,1);
+update();
 setCameraPosition();
 fade(in,-1);
 playSound("sndGetUp");
@@ -83,7 +90,7 @@ textCallback(Nightstand1_2);
 end();
 
 function(Nightstand1_2);
-showText("Eat your porridge or you won't grow up into good pony.# -Madame Le Fleur.");
+showText("Eat your porridge or you won't grow up into a good pony.# -Madame Le Fleur.");
 setTextPosition(20,219);
 setTextCentered(1);
 varSet(diaryChecked,1);

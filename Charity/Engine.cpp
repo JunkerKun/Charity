@@ -2,6 +2,7 @@
 
 Engine::Engine() {
 	//System Stuff
+	mapName="";
 	gridSize=64;
 	debug=false;
 	delta = clock.restart().asSeconds();
@@ -39,10 +40,21 @@ Engine::Engine() {
 	fadeMode=0;
 	fadeSpeed=255;
 
+	lampAlpha=0;
+	lampMode=0;
+	lampSpeed=255;
+
 	gameEnd=false;
+
+	objectsManager=NULL;
+
+	playerHP=100;
+	playerSP=100;
+	playerMP=100;
 };
 
 void Engine::Begin() {
+	renderImg = new RenderImg(windowSize.x,windowSize.y);
 	commands = new std::vector<std::wstring>;
 	variables = new std::map<std::wstring,float>;
 	variablesGlobal = new std::map<std::wstring,float>;
@@ -64,8 +76,10 @@ void Engine::Begin() {
 	textGame->setCharacterSize(fnt->size);
 	textGame->setFont(fnt->font);
 
-	LoadMap("Map");
+	scripting.ExecuteFile("Data/Menu.script");
+	//LoadMap("Map");
 
+	debugText=NULL;
 	if (debug) {
 		debugText=new sf::Text();
 		Font* fnt=resourcesManager->GetFont(1);
@@ -99,6 +113,10 @@ bool Engine::Update() {
 	if (textBox!=NULL) textBox->Update();
 	queue->Update(delta);
 	fadeAlpha=Increment(fadeAlpha,fadeMode*255,fadeSpeed);
+	lampAlpha=Increment(lampAlpha,lampMode*255,lampSpeed);
+	for(int i=0;i<objectsManager->overlays.size();i++) {
+		objectsManager->overlays.at(i)->Update();
+	};
 	return true;
 };
 
@@ -108,6 +126,23 @@ bool Engine::Draw() {
 	tilesManager->Draw(renderWindow);
 	objectsManager->Draw(renderWindow);
 	renderWindow.setView(renderWindow.getDefaultView());
+	if (lampAlpha!=0 && objectsManager->GetPlayer()!=NULL) {
+		renderImg->texture.clear(sf::Color::Transparent);
+		sf::RectangleShape rs;
+		rs.setSize(sf::Vector2f(windowSize.x,windowSize.y));
+		rs.setFillColor(sf::Color(0,0,0,lampAlpha));
+		rs.setPosition(0,0);//camera->xView,camera->yView);
+		renderImg->texture.draw(rs);
+		sf::CircleShape cs;
+		cs.setPosition(objectsManager->GetPlayer()->x-60-camera->xView,objectsManager->GetPlayer()->y-80-camera->yView);
+		cs.setFillColor(sf::Color(0,0,0,0));
+		cs.setRadius(60);
+		sf::RenderStates rst;
+		rst.blendMode=sf::BlendMode::BlendNone;
+		renderImg->texture.draw(cs,rst);
+		renderImg->texture.display();
+		renderWindow.draw(renderImg->sprite);
+	};
 	if (drawNoise) {
 		sf::Sprite spr;
 		sf::Texture* tex=resourcesManager->GetTexture("sprNoise");
@@ -117,6 +152,9 @@ bool Engine::Draw() {
 		spr.setPosition(0,0);//camera->xView,camera->yView);
 		spr.setScale(2,2);
 		renderWindow.draw(spr);
+	};
+	for(int i=0;i<objectsManager->overlays.size();i++) {
+		objectsManager->overlays.at(i)->Draw(renderWindow);
 	};
 	if (fadeAlpha!=0) {
 		sf::RectangleShape rs;
@@ -128,6 +166,7 @@ bool Engine::Draw() {
 	if (textBox!=NULL) textBox->Draw(renderWindow);
 	if (choiceBox!=NULL) choiceBox->Draw(renderWindow);
 	if (debug) {
+		if (debugText!=NULL) {
 		debugText->setPosition(0,0);//camera->xView,camera->yView);
 		std::string str;
 		str+=scripting.ToString(delta);
@@ -160,6 +199,7 @@ bool Engine::Draw() {
 				renderWindow.draw(rs);
 			};
 		};
+	};
 	};
 	renderWindow.display();
 	return true;
@@ -200,6 +240,7 @@ sf::Event Engine::GetInputEvent() {
 };
 
 Engine::~Engine() {
+	delete renderImg;
 	delete commands;
 	delete variables;
 	delete variablesGlobal;
@@ -215,28 +256,35 @@ Engine::~Engine() {
 };
 
 bool Engine::LoadMap(std::string name) {
+	commandPause = true;
+	mapName=name;
+	queue->Clear();
 	std::string path;
 	path="Data/Maps/";
 	path+=name;
-	//path+="/";
-	//path+=name;
 	path+=".resources";
 	scripting.ExecuteFile(path);
 
 	path="Data/Maps/";
 	path+=name;
-	//path+="/";
-	//path+=name;
 	path+=".script";
 	scripting.LoadFile(path);
 
 	path="Data/Maps/";
 	path+=name;
-	//path+="/";
-	//path+=name;
 	path+=".map";
+	bool executeInit = (placeIndex==-1);
+	if (placeIndex==-1) placeIndex=0;
+	bool load = (objectsManager->playerXStart!=-1 && objectsManager->playerYStart!=-1);
 	bool done = objectsManager->LoadMap(path);
-	if (done) scripting.ExecuteFunction(L"Init");
+	//Fade(1,-1);
+	if (done) {
+		if (load) scripting.ExecuteFunction(L"OnLoad");
+
+		if (executeInit) scripting.ExecuteFunction(L"Init");
+		else scripting.ExecuteFunction(L"OnEnter");
+	};
+	//if (fadeMode==1 && fadeSpeed==-1) Fade(0,1);
 	return done;
 };
 
@@ -299,6 +347,12 @@ void Engine::Fade(int mode, float speed) {
 	fadeMode=mode;
 	if (speed==-1) fadeAlpha=fadeMode*255;
 	fadeSpeed=255/speed;
+};
+
+void Engine::SetLamp(int mode, float speed) {
+	lampMode=mode;
+	if (speed==-1) lampAlpha=lampMode*255;
+	lampSpeed=255/speed;
 };
 
 void Engine::SetFadeColor(sf::Color color) {

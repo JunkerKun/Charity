@@ -1,0 +1,159 @@
+3 5
+0 32 160 none 
+0 96 160 none 
+0 160 160 none 
+0 224 160 none 
+0 32 224 none 
+0 32 288 none 
+0 32 352 none 
+0 224 352 none 
+0 32 416 none 
+0 224 416 none 
+5 128 416 0 
+0 32 480 none 
+0 224 480 none 
+4 96 512 ToMap06 
+4 160 512 ToMap06 
+0 32 544 none 
+0 224 544 none 
+0 96 544 none 
+0 160 544 none 
+0 288 160 none 
+0 352 160 none 
+0 416 160 none 
+0 480 160 none 
+0 288 352 none 
+0 352 352 none 
+0 416 352 none 
+0 480 352 none 
+0 736 160 none 
+0 544 160 none 
+0 608 160 none 
+0 672 160 none 
+0 736 224 none 
+0 736 288 none 
+0 736 352 none 
+0 544 352 none 
+0 736 416 none 
+0 544 416 none 
+5 640 416 1 
+0 736 480 none 
+0 544 480 none 
+4 608 512 ToMap08 
+4 672 512 ToMap08 
+0 736 544 none 
+0 544 544 none 
+0 608 544 none 
+0 672 544 none 
+-404
+TileSet 0 192 0 1 0 
+TileSet 64 0 1 1 0 
+TileSet 128 0 1 1 0 
+TileSet 192 0 1 1 0 
+TileSet 256 0 1 1 0 
+TileSet 256 64 1 2 0 
+TileSet 192 64 1 2 0 
+TileSet 128 64 1 2 0 
+TileSet 64 64 1 2 0 
+TileSet 64 128 1 3 0 
+TileSet 128 128 1 3 0 
+TileSet 192 128 1 3 0 
+TileSet 256 128 1 3 0 
+TileSet 0 0 4 0 0 
+TileSet 0 128 0 1 0 
+TileSet 0 64 0 1 0 
+TileSet 64 192 0 4 0 
+TileSet 128 192 0 4 0 
+TileSet 192 192 0 4 0 
+TileSet 256 192 0 4 0 
+TileSet 192 384 0 0 0 
+TileSet 0 256 0 1 0 
+TileSet 0 320 0 1 0 
+TileSet 0 384 0 1 0 
+TileSet 256 320 1 0 0 
+TileSet 192 320 2 0 0 
+TileSet 256 256 0 4 0 
+TileSet 192 256 0 4 0 
+TileSet 128 256 0 4 0 
+TileSet 64 256 0 4 0 
+TileSet 64 320 0 4 0 
+TileSet 128 320 0 4 0 
+TileSet 64 384 0 4 0 
+TileSet 128 384 0 4 0 
+TileSet 192 448 0 0 0 
+TileSet 192 512 0 0 0 
+TileSet 0 448 0 1 0 
+TileSet 0 512 0 1 0 
+TileSet 192 576 0 0 0 
+TileSet 0 576 0 1 0 
+TileSet 128 448 6 2 0 
+TileSet 64 448 6 2 0 
+TileSet 64 512 6 2 0 
+TileSet 128 512 6 2 0 
+TileSet 64 576 6 2 0 
+TileSet 128 576 6 2 0 
+TileSet 192 640 0 0 0 
+TileSet 0 640 0 1 0 
+TileSet 320 0 1 1 0 
+TileSet 384 0 1 1 0 
+TileSet 448 0 1 1 0 
+TileSet 512 0 1 1 0 
+TileSet 512 64 1 2 0 
+TileSet 448 64 1 2 0 
+TileSet 384 64 1 2 0 
+TileSet 320 64 1 2 0 
+TileSet 320 128 1 3 0 
+TileSet 384 128 1 3 0 
+TileSet 448 128 1 3 0 
+TileSet 512 128 1 3 0 
+TileSet 320 192 0 4 0 
+TileSet 384 192 0 4 0 
+TileSet 448 192 0 4 0 
+TileSet 512 192 0 4 0 
+TileSet 512 384 0 1 0 
+TileSet 320 320 1 0 0 
+TileSet 384 320 1 0 0 
+TileSet 448 320 1 0 0 
+TileSet 512 320 3 0 0 
+TileSet 512 256 0 4 0 
+TileSet 448 256 0 4 0 
+TileSet 384 256 0 4 0 
+TileSet 320 256 0 4 0 
+TileSet 512 448 0 1 0 
+TileSet 512 512 0 1 0 
+TileSet 512 576 0 1 0 
+TileSet 512 640 0 1 0 
+TileSet 704 192 0 0 0 
+TileSet 576 0 1 1 0 
+TileSet 640 0 1 1 0 
+TileSet 640 64 1 2 0 
+TileSet 576 64 1 2 0 
+TileSet 576 128 1 3 0 
+TileSet 640 128 1 3 0 
+TileSet 704 0 5 0 0 
+TileSet 704 64 0 0 0 
+TileSet 704 128 0 0 0 
+TileSet 576 192 0 4 0 
+TileSet 640 192 0 4 0 
+TileSet 704 256 0 0 0 
+TileSet 704 320 0 0 0 
+TileSet 704 384 0 0 0 
+TileSet 640 256 0 4 0 
+TileSet 576 256 0 4 0 
+TileSet 576 320 0 4 0 
+TileSet 640 320 0 4 0 
+TileSet 576 384 0 4 0 
+TileSet 640 384 0 4 0 
+TileSet 704 448 0 0 0 
+TileSet 704 512 0 0 0 
+TileSet 704 576 0 0 0 
+TileSet 640 512 5 3 0 
+TileSet 576 512 5 3 0 
+TileSet 576 576 5 4 0 
+TileSet 640 576 5 4 0 
+TileSet 576 448 5 2 0 
+TileSet 640 448 5 2 0 
+TileSet 576 448 6 7 1 
+TileSet 640 448 6 7 1 
+TileSet 704 640 0 0 0 
+-404

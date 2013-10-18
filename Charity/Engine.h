@@ -24,6 +24,16 @@
 #include "Trigger.h"
 #include "Npc.h"
 #include "ChoiceBox.h"
+#include "Overlay.h"
+
+struct RenderImg {
+	sf::RenderTexture texture;
+	sf::Sprite sprite;
+	RenderImg(int w, int h) {
+		texture.create(w,h);
+		sprite.setTexture(texture.getTexture());
+	};
+};
 
 struct Timer {
 	float time, endTime;
@@ -35,12 +45,14 @@ struct Timer {
 
 struct Queue {
 	std::vector<std::wstring> queue;
+	bool done;
 	Scripting scripting;
 	int index;
 	Timer timer;
 	Queue(Scripting &scr) {
 		scripting=scr;
 		index=0;
+		done=false;
 	};
 	void Add(std::wstring func, std::wstring time) {
 		if (queue.size()==0) {
@@ -56,6 +68,7 @@ struct Queue {
 			};
 			if (timer.time>=timer.endTime) {
 				scripting.ExecuteString(queue.at(index));
+				if (done) {done=false; return;}
 				if (index+2<queue.size()) {
 				index+=2;
 				timer.endTime=stof(queue.at(index+1));
@@ -68,6 +81,12 @@ struct Queue {
 				};
 			};
 		};
+	};
+	void Clear() {
+		queue.clear();
+		timer.time=0;
+		timer.endTime=-1;
+		index=0;
 	};
 };
 
@@ -106,6 +125,7 @@ public:
 	bool LoadMap(std::string name);
 	std::string pathMusic;
 	char* pathMap;
+	std::string mapName;
 	std::string playerSpriteName;
 	int placeIndex;
 	std::ifstream IniOpen(std::string filename);
@@ -113,6 +133,7 @@ public:
 	float IniFindValue(std::ifstream &ini, std::string group, std::string key, float defaultValue);
 	void LoadSettings();
 	void Fade(int mode,float speed);
+	void SetLamp(int mode,float speed);
 	void SetFadeColor(sf::Color color);
 
 	sf::Text* textGame;
@@ -122,14 +143,18 @@ public:
 	int setTextSpeed, setFramerateLimit, volumeSounds, volumeBGM;
 	int gridSize;
 
+	float playerHP, playerSP, playerMP;
+
 private:
 	sf::RenderWindow renderWindow;
 	sf::Clock clock;
 	sf::Event inputEvent;
 	sf::Text* debugText;
 	sf::Color fadeColor;
-	float fadeAlpha, fadeSpeed;
-	int fadeMode;
+	float fadeAlpha, fadeSpeed, lampAlpha, lampSpeed;
+	int fadeMode, lampMode;
+
+	RenderImg* renderImg;
 	
 	bool isFocused, drawNoise;
 	float delta;

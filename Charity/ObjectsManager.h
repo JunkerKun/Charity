@@ -9,6 +9,7 @@
 #include "Functions.h"
 #include "Player.h"
 #include "Npc.h"
+#include "Overlay.h"
 
 struct Chunk {
 	std::vector<Object*>* list;
@@ -57,6 +58,7 @@ public:
 	void DeleteObject(Object* obj);
 	void DeleteNpc(std::string name);
 	void AddMover(Object* obj, int x, int y, float sp);
+	Overlay* AddOverlay(sf::Texture* tex);
 	void DeleteMover(int index);
 	void Resize(int sizeX, int sizeY);
 	bool LoadMap(std::string path);
@@ -70,7 +72,8 @@ public:
 	sf::Vector2i chunksNumber;
 	std::vector<std::vector<Chunk*>*>* chunks;
 	std::vector<Mover*> movers;
-	int scaleFactor;
+	std::vector<Overlay*> overlays;
+	int scaleFactor, playerXStart, playerYStart, playerDirStart;
 private:
 	Player* player;
 	std::map<std::string,Object*> npcList;

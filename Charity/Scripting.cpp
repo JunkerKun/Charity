@@ -252,15 +252,12 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		engine->textBox->Complete();
 		return true;
 	} else if (command==L"showChoice") {
-		if(engine->choiceBox==NULL) {
 			engine->choiceBox=new ChoiceBox();
 			parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
 			parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
 			engine->choiceBox->AddChoice(parameters.at(1),L"");
 			engine->choiceBox->AddChoice(parameters.at(2),parameters.at(3));
 			engine->choiceBox->index=1;
-			return true;	
-		};
 		return true;
 	} else if (command==L"addChoice") {
 		if(engine->choiceBox!=NULL) {
@@ -268,6 +265,21 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 			engine->choiceBox->AddChoice(parameters.at(1),parameters.at(2));
 			return true;	
 		};
+		return true;
+	} else if (command==L"setChoiceDrawSprite") {
+		engine->choiceBox->drawSprite=stoi(parameters.at(1));
+		return true;
+	} else if (command==L"setChoiceDrawLine") {
+		engine->choiceBox->drawLine=stoi(parameters.at(1));
+		return true;
+	} else if (command==L"setChoicePosition") {
+		engine->textBox->SetPosition(stoi(parameters.at(1)),stoi(parameters.at(2)));
+		return true;
+	} else if (command==L"setChoiceBackTexture") {
+		engine->choiceBox->SetBackTexture(engine->resourcesManager->GetTexture(wStringToString(parameters.at(1))));
+		return true;
+	} else if (command==L"setChoiceLineTexture") {
+		engine->choiceBox->SetBackTexture(engine->resourcesManager->GetTexture(wStringToString(parameters.at(1))));
 		return true;
 	} else if (command==L"setFadeColor") {
 		engine->SetFadeColor(sf::Color(stoi(parameters.at(1)),stoi(parameters.at(2)),stoi(parameters.at(3)),255));
@@ -284,6 +296,9 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 	} else if (command==L"setEffect") {
 			if (parameters.at(1)==L"noise") {
 				engine->SetDrawNoise(stoi(parameters.at(2)));
+				return true;
+			} else if (parameters.at(1)==L"lamp") {
+				engine->SetLamp(stoi(parameters.at(2)),stof(parameters.at(3)));
 				return true;
 			};
 		return true;
@@ -396,6 +411,18 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 			Npc* obj=static_cast<Npc*>(engine->objectsManager->GetNpc(wStringToString(parameters.at(1))));
 			str+=ToWString(obj->GetDirection());
 		};
+		str+=L",";
+		str+=L"0";
+		str+=L");";
+		ExecuteString(str);
+		return true;
+	} else if (command==L"getEnterPlace") {
+		std::wstring str=L"varSet(";
+		str+=parameters.at(1);
+		str+=L",";
+		str+=ToWString(engine->placeIndex);
+		str+=L",";
+		str+=L"0";
 		str+=L");";
 		ExecuteString(str);
 		return true;
@@ -528,7 +555,9 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		int index=0;
 		if (parameters.at(1)==L"usable") index=2;
 		Object* obj=engine->objectsManager->GetObjectAt(stoi(parameters.at(2)),stoi(parameters.at(3)),index);
+		if (obj!=NULL) {
 		obj->active=stoi(parameters.at(4));
+		};
 		return true;
 	} else if (command==L"addToQueue") {
 		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
@@ -544,10 +573,12 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		return true;
 	} else if (command==L"playMusic") {
 		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+		if (parameters.at(1)==L"") return true;
 		engine->resourcesManager->bgMusic.openFromFile(wStringToString(parameters.at(1)));
 		engine->resourcesManager->bgMusic.setLoop(true);
 		engine->resourcesManager->bgMusic.setVolume(engine->volumeBGM);
 		engine->resourcesManager->bgMusic.play();
+		engine->pathMusic = wStringToString(parameters.at(1));
 		return true;
 	} else if (command==L"stopMusic") {
 		engine->resourcesManager->bgMusic.stop();
@@ -557,10 +588,10 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		return true;
 	} else if (command==L"loadMap") {
 		parameters.at(1)=parameters.at(1).substr(1,parameters.at(1).length()-2);
+		if (parameters.at(2)>=L"-1") engine->placeIndex=stoi(parameters.at(2));
+		else engine->placeIndex=-1;
 		engine->LoadMap(wStringToString(parameters.at(1)));
-		if (parameters.at(2)!=L"-1") engine->placeIndex=stoi(parameters.at(2));
-		else engine->placeIndex=0;
-
+		engine->queue->done=true;
 		return true;
 	} else if (command==L"clearResources") {
 		if (parameters.at(1)==L"all") {
@@ -575,6 +606,108 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 		return true;
 	} else if (command==L"endGame") {
 		engine->gameEnd=true;
+		return true;
+	} else if (command==L"save") {
+		int number = stoi(parameters.at(1));
+		if (number==-1) number=0;
+		std::string path = "Saves/Save";
+		path+=ToString(number);
+		path+=".sav";
+		std::ofstream file(path);
+		file<<engine->mapName<<" ";
+		file<<engine->pathMusic<<" ";
+		//Variables
+		file<<engine->variablesGlobal->size()<<" ";
+		for(std::map<std::wstring,float>::iterator it=engine->variablesGlobal->begin();it!=engine->variablesGlobal->end();it++) {
+			file<<wStringToString(it->first)<<" "<<it->second<<" ";
+		};
+		file<<engine->variables->size()<<" ";
+		for(std::map<std::wstring,float>::iterator it=engine->variables->begin();it!=engine->variables->end();it++) {
+			file<<wStringToString(it->first)<<" "<<it->second<<" ";
+		};
+		//Player coordinates
+		file<<static_cast<int>(engine->objectsManager->GetPlayer()->x)<<" "<<static_cast<int>(engine->objectsManager->GetPlayer()->y)<<" ";
+		file<<engine->objectsManager->GetPlayer()->GetDirection()<<" ";
+		//Triggers and usables state
+		std::vector<Object*> tempVec;
+		for(int i=0;i<engine->objectsManager->chunksNumber.x;i++) {
+			for(int j=0;j<engine->objectsManager->chunksNumber.y;j++) {
+				for (int k=0;k<engine->objectsManager->chunks->at(i)->at(j)->list->size();k++) {
+					Object* obj = engine->objectsManager->chunks->at(i)->at(j)->list->at(k);
+					if (obj->objectIndex==2 || obj->objectIndex==4) {
+						tempVec.push_back(obj);
+					};
+				};
+			};
+		};
+		file<<tempVec.size()<<" ";
+		for (int i=0;i<tempVec.size();i++) {
+			Object* obj = tempVec.at(i);
+		file<<static_cast<int>(obj->x)<<" "<<static_cast<int>(obj->y)<<" "<<static_cast<int>(obj->active)<<" ";
+		};
+		file.close();
+		return true;
+	}  else if (command==L"load") {
+		int number = stoi(parameters.at(1));
+		if (number==-1) number=0;
+		std::string path = "Saves/Save";
+		path+=ToString(number);
+		path+=".sav";
+		std::ifstream file(path);
+		std::string mapName, musicPath;
+		file>>mapName;
+		file>>musicPath;
+		int size;
+		//Variables
+		engine->variablesGlobal->clear();
+		file>>size;
+		for(int i=0;i<size;i++) {
+			std::string name;
+			float value;
+			file>>name;
+			file>>value;
+			engine->variablesGlobal->insert(engine->variablesGlobal->end(),std::pair<std::wstring,float>(StringToWString(name),value));
+		};
+		engine->variables->clear();
+		file>>size;
+		for(int i=0;i<size;i++) {
+			std::string name;
+			float value;
+			file>>name;
+			file>>value;
+			engine->variables->insert(engine->variables->end(),std::pair<std::wstring,float>(StringToWString(name),value));
+		};
+		//Player coordinates
+		file>>engine->objectsManager->playerXStart;
+		file>>engine->objectsManager->playerYStart;
+		file>>engine->objectsManager->playerDirStart;
+		file>>size;
+		if (engine->objectsManager->playerXStart==-1 && engine->objectsManager->playerYStart==-1) {
+			int a = 2;
+		};
+		engine->LoadMap(mapName);
+		if (engine->objectsManager->playerXStart!=-1 && engine->objectsManager->playerYStart!=-1) {
+		engine->objectsManager->GetPlayer()->SetPosition(engine->objectsManager->playerXStart,engine->objectsManager->playerYStart);
+		engine->objectsManager->playerXStart=-1;
+		engine->objectsManager->playerYStart=-1;
+		engine->camera->xView=engine->objectsManager->GetPlayer()->x-(engine->windowSize.x/2);
+		engine->camera->yView=engine->objectsManager->GetPlayer()->y-(engine->windowSize.y/2);
+		engine->camera->viewTo.x=engine->objectsManager->GetPlayer()->x-(engine->windowSize.x/2);
+		engine->camera->viewTo.y=engine->objectsManager->GetPlayer()->y-(engine->windowSize.y/2);
+	};
+	if (engine->objectsManager->playerDirStart!=-1) {
+		engine->objectsManager->GetPlayer()->SetDirection(engine->objectsManager->playerDirStart);
+	};
+		for (int i=0;i<size;i++) {
+			int x, y, state;
+			file>>x;
+			file>>y;
+			file>>state;
+			engine->scripting.ExecuteString(L"setActive(usable,"+ToWString(x)+L","+ToWString(y)+L","+ToWString(state)+L")");
+		};
+		engine->scripting.ExecuteString(L"playMusic(\""+StringToWString(musicPath)+L"\")");
+
+		file.close();
 		return true;
 	}
 	//Resources add
@@ -615,7 +748,28 @@ bool Scripting::ExecuteCommand(std::vector<std::wstring> &parameters) {
 			engine->resourcesManager->AddFont(stoi(parameters.at(1)),wStringToString(parameters.at(2)));
 		};
 		return true;
-	};
+	}
+	//Resources check
+	else if(command==L"isFileExists") {
+		parameters.at(2)=parameters.at(2).substr(1,parameters.at(2).length()-2);
+		bool exists=false;
+		std::ifstream file;
+		file.open(parameters.at(2));
+		if (file) {
+			file.close();
+			exists=true;
+		};
+
+		std::wstring str=L"varSet(";
+		str+=parameters.at(1);
+		str+=L",";
+		str+=ToWString(exists);
+		str+=L",";
+		str+=L"0";
+		str+=L");";
+		ExecuteString(str);
+		return true;
+		};
 	return false;
 };
 
@@ -681,10 +835,10 @@ bool Scripting::ExecuteString(std::wstring string) {
 		int type = 0;
 		int pos = parameters.at(1).find(L"==");
 		float first, second;
-		if (parameters.at(1).find(L">")!=parameters.at(1).npos) {type = 1; pos = parameters.at(1).find(L">");}
-		else if (parameters.at(1).find(L"<")!=parameters.at(1).npos) {type = 2; pos = parameters.at(1).find(L"<");}
-		else if (parameters.at(1).find(L">=")!=parameters.at(1).npos) {type = 3; pos = parameters.at(1).find(L">=");}
+		if (parameters.at(1).find(L">=")!=parameters.at(1).npos) {type = 3; pos = parameters.at(1).find(L">=");}
 		else if (parameters.at(1).find(L"<=")!=parameters.at(1).npos) {type = 4; pos = parameters.at(1).find(L"<=");}
+		else if (parameters.at(1).find(L">")!=parameters.at(1).npos) {type = 1; pos = parameters.at(1).find(L">");}
+		else if (parameters.at(1).find(L"<")!=parameters.at(1).npos) {type = 2; pos = parameters.at(1).find(L"<");}
 		else if (parameters.at(1).find(L"!=")!=parameters.at(1).npos) {type = 5; pos = parameters.at(1).find(L"!=");}
 		first = std::stof(parameters.at(1).substr(0,pos));
 

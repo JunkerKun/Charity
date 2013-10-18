@@ -11,6 +11,9 @@ addSound("sndStep1","Data/Sounds/SE002.wav",1);
 addSound("sndStep2","Data/Sounds/SE003.wav",1);
 addSound("sndStep3","Data/Sounds/SE004.wav",1);
 addSound("sndStep4","Data/Sounds/SE005.wav",1);
+addSound("sndSysLineBack","Data/Sounds/SYSSE001.wav",1);
+addSound("sndSysLineAccept","Data/Sounds/SYSSE002.wav",1);
+addSound("sndSysLineMove","Data/Sounds/SYSSE003.wav",1);
 
 //Additional
 addTexture("sprLeFleur","Data/Sprites/LeFleur.png",-1,-1);

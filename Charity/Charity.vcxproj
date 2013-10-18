@@ -92,6 +92,7 @@
     <ClInclude Include="Npc.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectsManager.h" />
+    <ClInclude Include="Overlay.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Scripting.h" />
@@ -115,6 +116,7 @@
     <ClCompile Include="Npc.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectsManager.cpp" />
+    <ClCompile Include="Overlay.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Scripting.cpp" />

@@ -1,0 +1,45 @@
+Map06 {
+
+function(OnEnter);
+fade(in,1);
+setCameraPosition();
+setCameraBorders(-1,-1,-1,600);
+end();
+
+function(Init);
+varSet(turns,0);
+call(OnEnter);
+end();
+
+function(ToMap05);
+setCanMove(player,0);
+fade(out,1);
+if($turns == 0)
+addToQueue("call(GoToMap05)",1);
+fi
+if($turns > 0)
+addToQueue("call(GoToMap072)",1);
+fi
+end();
+
+function(GoToMap05);
+loadMap("Map04",2);
+end();
+
+function(ToMap07);
+setCanMove(player,0);
+fade(out,1);
+addToQueue("call(GoToMap07)",1);
+end();
+
+function(GoToMap07);
+varSet(turns,++);
+loadMap("Map07",0);
+end();
+
+function(GoToMap072);
+varSet(turns,--);
+loadMap("Map07",1);
+end();
+
+}

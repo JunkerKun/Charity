@@ -3,6 +3,7 @@
 
 #include "Image.h"
 #include <SFML/Audio.hpp>
+#include "Overlay.h"
 
 class Player: public Image {
 public:
@@ -16,7 +17,10 @@ public:
 private:
 	float speed;
 	int direction;
-	int hp, maxHp;
+	float maxHP, maxSP, maxMP;
+	float* playerHP,* playerSP,* playerMP;
+	Overlay* overlayHP,* overlaySP,* overlayMP;
+	bool drawHP, drawSP, drawMP;
 	sf::Sprite sprShadow;
 	sf::Sprite sprExclamation;
 	bool drawExclamation, canPlaySound;

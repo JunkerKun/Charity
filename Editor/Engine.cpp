@@ -713,5 +713,6 @@ bool Engine::SaveMap(std::string path) {
 };
 
 bool Engine::LoadMap(std::string path) {
+	editorPlaceIndex=0;
 	return objectsManager->LoadMap(path);
 };

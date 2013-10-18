@@ -19,6 +19,9 @@ ObjectsManager::ObjectsManager() {
 	chunks=NULL;
 	Clear(1,1);
 	engine->camera->SetBorders(0,0,engine->windowSize.x,engine->windowSize.y);
+	playerXStart=-1;
+	playerYStart=-1;
+	playerDirStart=-1;
 };
 
 void ObjectsManager::Resize(int sizeX, int sizeY) {
@@ -154,7 +157,7 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 			if (sets->at(1)!=-1) plr->imageHeight=sets->at(1);
 			//plr->SetOrigin(plr->imageWidth/2,plr->imageHeight-static_cast<int>(plr->imageHeight/7.63));
 			plr->SetOrigin(plr->imageWidth/2,plr->imageHeight-6*engine->gridSize/32);
-			engine->placeIndex=0;
+			//engine->placeIndex=0;
 			break;
 		};
 		done=false;
@@ -167,9 +170,9 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 	temp->chunk.y=floor(temp->y/chunkSize.y);
 	temp->depth=temp->y;
 	chunks->at(temp->chunk.x)->at(temp->chunk.y)->list->push_back(static_cast<Object*>(temp));
-	};
 	return temp;
-	
+	};
+	return NULL;
 };
 
 Object* ObjectsManager::AddNpc(int x, int y, std::string name, sf::Texture* tex) {
@@ -198,6 +201,13 @@ void ObjectsManager::DeleteNpc(std::string name) {
 void ObjectsManager::AddMover(Object* obj, int x, int y, float sp) {
 	if (obj!=NULL) movers.push_back(new Mover(obj,x,y,sp));
 };
+
+Overlay* ObjectsManager::AddOverlay(sf::Texture *tex) {
+	Overlay* ovr=new Overlay(tex);
+	overlays.push_back(ovr);
+	return ovr;
+};
+
 
 void ObjectsManager::DeleteMover(int index) {
 	movers[index]->object->isMoving=false;
@@ -231,6 +241,10 @@ void ObjectsManager::DeleteObject(Object* obj) {
 
 void ObjectsManager::Clear(int sizeX, int sizeY) {
 	player=NULL;
+	for(int i=0;i<overlays.size();i++) {
+		delete overlays.at(i);
+	};
+	overlays.clear();
 	int size=npcList.size();
 	for(int i=0;i<size;i++) {
 		npcList.erase(npcList.begin());
@@ -287,6 +301,7 @@ bool ObjectsManager::LoadMap(std::string name) {
 	engine->tilesManager->LoadTiles(load);
 	load.close();
 	engine->camera->SetBorders(0,0,chunkSize.x*chunksNumber.x,chunkSize.y*chunksNumber.y);
+	
 	return true;
 };
 

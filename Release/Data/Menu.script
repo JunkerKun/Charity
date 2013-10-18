@@ -1,0 +1,58 @@
+Menu {
+
+function(Init);
+showChoice("","Start Game",Start);
+setChoiceDrawSprite(0);
+addChoice("Load Game",Load);
+addChoice("Quit Game",Quit);
+end();
+
+function(Start);
+loadMap("Map01");
+end();
+
+function(Load);
+isFileExists(slotExists,"Saves/Save0.sav")
+if($slotExists == 0)
+showChoice("Load game","Empty Slot",Empty);
+fi
+if($slotExists == 1)
+varSet(slot,0);
+showChoice("Load game","Save game 1",LoadGame);
+fi
+
+isFileExists(slotExists,"Saves/Save1.sav")
+if($slotExists == 0)
+addChoice("Empty Slot",Empty);
+fi
+if($slotExists == 1)
+varSet(slot,1);
+addChoice("Save game 2",LoadGame);
+fi
+
+isFileExists(slotExists,"Saves/Save2.sav")
+if($slotExists == 0)
+addChoice("Empty Slot",Empty);
+fi
+if($slotExists == 1)
+varSet(slot,2);
+addChoice("Save game 3",LoadGame);
+fi
+
+addChoice("Back",Init);
+setChoiceDrawSprite(0);
+end();
+
+function(Empty);
+call(Load);
+end();
+
+function(LoadGame);
+load($slot);
+end();
+
+function(Quit);
+endGame();
+end();
+
+};

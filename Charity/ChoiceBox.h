@@ -2,6 +2,7 @@
 #define __CHOICEBOX
 
 #include "Object.h"
+#include "ResourcesManager.h"
 #include <SFML/Graphics.hpp>
 
 struct Choice {
@@ -21,6 +22,9 @@ public:
 	bool Update();
 	bool Draw(sf::RenderTarget& RT);
 	void AddChoice(std::wstring title, std::wstring function);
+	bool drawSprite, drawLine;
+	void SetBackTexture(sf::Texture* tex);
+	void SetLineTexture(sf::Texture* tex);
 private:
 	sf::Text* text;
 	sf::Texture* texBG;
@@ -28,6 +32,9 @@ private:
 	sf::Sprite sprBG;
 	sf::Sprite sprLine;
 	std::vector<Choice*> choices;
+	Sound* sndBack;
+	Sound* sndAccept;
+	Sound* sndMove;
 };
 
 #endif

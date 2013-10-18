@@ -15,26 +15,47 @@ ChoiceBox::ChoiceBox():Object() {
 	text=engine->textGame;
 
 	index=0;
+	drawSprite=true;
+	drawLine=true;
+
+	sndAccept=engine->resourcesManager->GetSound("sndSysLineAccept");
+	sndBack=engine->resourcesManager->GetSound("sndSysLineBack");
+	sndMove=engine->resourcesManager->GetSound("sndSysLineMove");
 };
 
 ChoiceBox::~ChoiceBox() {
 	for(int i=0;i<choices.size();i++) {
 		delete choices.at(i);
 	};
-	engine->objectsManager->GetPlayer()->canMove=true;
-	engine->choiceBox=NULL;
+	if (engine->objectsManager->GetPlayer()!=NULL) engine->objectsManager->GetPlayer()->canMove=true;
+	if (engine->choiceBox==this) engine->choiceBox=NULL;
+};
+
+void ChoiceBox::SetBackTexture(sf::Texture* tex) {
+	sprBG.setTexture(*tex,1);
+};
+
+void ChoiceBox::SetLineTexture(sf::Texture* tex) {
+	sprLine.setTexture(*tex,1);
 };
 
 bool ChoiceBox::Update() {
-	engine->objectsManager->GetPlayer()->canMove=false;
+	if (engine->objectsManager->GetPlayer()!=NULL) engine->objectsManager->GetPlayer()->canMove=false;
 	if (engine->input->GetKeyPressed(sf::Keyboard::Up)) {
-		if (index>1) index--;
+		if (index>1) {
+			sndMove->sound->play();
+			index--;
+		};
 	} else
 		if (engine->input->GetKeyPressed(sf::Keyboard::Down)) {
-			if (index<choices.size()-1) index++;
+			if (index<choices.size()-1) {
+				sndMove->sound->play();
+				index++;
+			};
 		} else
 			if (engine->input->GetKeyPressed(sf::Keyboard::Z)) {
 				if (choices.at(index)->function!=L"") {
+					sndAccept->sound->play();
 					engine->scripting.ExecuteFunction(choices.at(index)->function);
 					delete this;
 				};
@@ -43,11 +64,15 @@ bool ChoiceBox::Update() {
 };
 
 bool ChoiceBox::Draw(sf::RenderTarget &RT) {
-	sprBG.setPosition(x,y);
-	RT.draw(sprBG);
+	if (drawSprite) {
+		sprBG.setPosition(x,y);
+		RT.draw(sprBG);
+	};
 	int textX=0, textY=0, size=choices.size(), height=static_cast<int>(texBG->getSize().y)/size;
-	sprLine.setPosition(x,y+height/2-texLine->getSize().y/2+height*index);
-	RT.draw(sprLine);
+	if (drawLine) {
+		sprLine.setPosition(x,y+height/2-texLine->getSize().y/2+height*index);
+		RT.draw(sprLine);
+	};
 
 	for (int i=0;i<size;i++) {
 		text->setString(choices.at(i)->title);

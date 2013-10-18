@@ -5,9 +5,16 @@ extern Engine* engine;
 
 Player::Player(sf::Texture* tex):Image(tex) {
 	collisionTrigger=NULL;
-	maxHp=100;
-	hp=maxHp;
-	speed=105;
+	maxHP=100;
+	maxSP=100;
+	maxMP=100;
+	playerHP=&engine->playerHP;
+	playerSP=&engine->playerSP;
+	playerMP=&engine->playerMP;
+	drawHP=true;
+	drawSP=true;
+	drawMP=true;
+	speed=126;
 	objectIndex=1;
 	direction=0;
 	canMove=true;
@@ -42,12 +49,23 @@ Player::Player(sf::Texture* tex):Image(tex) {
 	sndStep[1]=engine->resourcesManager->GetSound("sndStep2")->sound;
 	sndStep[2]=engine->resourcesManager->GetSound("sndStep3")->sound;
 	sndStep[3]=engine->resourcesManager->GetSound("sndStep4")->sound;
+
+	overlayHP=NULL;
+	overlaySP=NULL;
+	overlayMP=NULL;
+
+	//overlayHP = engine->objectsManager->AddOverlay(engine->resourcesManager->GetTexture("sprTable"));
+	//overlayHP->AddSequence(0,0,0);
+
 };
 
 bool Player::Update() {
 	xPrev=x;
 	yPrev=y;
 	drawExclamation=false;
+	if (overlayHP!=NULL) overlayHP->visible=drawHP;
+	if (overlaySP!=NULL) overlaySP->visible=drawSP;
+	if (overlayMP!=NULL) overlayMP->visible=drawMP;
 	if (!isControlled && !isBlocked) {
 		isMoving=false;
 		if (canMove) {
@@ -159,7 +177,9 @@ bool Player::Update() {
 				};
 			};
 		};
-	};
+	}
+	if (!isControlled && isBlocked) isMoving=false;
+		
 	MoveToChunk();
 
 	SetSequence(direction+4*(isMoving));

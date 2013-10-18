@@ -19,7 +19,22 @@ Camera::Camera() {
 };
 
 void Camera::SetBorders(int left, int top, int right, int bottom) {
-	borders=sf::IntRect(left,top,right,bottom);
+	int l,r,t,b;
+	l=left;
+	if (l==-1) l=0;
+	r=right;
+	if (r==-1) {
+		if (engine->objectsManager!=NULL) r=engine->objectsManager->chunkSize.x*engine->objectsManager->chunksNumber.x;
+		else r=engine->windowSize.x;
+	};
+	t=top;
+	if (t==-1) t=0;
+	b=bottom;
+	if (b==-1) {
+		if (engine->objectsManager!=NULL) b=engine->objectsManager->chunkSize.y*engine->objectsManager->chunksNumber.y;
+		else b=engine->windowSize.y;
+	};
+	borders=sf::IntRect(l,t,r,b);
 };
 
 bool Camera::Update() {
@@ -28,31 +43,26 @@ bool Camera::Update() {
 	if (target!=NULL) {
 		viewTo=Interpolate2D(viewTo, sf::Vector2f(target->x-(engine->windowSize.x/2),
 			target->y-(engine->windowSize.y/2)),3);
-		/*if (viewTo.x<borders.left) viewTo.x=borders.left;
-	else
-		if (viewTo.x+engine->windowSize.x>borders.width) viewTo.x=borders.width-engine->windowSize.x;
-	if (viewTo.y<borders.top) viewTo.y=borders.top;
-	else
-		if (viewTo.y+engine->windowSize.y>borders.height) viewTo.y=borders.height-engine->windowSize.y;*/
+
+		if (viewTo.x<borders.left) viewTo.x=borders.left;
+		else
+			if (viewTo.x+engine->windowSize.x>borders.width) viewTo.x=borders.width-engine->windowSize.x;
+
+		if (viewTo.y<borders.top) viewTo.y=borders.top;
+		else
+			if (viewTo.y+engine->windowSize.y>borders.height) viewTo.y=borders.height-engine->windowSize.y;
+
 		xView=floor(viewTo.x);
 		yView=floor(viewTo.y);
 	};
-	if (xView<=borders.left) {
-		xView=borders.left;
-		angleTo=0;
-	}
+	if (xView<=borders.left) {xView=borders.left;angleTo=0;}
 	else
-		if (xView+engine->windowSize.x>=borders.width) {
-			xView=borders.width-engine->windowSize.x;
-			angleTo=0;
-		};
-	if (yView<borders.top) {
-		yView=borders.top;
-		}
+		if (xView+engine->windowSize.x>=borders.width) {xView=borders.width-engine->windowSize.x;angleTo=0;};
+
+	if (yView<borders.top) {yView=borders.top;}
 	else
-		if (yView+engine->windowSize.y>borders.height) {
-			yView=borders.height-engine->windowSize.y;
-		};
+		if (yView+engine->windowSize.y>borders.height) {yView=borders.height-engine->windowSize.y;};
+
 	angle=Interpolate2D(angle,angleTo,angleSpeed);
 	view.setRotation(angle);
 	view.setCenter(xView+engine->windowSize.x/2,yView+engine->windowSize.y/2);

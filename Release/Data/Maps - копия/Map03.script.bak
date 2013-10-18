@@ -11,7 +11,6 @@ loadSequences("JailDoor","Data/Sequences/Door.seq");
 setSequence("JailDoor",1);
 setSolid("JailDoor",0);
 setCameraPosition();
-setActive(usable,352,192,0);
 end();
 
 function(Init);
@@ -24,7 +23,6 @@ fade(out,-1);
 setCanMove(player,0);
 addToQueue("fade(in,2)",2);
 addToQueue("call(Cutscene1_1)",2.5);
-varSet(diaryRead,0);
 end();
 
 function(Cutscene1_1);
@@ -104,16 +102,10 @@ function(Cutscene2_7);
 setCameraTarget(player);
 setActive(usable,352,192,0);
 showText("Charity","Mom wait!");
-setActive(usable,352,192,0);
 setCanMove(player,1);
-varSet(diaryRead,1);
 end();
 
 function(ToMap04);
-if($diaryRead == 0)
-if($place != 1)
-end();
-fi
 setCanMove(player,0);
 fade(out,1);
 addToQueue("call(GoToMap04)",1);
