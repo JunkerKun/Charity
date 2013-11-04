@@ -108,6 +108,12 @@ bool Engine::Update() {
 	};
 
 	//Editor stuff
+	if (!enter) {
+	if (input->GetKeyPressed(sf::Keyboard::J)) {
+		EditorMoveDown();
+	};
+	};
+
 	if (input->GetKeyIsPressed(sf::Keyboard::Left)) {
 		if (!input->GetKeyIsPressed(sf::Keyboard::LShift)) xView-=150*delta;
 		else xView-=300*delta;
@@ -441,6 +447,18 @@ void Engine::EditorNum9() {
 	editorTilesLayer+=1;
 };
 
+void Engine::EditorMoveDown() {
+	for(int i=0;i<objectsManager->chunksNumber.x;i++) {
+			for(int j=0;j<objectsManager->chunksNumber.y;j++) {
+				for (int k=0;k<objectsManager->chunks->at(i)->at(j)->list->size();k++) {
+					Object* obj = objectsManager->chunks->at(i)->at(j)->list->at(k);
+					obj->SetPosition(obj->x,obj->y+64);
+					//obj->MoveToChunk();
+				};
+			};
+		};
+};
+
 
 void Engine::MouseCheck() {
 	if (input->GetMousePosition().x>800-editorGridSize/2) {
@@ -486,8 +504,21 @@ void Engine::MouseCheck() {
 							};
 
 						} else {
+							if (!input->GetKeyIsPressed(sf::Keyboard::LAlt)) {
 							grab->Grab(false);
 							grab=NULL;
+							} else {
+								Object* obj = objectsManager->AddObject(grab->x,grab->y,grab->objectIndex);
+								if (obj->objectIndex==3) {
+									Decoration* dec = static_cast<Decoration*>(obj);
+									Decoration* dec2 = static_cast<Decoration*>(grab);
+									dec->spriteName=dec2->spriteName;
+								} else if (obj->objectIndex==4) {
+									Trigger* dec = static_cast<Trigger*>(obj);
+									Trigger* dec2 = static_cast<Trigger*>(grab);
+									dec->function=dec2->function;
+								};
+							};
 						};
 					} else {
 						if (objectsManager->GetObjectAt(marker->x,marker->y)==NULL) {

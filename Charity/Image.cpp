@@ -9,13 +9,17 @@ Image::Image(char* path):Object() {
 };
 
 Image::Image(sf::Texture* tex):Object() {
-	Load(tex);
+	std::string name = engine->resourcesManager->GetTextureName(tex);
+	std::vector<int>* vec=engine->resourcesManager->GetTextureSettings(name);
+	Load(tex, vec);
 };
 
-bool Image::Load(sf::Texture* tex) {
+bool Image::Load(sf::Texture* tex, std::vector<int>* sets) {
 	texture=*tex;
 	imageWidth=texture.getSize().y;
 	imageHeight=texture.getSize().y;
+	if (sets->at(0)!=-1) imageWidth=sets->at(0);
+	if (sets->at(1)!=-1) imageHeight=sets->at(1);
 	imageSpeed=0;
 	imageFrame=0;
 	sprite.setTexture(texture);
@@ -57,6 +61,7 @@ bool Image::SetOrigin(int left, int top) {
 
 bool Image::Update() {
 	sprite.setPosition(floor(x),floor(y));
+	if (!locked) {
 	imageFrame+=(1/imageSpeed)*engine->GetDelta();
 	if (imageFrame>lastFrame+1) {
 		imageFrame=firstFrame;
@@ -67,6 +72,7 @@ bool Image::Update() {
 	};
 	SetFrame((int)imageFrame);
 	depth=y+16;
+	};
 	return true;
 };
 
@@ -85,6 +91,14 @@ bool Image::Draw(sf::RenderTarget& RT) {
 
 void Image::SetTexture(sf::Texture* tex) {
 	sprite.setTexture(*tex);
+};
+
+sf::Texture& Image::GetTexture() {
+	return texture;
+};
+
+sf::Sprite& Image::GetSprite() {
+	return sprite;
 };
 
 bool Image::SetFrame(int frame) {

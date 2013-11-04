@@ -15,24 +15,27 @@ function(Load);
 isFileExists(slotExists,"Saves/Save0.sav")
 if($slotExists == 0)
 showChoice("Load game","Empty Slot",Empty);
+fi
+if($slotExists == 1)
+varSet(slot,0);
+showChoice("Load game","Save game 1",LoadGame);
+fi
+
+isFileExists(slotExists,"Saves/Save1.sav")
+if($slotExists == 0)
+addChoice("Empty Slot",Empty);
+fi
 if($slotExists == 1)
 varSet(slot,1);
-showChoice("Load game","Save game 1",LoadGame);
+addChoice("Save game 2",LoadGame);
 fi
 
 isFileExists(slotExists,"Saves/Save2.sav")
 if($slotExists == 0)
 addChoice("Empty Slot",Empty);
+fi
 if($slotExists == 1)
 varSet(slot,2);
-addChoice("Save game 2",LoadGame);
-fi
-
-isFileExists(slotExists,"Saves/Save3.sav")
-if($slotExists == 0)
-addChoice("Empty Slot",Empty);
-if($slotExists == 1)
-varSet(slot,3);
 addChoice("Save game 3",LoadGame);
 fi
 

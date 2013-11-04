@@ -1,13 +1,23 @@
 Map03 {
 
+function(OnLoad);
+fade(out,-1);
+fade(in,1);
+addObject(decoration,416,672,"sprJailDoor","JailDoor");
+loadSequences("JailDoor","Data/Sequences/Door.seq");
+setSequence("JailDoor",1);
+setSolid("JailDoor",0);
+setCameraPosition();
+setActive(usable,352,192,0);
+end();
+
 function(OnEnter);
 getEnterPlace(place);
 if($place == 1)
 fade(in,1);
-setDirection(player,2);
-varSet(place,0);
+setDirection(player,2,1);
 fi
-addObject(416,672,decoration,"sprJailDoor","JailDoor");
+addObject(decoration,416,672,"sprJailDoor","JailDoor");
 loadSequences("JailDoor","Data/Sequences/Door.seq");
 setSequence("JailDoor",1);
 setSolid("JailDoor",0);
@@ -16,7 +26,7 @@ setActive(usable,352,192,0);
 end();
 
 function(Init);
-addObject(416,672,decoration,"sprJailDoor","JailDoor");
+addObject(decoration,416,672,"sprJailDoor","JailDoor");
 loadSequences("JailDoor","Data/Sequences/Door.seq");
 setSequence("JailDoor",0);
 setCameraPosition();

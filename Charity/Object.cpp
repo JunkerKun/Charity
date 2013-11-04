@@ -35,6 +35,14 @@ sf::Rect<sf::Int16> Object::GetBBox() {
 	return bBox;
 };
 
+void Object::Lock() {
+	locked=true;
+};
+
+void Object::Unlock() {
+	locked=false;
+};
+
 void Object::SetPosition(float xx, float yy) {
 	x=xx;
 	y=yy;

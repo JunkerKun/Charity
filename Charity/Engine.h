@@ -25,6 +25,7 @@
 #include "Npc.h"
 #include "ChoiceBox.h"
 #include "Overlay.h"
+#include "Queue.h"
 
 struct RenderImg {
 	sf::RenderTexture texture;
@@ -32,61 +33,6 @@ struct RenderImg {
 	RenderImg(int w, int h) {
 		texture.create(w,h);
 		sprite.setTexture(texture.getTexture());
-	};
-};
-
-struct Timer {
-	float time, endTime;
-	Timer() {
-		time=0;
-		endTime=-1;
-	};
-};
-
-struct Queue {
-	std::vector<std::wstring> queue;
-	bool done;
-	Scripting scripting;
-	int index;
-	Timer timer;
-	Queue(Scripting &scr) {
-		scripting=scr;
-		index=0;
-		done=false;
-	};
-	void Add(std::wstring func, std::wstring time) {
-		if (queue.size()==0) {
-			timer.endTime=stof(time);
-		};
-		queue.push_back(func);
-		queue.push_back(time);
-	};
-	void Update(float delta) {
-		if (timer.endTime!=-1) {
-			if (timer.time<timer.endTime) {
-				timer.time+=delta;
-			};
-			if (timer.time>=timer.endTime) {
-				scripting.ExecuteString(queue.at(index));
-				if (done) {done=false; return;}
-				if (index+2<queue.size()) {
-				index+=2;
-				timer.endTime=stof(queue.at(index+1));
-				timer.time=0;
-				} else {
-					index=0;
-					queue.clear();
-					timer.time=0;
-					timer.endTime=-1;
-				};
-			};
-		};
-	};
-	void Clear() {
-		queue.clear();
-		timer.time=0;
-		timer.endTime=-1;
-		index=0;
 	};
 };
 
@@ -133,7 +79,7 @@ public:
 	float IniFindValue(std::ifstream &ini, std::string group, std::string key, float defaultValue);
 	void LoadSettings();
 	void Fade(int mode,float speed);
-	void SetLamp(int mode,float speed);
+	void SetLamp(float mode,float speed);
 	void SetFadeColor(sf::Color color);
 
 	sf::Text* textGame;
@@ -144,6 +90,7 @@ public:
 	int gridSize;
 
 	float playerHP, playerSP, playerMP;
+	bool drawHP, drawSP, drawMP;
 
 private:
 	sf::RenderWindow renderWindow;
@@ -151,12 +98,12 @@ private:
 	sf::Event inputEvent;
 	sf::Text* debugText;
 	sf::Color fadeColor;
-	float fadeAlpha, fadeSpeed, lampAlpha, lampSpeed;
-	int fadeMode, lampMode;
+	float fadeAlpha, fadeSpeed, lampMode, lampAlpha, lampSpeed;
+	int fadeMode;
 
 	RenderImg* renderImg;
 	
 	bool isFocused, drawNoise;
-	float delta;
+	float delta, timeScale;
 };
 #endif

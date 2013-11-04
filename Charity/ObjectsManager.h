@@ -77,6 +77,7 @@ public:
 private:
 	Player* player;
 	std::map<std::string,Object*> npcList;
+	bool loaded;
 };
 
 #endif

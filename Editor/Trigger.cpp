@@ -23,6 +23,7 @@ bool Trigger::Update() {
 				y=std::floor(static_cast<float>(engine->input->GetMousePosition(true).y)/(gridSize/2))*(gridSize/2)+(gridSize/2);
 			};
 		};
+		MoveToChunk();
 	};
 	return true;
 };

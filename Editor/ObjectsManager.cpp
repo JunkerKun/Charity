@@ -47,8 +47,7 @@ void ObjectsManager::Update() {
 	int chunkYEnd = std::min(chunksNumber.y,(chunkY+3)*3);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
-			int size=chunks->at(i)->at(j)->list->size();
-			for(int k=0;k<size;k++) {
+			for(int k=0;k<chunks->at(i)->at(j)->list->size();k++) {
 				chunks->at(i)->at(j)->list->at(k)->Update();
 			};
 		};

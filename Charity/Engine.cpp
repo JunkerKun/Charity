@@ -2,6 +2,7 @@
 
 Engine::Engine() {
 	//System Stuff
+	timeScale=1;
 	mapName="";
 	gridSize=64;
 	debug=false;
@@ -51,6 +52,9 @@ Engine::Engine() {
 	playerHP=100;
 	playerSP=100;
 	playerMP=100;
+	drawHP=true;
+	drawSP=true;
+	drawMP=true;
 };
 
 void Engine::Begin() {
@@ -77,8 +81,6 @@ void Engine::Begin() {
 	textGame->setFont(fnt->font);
 
 	scripting.ExecuteFile("Data/Menu.script");
-	//LoadMap("Map");
-
 	debugText=NULL;
 	if (debug) {
 		debugText=new sf::Text();
@@ -98,7 +100,7 @@ bool Engine::GetIsFocused() {
 };
 
 bool Engine::Update() {
-	delta = clock.restart().asSeconds();
+	delta = clock.restart().asSeconds()*timeScale;
 
 	isFocused=true;
 	if (inputEvent.type==sf::Event::LostFocus) {
@@ -167,39 +169,39 @@ bool Engine::Draw() {
 	if (choiceBox!=NULL) choiceBox->Draw(renderWindow);
 	if (debug) {
 		if (debugText!=NULL) {
-		debugText->setPosition(0,0);//camera->xView,camera->yView);
-		std::string str;
-		str+=scripting.ToString(delta);
-		if (queue!=NULL) {
+			debugText->setPosition(0,0);//camera->xView,camera->yView);
+			std::string str;
+			str+=scripting.ToString(delta);
+			if (queue!=NULL) {
+				str+="\n";
+				str+=scripting.ToString(queue->timer.time);
+				str+="|";
+				str+=scripting.ToString(queue->timer.endTime);
+			};
 			str+="\n";
-			str+=scripting.ToString(queue->timer.time);
-			str+="|";
-			str+=scripting.ToString(queue->timer.endTime);
-		};
-		str+="\n";
-		str+=scripting.ToString(camera->xViewPrev-camera->xView);
-		str+="\n";
-		debugText->setString(str);
-		renderWindow.draw(*debugText);
-		renderWindow.setView(camera->view);
-		sf::RectangleShape rs;
-		rs.setSize(static_cast<sf::Vector2f>(objectsManager->chunkSize));
-		rs.setFillColor(sf::Color::Transparent);
-		rs.setOutlineColor(sf::Color::Cyan);
-		rs.setOutlineThickness(1);
-		int chunkX = floor(camera->xView/objectsManager->chunkSize.x);
-		int chunkY = floor(camera->yView/objectsManager->chunkSize.y);
-		int chunkXStart = std::max(0,chunkX-1);
-		int chunkYStart = std::max(0,chunkY-1);
-		int chunkXEnd = std::min(objectsManager->chunksNumber.x,(chunkX+3)*3);
-		int chunkYEnd = std::min(objectsManager->chunksNumber.y,(chunkY+3)*3);
-		for(int i=chunkXStart;i<chunkXEnd;i++) {
-			for(int j=chunkYStart;j<chunkYEnd;j++) {
-				rs.setPosition(rs.getSize().x*i,rs.getSize().y*j);
-				renderWindow.draw(rs);
+			str+=scripting.ToString(camera->xViewPrev-camera->xView);
+			str+="\n";
+			debugText->setString(str);
+			renderWindow.draw(*debugText);
+			renderWindow.setView(camera->view);
+			sf::RectangleShape rs;
+			rs.setSize(static_cast<sf::Vector2f>(objectsManager->chunkSize));
+			rs.setFillColor(sf::Color::Transparent);
+			rs.setOutlineColor(sf::Color::Cyan);
+			rs.setOutlineThickness(1);
+			int chunkX = floor(camera->xView/objectsManager->chunkSize.x);
+			int chunkY = floor(camera->yView/objectsManager->chunkSize.y);
+			int chunkXStart = std::max(0,chunkX-1);
+			int chunkYStart = std::max(0,chunkY-1);
+			int chunkXEnd = std::min(objectsManager->chunksNumber.x,(chunkX+3)*3);
+			int chunkYEnd = std::min(objectsManager->chunksNumber.y,(chunkY+3)*3);
+			for(int i=chunkXStart;i<chunkXEnd;i++) {
+				for(int j=chunkYStart;j<chunkYEnd;j++) {
+					rs.setPosition(rs.getSize().x*i,rs.getSize().y*j);
+					renderWindow.draw(rs);
+				};
 			};
 		};
-	};
 	};
 	renderWindow.display();
 	return true;
@@ -280,9 +282,10 @@ bool Engine::LoadMap(std::string name) {
 	//Fade(1,-1);
 	if (done) {
 		if (load) scripting.ExecuteFunction(L"OnLoad");
-
+		else {
 		if (executeInit) scripting.ExecuteFunction(L"Init");
 		else scripting.ExecuteFunction(L"OnEnter");
+		};
 	};
 	//if (fadeMode==1 && fadeSpeed==-1) Fade(0,1);
 	return done;
@@ -349,7 +352,7 @@ void Engine::Fade(int mode, float speed) {
 	fadeSpeed=255/speed;
 };
 
-void Engine::SetLamp(int mode, float speed) {
+void Engine::SetLamp(float mode, float speed) {
 	lampMode=mode;
 	if (speed==-1) lampAlpha=lampMode*255;
 	lampSpeed=255/speed;

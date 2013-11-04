@@ -94,6 +94,7 @@
     <ClInclude Include="ObjectsManager.h" />
     <ClInclude Include="Overlay.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Queue.h" />
     <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Scripting.h" />
     <ClInclude Include="TextBox.h" />
@@ -118,6 +119,7 @@
     <ClCompile Include="ObjectsManager.cpp" />
     <ClCompile Include="Overlay.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Queue.cpp" />
     <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Scripting.cpp" />
     <ClCompile Include="TextBox.cpp" />

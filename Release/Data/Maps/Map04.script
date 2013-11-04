@@ -4,13 +4,13 @@ function(OnEnter);
 fade(in,1);
 setCameraPosition();
 setCameraBorders(-1,-1,-1,600);
-addObject(608,128,decoration,"sprJailDoor","JailDoor");
+addObject(decoration,608,128,"sprJailDoor","JailDoor");
 loadSequences("JailDoor","Data/Sequences/Door.seq");
 setSequence("JailDoor",1);
 setSolid("JailDoor",0);
 getEnterPlace(place);
 if($place == 2)
-setDirection(player,2);
+setDirection(player,2,1);
 fi
 end();
 
@@ -35,6 +35,10 @@ addToQueue("call(GoToMap05)",1);
 end();
 
 function(GoToMap05);
-loadMap("Map06");
+if($EnteredMap05 == 0)
+loadMap("Map05");
+end
+fi
+loadMap("Map05",0);
 end();
 }

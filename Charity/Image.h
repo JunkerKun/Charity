@@ -9,7 +9,7 @@ public:
 	Image(char* path);
 	Image(sf::Texture* tex);
 	bool Load(char* path);
-	bool Load(sf::Texture* tex);
+	bool Load(sf::Texture* tex, std::vector<int>* sets);
 	bool Update();
 	bool Draw(sf::RenderTarget& RT);
 	bool SetFrame(int frame);
@@ -21,6 +21,8 @@ public:
 	bool LoadSettings(std::string path);
 	int imageWidth, imageHeight;
 	void SetTexture(sf::Texture* tex);
+	sf::Texture& GetTexture();
+	sf::Sprite& GetSprite();
 	~Image();
 protected:
 	sf::Texture texture;

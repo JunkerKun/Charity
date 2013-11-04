@@ -1,7 +1,7 @@
 Map07 {
 
 function(OnEnter);
-setDirection(player,2);
+setDirection(player,2,1);
 fade(in,1);
 setCameraPosition();
 setCameraBorders(-1,-1,-1,600);
@@ -17,7 +17,7 @@ fade(out,1);
 if($turns < 3)
 addToQueue("call(GoToMap06)",1);
 fi
-if($turns > 3)
+if($turns >= 3)
 addToQueue("call(GoToMap04)",1);
 fi
 end();

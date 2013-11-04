@@ -1,12 +1,11 @@
 Map {
 function(OnLoad);
-fade(out,-1);
 fade(in,1);
 end();
 
 function(Init);
 //debug();
-//loadMap("Map03");
+loadMap("Map08");
 //end();
 playMusic("Data/BGM/BGM001.ogg");
 setCameraPosition();
@@ -20,7 +19,7 @@ fade(out,-1);
 fade(in,2);
 addNpc(416,544,"npcLeFleur","sprLeFleur");
 setDirection("npcLeFleur",2);
-addToQueue("moveObject(player,288,416,1.5,1)",2.5);
+addToQueue("moveObject(player,288,416,1.5,1)",2);
 addToQueue("setDirection(player,3)",1.5);
 addToQueue("moveObject(player,416,416,1,1)",0);
 addToQueue("setDirection(player,0)",1);

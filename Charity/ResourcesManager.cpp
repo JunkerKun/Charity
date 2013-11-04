@@ -196,6 +196,9 @@ std::string ResourcesManager::GetTextureName(sf::Texture* tex) {
 	for(std::map<std::string,sf::Texture*>::iterator it=texturesList->begin();it!=texturesList->end();it++) {
 		if (it->second==tex) return it->first;
 	};
+	for(std::map<std::string,sf::Texture*>::iterator it=texturesListGlobal->begin();it!=texturesListGlobal->end();it++) {
+		if (it->second==tex) return it->first;
+	};
 	return "";
 };
 

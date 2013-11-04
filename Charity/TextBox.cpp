@@ -42,7 +42,7 @@ TextBox::TextBox(int xx, int yy, sf::Texture* texture):Object() {
 	text->setFont(fnt->font);*/
 	text=engine->textGame;
 	index=0;
-	locked=true;
+	Lock();
 	timer=0;
 };
 
@@ -56,45 +56,43 @@ int TextBox::GetIndex() {
 
 bool TextBox::Update() {
 	engine->objectsManager->GetPlayer()->canMove=false;
-	if (engine->choiceBox==NULL) {
-		if (!locked) {
-			if (text->getString().getSize()!=strings.at(index).size()) {
-				timer+=engine->setTextSpeed*engine->GetDelta();
-				if (timer>1) {
-					SetText(strings.at(index).substr(0,text->getString().getSize()+1));
-					timer=0;
-				};
+	if (engine->choiceBox!=NULL) return true;
+	if (locked) return true;
+	if (text->getString().getSize()!=strings.at(index).size()) {
+		timer+=engine->setTextSpeed*engine->GetDelta();
+		if (timer>1) {
+			SetText(strings.at(index).substr(0,text->getString().getSize()+1));
+			timer=0;
+		};
+	};
+	if (engine->input->GetKeyPressed(sf::Keyboard::Z)) {
+		if (index<strings.size()-1) {
+			if (text->getString().getSize()>=strings.at(index).size()) {
+				index+=1;
+				SetText(strings.at(index).substr(0,strings.at(index).find_first_of(L"]")+2));
+			} else {
+				SetText(strings.at(index));
 			};
-			if (engine->input->GetKeyPressed(sf::Keyboard::Z)) {
-				if (index<strings.size()-1) {
-					if (text->getString().getSize()>=strings.at(index).size()) {
+		} else {
+			if (text->getString().getSize()>=strings.at(index).size()) {
+				//toDelete=true;
+				if (callback!=L"") {
+					std::wstring temp=callback;
+					engine->scripting.ExecuteFunction(callback);
+					if (callback==temp) callback=L"";
+					if (index<strings.size()-1) {
 						index+=1;
-						SetText(strings.at(index).substr(0,strings.at(index).find_first_of(L"]")+2));
+						text->setString(L"");
 					} else {
-						SetText(strings.at(index));
+						delete this;
+						return true;
 					};
 				} else {
-					if (text->getString().getSize()>=strings.at(index).size()) {
-						//toDelete=true;
-						if (callback!=L"") {
-							std::wstring temp=callback;
-							engine->scripting.ExecuteFunction(callback);
-							if (callback==temp) callback=L"";
-							if (index<strings.size()-1) {
-								index+=1;
-								text->setString(L"");
-							} else {
-								delete this;
-								return true;
-							};
-						} else {
-							delete this;
-							return true;
-						};
-					} else {
-						SetText(strings.at(index));
-					};
+					delete this;
+					return true;
 				};
+			} else {
+				SetText(strings.at(index));
 			};
 		};
 	};
@@ -116,10 +114,6 @@ void TextBox::SetNvl(bool enabled, sf::Texture* tex) {
 		engine->textBox->SetPosition(xAdv,yAdv);
 	};
 	nvlMode=enabled;
-};
-
-void TextBox::Unlock() {
-	locked=false;
 };
 
 void TextBox::Complete() {

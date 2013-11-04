@@ -1,0 +1,471 @@
+5 30
+0 544 32 none 
+4 736 32 ToMap04 
+4 640 32 ToMap04 
+0 544 96 none 
+5 736 96 0 
+0 544 160 none 
+0 544 224 none 
+0 544 288 none 
+4 640 288 SetDark1 
+4 736 288 SetDark1 
+0 544 352 none 
+0 544 416 none 
+0 544 480 none 
+0 544 544 none 
+0 544 608 none 
+0 544 672 none 
+4 640 736 SetDark2 
+4 736 736 SetDark2 
+0 544 736 none 
+0 544 800 none 
+0 544 864 none 
+0 544 928 none 
+0 544 992 none 
+0 544 1056 none 
+0 544 1120 none 
+4 736 1152 SetDark3 
+4 640 1152 SetDark3 
+0 544 1184 none 
+0 544 1248 none 
+0 544 1312 none 
+0 544 1376 none 
+0 544 1440 none 
+0 544 1504 none 
+4 640 1536 SetDark3 
+4 736 1536 SetDark3 
+0 544 1568 none 
+0 544 1632 none 
+0 544 1696 none 
+4 640 1696 SetDark0 
+4 736 1696 SetDark0 
+0 544 1760 none 
+0 544 1824 none 
+0 544 1888 none 
+4 736 1952 RarityMoves1 
+4 640 1952 RarityMoves1 
+0 544 1952 none 
+0 544 2016 none 
+0 544 2080 none 
+4 640 2144 Death 
+0 544 2144 none 
+4 640 2240 Death 
+4 640 2336 Death 
+4 768 2432 Death 
+4 672 2432 Death 
+4 768 2496 Death 
+4 672 2496 Death 
+4 576 2496 Death 
+0 544 2592 none 
+4 704 2656 Death 
+4 768 2656 Death 
+0 544 2656 none 
+0 544 2720 none 
+4 704 2752 Death 
+0 544 2784 none 
+4 704 2848 Death 
+0 544 2848 none 
+0 544 2912 none 
+4 704 2944 Death 
+0 544 2976 none 
+4 704 3008 Death 
+0 544 3040 none 
+4 704 3072 Death 
+0 544 3104 none 
+4 704 3168 Death 
+4 768 3168 Death 
+0 544 3168 none 
+0 544 3232 none 
+4 768 3328 Death 
+4 672 3328 Death 
+4 576 3328 Death 
+4 640 3392 Death 
+4 640 3456 Death 
+4 576 3552 Death 
+4 736 3616 Death 
+4 576 3648 Death 
+4 576 3712 Death 
+4 736 3712 Death 
+4 576 3776 Death 
+4 736 3808 Death 
+0 544 3872 none 
+4 736 3872 Death 
+4 704 3936 Death 
+0 544 3936 none 
+4 704 4000 Death 
+0 544 4000 none 
+4 704 4064 Death 
+4 768 4064 Death 
+0 544 4064 none 
+0 544 4128 none 
+4 768 4224 Death 
+4 672 4224 Death 
+4 576 4224 Death 
+4 640 4320 Death 
+4 640 4416 Death 
+4 640 4512 Death 
+4 768 4608 Death 
+4 672 4608 Death 
+4 640 4704 Death 
+4 736 4704 SetDark3 
+4 640 4800 Death 
+4 640 4896 Death 
+4 640 4992 Death 
+0 544 5088 none 
+0 576 5152 none 
+0 640 5152 none 
+4 736 5216 SetDark3 
+0 640 5216 none 
+0 640 5280 none 
+4 736 5344 SetDark1 
+0 640 5344 none 
+0 640 5408 none 
+5 736 5472 1 
+0 640 5472 none 
+4 736 5536 ToMap06 
+4 832 32 ToMap04 
+0 928 32 none 
+0 928 96 none 
+0 928 160 none 
+0 928 224 none 
+0 928 288 none 
+4 832 288 SetDark1 
+0 928 352 none 
+0 928 416 none 
+0 928 480 none 
+0 928 544 none 
+0 928 608 none 
+0 928 672 none 
+4 832 736 SetDark2 
+0 928 736 none 
+0 928 800 none 
+0 928 864 none 
+0 928 928 none 
+0 928 992 none 
+0 928 1056 none 
+0 928 1120 none 
+4 832 1152 SetDark3 
+0 928 1184 none 
+0 928 1248 none 
+0 928 1312 none 
+0 928 1376 none 
+0 928 1440 none 
+0 928 1504 none 
+4 832 1536 SetDark3 
+0 928 1568 none 
+0 928 1632 none 
+0 928 1696 none 
+4 832 1696 SetDark0 
+0 928 1760 none 
+0 928 1824 none 
+0 928 1888 none 
+4 832 1952 RarityMoves1 
+0 928 1952 none 
+0 928 2016 none 
+0 928 2080 none 
+4 800 2144 Death 
+0 928 2144 none 
+4 800 2208 Death 
+4 864 2272 Death 
+4 800 2272 Death 
+0 928 2336 none 
+0 928 2400 none 
+0 928 2464 none 
+0 928 2528 none 
+0 928 2592 none 
+4 864 2656 Death 
+4 864 3168 Death 
+0 928 3232 none 
+0 928 3296 none 
+0 928 3360 none 
+0 928 3424 none 
+4 800 3488 Death 
+4 896 3488 Death 
+4 800 3584 Death 
+4 864 4064 Death 
+0 928 4128 none 
+0 928 4192 none 
+0 928 4256 none 
+0 928 4320 none 
+4 800 4384 Death 
+4 864 4384 Death 
+4 800 4448 Death 
+4 864 4448 Death 
+0 928 4512 none 
+0 928 4576 none 
+0 928 4640 none 
+0 928 4704 none 
+4 800 4768 Death 
+4 864 4768 Death 
+4 800 4864 Death 
+4 800 4928 Death 
+4 800 4992 Death 
+4 864 4992 Death 
+0 928 5088 none 
+0 832 5152 none 
+0 896 5152 none 
+0 832 5216 none 
+0 832 5280 none 
+0 832 5344 none 
+0 832 5408 none 
+0 832 5472 none 
+-404
+TileSet2 512 0 0 1 0 
+TileSet2 512 64 0 1 0 
+TileSet2 512 128 0 1 0 
+TileSet2 512 192 0 1 0 
+TileSet2 512 256 0 1 0 
+TileSet2 512 320 0 1 0 
+TileSet2 512 384 0 1 0 
+TileSet2 512 448 0 1 0 
+TileSet2 512 512 0 1 0 
+TileSet2 512 576 0 1 0 
+TileSet2 512 640 0 1 0 
+TileSet2 512 704 0 1 0 
+TileSet2 512 768 0 1 0 
+TileSet2 512 896 0 1 0 
+TileSet2 512 960 0 1 0 
+TileSet2 512 832 0 1 0 
+TileShadows 512 960 0 1 1 
+TileShadows 512 896 0 1 1 
+TileShadows 512 832 0 0 1 
+TileSet2 512 1024 0 1 0 
+TileSet2 512 1088 0 1 0 
+TileSet2 512 1152 0 1 0 
+TileShadows 512 1088 0 1 1 
+TileShadows 512 1024 0 1 1 
+TileShadows 512 1152 0 2 1 
+TileSet2 512 5056 0 1 0 
+TileSet2 512 5120 4 1 0 
+TileShadows 512 5056 1 0 1 
+TileShadows 512 5120 1 1 1 
+TileSet2 576 0 0 4 0 
+TileSet2 640 0 0 4 0 
+TileSet2 704 0 0 4 0 
+TileSet2 768 0 0 4 0 
+TileSet2 768 64 0 4 0 
+TileSet2 704 64 0 4 0 
+TileSet2 640 64 0 4 0 
+TileSet2 576 64 0 4 0 
+TileSet2 640 128 0 4 0 
+TileSet2 704 128 0 4 0 
+TileSet2 768 128 0 4 0 
+TileSet2 576 192 0 4 0 
+TileSet2 640 192 0 4 0 
+TileSet2 704 192 0 4 0 
+TileSet2 768 192 0 4 0 
+TileSet2 576 128 0 5 0 
+TileSet2 576 384 0 4 0 
+TileSet2 576 320 0 4 0 
+TileSet2 576 256 0 4 0 
+TileSet2 768 256 0 4 0 
+TileSet2 768 320 0 4 0 
+TileSet2 768 384 0 4 0 
+TileSet2 640 384 0 4 0 
+TileSet2 640 320 0 4 0 
+TileSet2 640 256 0 4 0 
+TileSet2 704 320 0 4 0 
+TileSet2 704 384 0 4 0 
+TileSet2 704 256 0 5 0 
+TileSet2 768 512 0 4 0 
+TileSet2 704 512 0 4 0 
+TileSet2 640 512 0 4 0 
+TileSet2 576 512 0 4 0 
+TileSet2 576 448 0 4 0 
+TileSet2 768 448 0 4 0 
+TileSet2 640 448 0 4 0 
+TileSet2 704 448 0 5 0 
+TileSet2 576 576 0 4 0 
+TileSet2 640 576 0 4 0 
+TileSet2 704 576 0 4 0 
+TileSet2 768 576 0 4 0 
+TileSet2 576 768 0 4 0 
+TileSet2 576 704 0 4 0 
+TileSet2 576 640 0 4 0 
+TileSet2 640 640 0 4 0 
+TileSet2 704 640 0 4 0 
+TileSet2 768 640 0 4 0 
+TileSet2 768 704 0 4 0 
+TileSet2 768 768 0 4 0 
+TileSet2 640 768 0 4 0 
+TileSet2 640 704 0 4 0 
+TileSet2 704 704 0 4 0 
+TileSet2 704 768 0 4 0 
+TileSet2 768 960 0 4 0 
+TileSet2 704 960 0 4 0 
+TileSet2 640 960 0 4 0 
+TileSet2 576 960 0 4 0 
+TileSet2 576 896 0 4 0 
+TileSet2 576 832 0 4 0 
+TileSet2 768 832 0 4 0 
+TileSet2 768 896 0 4 0 
+TileSet2 704 896 0 4 0 
+TileSet2 640 896 0 4 0 
+TileSet2 640 832 0 4 0 
+TileSet2 704 832 0 4 0 
+TileShadows 576 832 0 0 1 
+TileShadows 640 832 0 0 1 
+TileShadows 704 832 0 0 1 
+TileShadows 768 832 0 0 1 
+TileShadows 768 896 0 1 1 
+TileShadows 704 896 0 1 1 
+TileShadows 640 896 0 1 1 
+TileShadows 576 896 0 1 1 
+TileShadows 576 960 0 1 1 
+TileShadows 640 960 0 1 1 
+TileShadows 704 960 0 1 1 
+TileShadows 768 960 0 1 1 
+TileSet2 576 1024 0 4 0 
+TileSet2 576 1088 0 4 0 
+TileSet2 576 1152 0 4 0 
+TileSet2 640 1152 0 4 0 
+TileSet2 704 1152 0 4 0 
+TileSet2 768 1152 0 4 0 
+TileSet2 768 1024 0 4 0 
+TileSet2 704 1024 0 4 0 
+TileSet2 640 1024 0 4 0 
+TileSet2 640 1088 0 4 0 
+TileSet2 704 1088 0 4 0 
+TileSet2 768 1088 0 4 0 
+TileShadows 576 1024 0 1 1 
+TileShadows 640 1024 0 1 1 
+TileShadows 704 1024 0 1 1 
+TileShadows 768 1024 0 1 1 
+TileShadows 768 1088 0 1 1 
+TileShadows 704 1088 0 1 1 
+TileShadows 640 1088 0 1 1 
+TileShadows 576 1088 0 1 1 
+TileShadows 576 1152 0 2 1 
+TileShadows 640 1152 0 2 1 
+TileShadows 704 1152 0 2 1 
+TileShadows 768 1152 0 2 1 
+TileSet2 608 5184 0 1 0 
+TileSet2 608 5120 3 0 0 
+TileSet2 576 5120 1 0 0 
+TileSet2 576 5056 0 4 0 
+TileSet2 640 5056 0 4 0 
+TileSet2 704 5056 0 4 0 
+TileSet2 768 5056 0 4 0 
+TileSet2 672 5120 0 4 0 
+TileSet2 736 5120 0 4 0 
+TileSet2 736 5184 0 4 0 
+TileSet2 672 5184 0 4 0 
+TileShadows 576 5056 1 0 1 
+TileShadows 640 5056 1 0 1 
+TileShadows 704 5056 1 0 1 
+TileShadows 768 5056 1 0 1 
+TileShadows 576 5120 1 1 1 
+TileShadows 640 5120 1 1 1 
+TileShadows 704 5120 1 1 1 
+TileShadows 640 5184 1 1 1 
+TileShadows 704 5184 1 1 1 
+TileShadows 768 5184 1 1 1 
+TileShadows 768 5120 1 1 1 
+TileSet2 608 5248 0 1 0 
+TileSet2 608 5312 0 1 0 
+TileSet2 608 5376 0 1 0 
+TileSet2 672 5248 0 4 0 
+TileSet2 736 5248 0 4 0 
+TileSet2 736 5312 0 4 0 
+TileSet2 672 5312 0 4 0 
+TileSet2 672 5376 0 4 0 
+TileSet2 736 5376 0 4 0 
+TileShadows 640 5248 1 2 1 
+TileShadows 704 5248 1 2 1 
+TileShadows 768 5248 1 2 1 
+TileSet2 608 5440 0 1 0 
+TileSet2 608 5504 0 1 0 
+TileSet2 608 5568 0 1 0 
+TileSet2 736 5440 0 4 0 
+TileSet2 672 5440 0 4 0 
+TileSet2 672 5504 0 4 0 
+TileSet2 736 5504 0 4 0 
+TileSet2 672 5568 0 4 0 
+TileSet2 736 5568 0 4 0 
+TileSet2 608 5632 0 1 0 
+TileSet2 608 5696 0 1 0 
+TileSet2 608 5760 0 1 0 
+TileSet2 672 5632 5 2 0 
+TileSet2 736 5632 5 2 0 
+TileSet2 736 5696 5 3 0 
+TileSet2 672 5696 5 3 0 
+TileSet2 672 5760 5 4 0 
+TileSet2 736 5760 5 4 0 
+TileShadows 672 5632 1 2 1 
+TileShadows 736 5632 1 2 1 
+TileSet2 608 5824 0 1 0 
+TileSet2 608 5888 0 1 0 
+TileSet2 896 0 0 0 0 
+TileSet2 896 64 0 0 0 
+TileSet2 896 128 0 0 0 
+TileSet2 896 192 0 0 0 
+TileSet2 832 0 0 4 0 
+TileSet2 832 64 0 4 0 
+TileSet2 832 192 0 4 0 
+TileSet2 832 128 0 5 0 
+TileSet2 896 256 0 0 0 
+TileSet2 896 320 0 0 0 
+TileSet2 896 384 0 0 0 
+TileSet2 832 256 0 4 0 
+TileSet2 832 320 0 4 0 
+TileSet2 832 384 0 5 0 
+TileSet2 896 448 0 0 0 
+TileSet2 896 512 0 0 0 
+TileSet2 832 448 0 4 0 
+TileSet2 832 512 0 4 0 
+TileSet2 896 576 0 0 0 
+TileSet2 832 576 0 4 0 
+TileSet2 896 640 0 0 0 
+TileSet2 896 704 0 0 0 
+TileSet2 832 640 0 4 0 
+TileSet2 832 704 0 4 0 
+TileSet2 832 768 0 4 0 
+TileSet2 896 768 0 0 0 
+TileSet2 832 832 0 4 0 
+TileSet2 832 896 0 4 0 
+TileSet2 832 960 0 4 0 
+TileSet2 896 896 0 0 0 
+TileSet2 896 960 0 0 0 
+TileSet2 896 832 0 0 0 
+TileShadows 832 832 0 0 1 
+TileShadows 832 896 0 1 1 
+TileShadows 832 960 0 1 1 
+TileShadows 896 896 0 1 1 
+TileShadows 896 960 0 1 1 
+TileShadows 896 832 0 0 1 
+TileSet2 832 1152 0 4 0 
+TileSet2 832 1088 0 4 0 
+TileSet2 832 1024 0 4 0 
+TileSet2 896 1024 0 0 0 
+TileSet2 896 1088 0 0 0 
+TileSet2 896 1152 0 0 0 
+TileShadows 832 1024 0 1 1 
+TileShadows 832 1088 0 1 1 
+TileShadows 832 1152 0 2 1 
+TileShadows 896 1024 0 1 1 
+TileShadows 896 1088 0 1 1 
+TileShadows 896 1152 0 2 1 
+TileSet2 800 5184 0 0 0 
+TileSet2 832 5056 0 4 0 
+TileSet2 896 5056 0 0 0 
+TileSet2 800 5120 2 0 0 
+TileSet2 832 5120 1 0 0 
+TileSet2 896 5120 5 1 0 
+TileShadows 832 5056 1 0 1 
+TileShadows 896 5056 1 0 1 
+TileShadows 800 5184 1 1 1 
+TileShadows 800 5120 1 1 1 
+TileShadows 864 5120 1 1 1 
+TileSet2 800 5248 0 0 0 
+TileSet2 800 5312 0 0 0 
+TileSet2 800 5376 0 0 0 
+TileShadows 800 5248 1 2 1 
+TileSet2 800 5440 0 0 0 
+TileSet2 800 5504 0 0 0 
+TileSet2 800 5568 0 0 0 
+TileSet2 800 5632 0 0 0 
+TileSet2 800 5696 0 0 0 
+TileSet2 800 5760 0 0 0 
+TileSet2 800 5824 0 0 0 
+TileSet2 800 5888 0 0 0 
+-404

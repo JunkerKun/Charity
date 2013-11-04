@@ -17,6 +17,8 @@ public:
 	float x,y, xPrev, yPrev;
 	void SetPosition(float xx, float yy);
 	void MoveToChunk();
+	void Lock();
+	void Unlock();
 	std::string objectName;
 protected:
 	sf::Rect<sf::Int16> bBox;

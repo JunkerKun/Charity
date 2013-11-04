@@ -15,7 +15,6 @@ public:
 	void ExtendText(std::wstring text);
 	std::vector<std::wstring> GetStrings();
 	int GetIndex();
-	void Unlock();
 	void Complete();
 	sf::Text GetTextBox();
 	void SetCallback(std::wstring callback);
@@ -31,7 +30,7 @@ private:
 	std::vector<std::wstring> strings; 
 	int index;
 	float timer;
-	bool locked, nvlMode;
+	bool nvlMode;
 };
 
 #endif

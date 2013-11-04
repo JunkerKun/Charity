@@ -22,6 +22,7 @@ ObjectsManager::ObjectsManager() {
 	playerXStart=-1;
 	playerYStart=-1;
 	playerDirStart=-1;
+	loaded=false;
 };
 
 void ObjectsManager::Resize(int sizeX, int sizeY) {
@@ -34,15 +35,15 @@ void ObjectsManager::Resize(int sizeX, int sizeY) {
 
 Object* ObjectsManager::GetObjectByName(std::string name) {
 	for(int i=0;i<chunksNumber.x;i++) {
-			for(int j=0;j<chunksNumber.y;j++) {
-				for (int k=0;k<chunks->at(i)->at(j)->list->size();k++) {
-					Object* obj = chunks->at(i)->at(j)->list->at(k);
-					if (obj->objectName==name) {
-						return obj;
-					};
+		for(int j=0;j<chunksNumber.y;j++) {
+			for (int k=0;k<chunks->at(i)->at(j)->list->size();k++) {
+				Object* obj = chunks->at(i)->at(j)->list->at(k);
+				if (obj->objectName==name) {
+					return obj;
 				};
 			};
 		};
+	};
 	return NULL;
 };
 
@@ -69,9 +70,12 @@ void ObjectsManager::Update() {
 	int chunkYEnd = std::min(chunksNumber.y,(chunkY+3)*scaleFactor);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
-			//int size=;
 			for(int k=0;k<chunks->at(i)->at(j)->list->size();k++) {
 				chunks->at(i)->at(j)->list->at(k)->Update();
+				if (loaded) {
+					//loaded=false;
+					return;
+				};
 			};
 		};
 	};
@@ -98,10 +102,13 @@ void ObjectsManager::Draw(sf::RenderTarget &rt) {
 	int chunkYEnd = std::min(chunksNumber.y,(chunkY+3)*scaleFactor);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
-			int size=chunks->at(i)->at(j)->list->size();
 			std::sort(chunks->at(i)->at(j)->list->begin(),chunks->at(i)->at(j)->list->end(),SortObjectsPredicate);
-			for(int k=0;k<size;k++) {
+			for(int k=0;k<chunks->at(i)->at(j)->list->size();k++) {
 				chunks->at(i)->at(j)->list->at(k)->Draw(rt);
+				if (loaded) {
+					loaded=false;
+					return;
+				};
 			};
 		};
 	};
@@ -118,11 +125,11 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 	case 1: {
 		temp=new Player(engine->resourcesManager->GetTexture(engine->playerSpriteName));
 		Player* plr = static_cast<Player*>(temp);
-		std::vector<int>* sets=engine->resourcesManager->GetTextureSettings(engine->playerSpriteName);
+		/*std::vector<int>* sets=engine->resourcesManager->GetTextureSettings(engine->playerSpriteName);
 		if (sets->at(0)!=-1) plr->imageWidth=sets->at(0);
-		if (sets->at(1)!=-1) plr->imageHeight=sets->at(1);
+		if (sets->at(1)!=-1) plr->imageHeight=sets->at(1);*/
 		//plr->SetOrigin(plr->imageWidth/2,plr->imageHeight-static_cast<int>(plr->imageHeight/7.63));
-		plr->SetOrigin(plr->imageWidth/2,plr->imageHeight-6*engine->gridSize/32);
+		//plr->SetOrigin(plr->imageWidth/2,plr->imageHeight-6*engine->gridSize/32);
 		break;
 			};
 	case 2: {
@@ -134,10 +141,10 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 	case 3: {
 		temp=new Decoration(engine->resourcesManager->GetTexture(function));
 		Decoration* dec = static_cast<Decoration*>(temp);
-		std::vector<int>* sets=engine->resourcesManager->GetTextureSettings(function);
+		/*std::vector<int>* sets=engine->resourcesManager->GetTextureSettings(function);
 		if (sets->at(0)!=-1) dec->imageWidth=sets->at(0);
-		if (sets->at(1)!=-1) dec->imageHeight=sets->at(1);
-		dec->SetOrigin(dec->imageWidth/2,dec->imageHeight-6*engine->gridSize/32);
+		if (sets->at(1)!=-1) dec->imageHeight=sets->at(1);*/
+		//dec->SetOrigin(dec->imageWidth/2,dec->imageHeight-6*engine->gridSize/32);
 		dec->spriteName=function;
 		dec->objectName=function;
 		break;
@@ -152,11 +159,11 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 		if (stoi(function)==engine->placeIndex) {
 			temp=new Player(engine->resourcesManager->GetTexture(engine->playerSpriteName));
 			Player* plr = static_cast<Player*>(temp);
-			std::vector<int>* sets=engine->resourcesManager->GetTextureSettings(engine->playerSpriteName);
+			/*std::vector<int>* sets=engine->resourcesManager->GetTextureSettings(engine->playerSpriteName);
 			if (sets->at(0)!=-1) plr->imageWidth=sets->at(0);
-			if (sets->at(1)!=-1) plr->imageHeight=sets->at(1);
+			if (sets->at(1)!=-1) plr->imageHeight=sets->at(1);*/
 			//plr->SetOrigin(plr->imageWidth/2,plr->imageHeight-static_cast<int>(plr->imageHeight/7.63));
-			plr->SetOrigin(plr->imageWidth/2,plr->imageHeight-6*engine->gridSize/32);
+			//plr->SetOrigin(plr->imageWidth/2,plr->imageHeight-6*engine->gridSize/32);
 			//engine->placeIndex=0;
 			break;
 		};
@@ -165,12 +172,12 @@ Object* ObjectsManager::AddObject(int x, int y, int index, std::string function)
 			};
 	};
 	if (done) {
-	temp->SetPosition(x, y);
-	temp->chunk.x=floor(temp->x/chunkSize.x);
-	temp->chunk.y=floor(temp->y/chunkSize.y);
-	temp->depth=temp->y;
-	chunks->at(temp->chunk.x)->at(temp->chunk.y)->list->push_back(static_cast<Object*>(temp));
-	return temp;
+		temp->SetPosition(x, y);
+		temp->chunk.x=floor(temp->x/chunkSize.x);
+		temp->chunk.y=floor(temp->y/chunkSize.y);
+		temp->depth=temp->y;
+		chunks->at(temp->chunk.x)->at(temp->chunk.y)->list->push_back(static_cast<Object*>(temp));
+		return temp;
 	};
 	return NULL;
 };
@@ -248,7 +255,7 @@ void ObjectsManager::Clear(int sizeX, int sizeY) {
 	int size=npcList.size();
 	for(int i=0;i<size;i++) {
 		npcList.erase(npcList.begin());
-		};
+	};
 	if (chunks!=NULL) {
 		for(int i=0;i<chunksNumber.x;i++) {
 			for(int j=0;j<chunksNumber.y;j++) {
@@ -301,7 +308,7 @@ bool ObjectsManager::LoadMap(std::string name) {
 	engine->tilesManager->LoadTiles(load);
 	load.close();
 	engine->camera->SetBorders(0,0,chunkSize.x*chunksNumber.x,chunkSize.y*chunksNumber.y);
-	
+	loaded=true;
 	return true;
 };
 

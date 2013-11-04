@@ -1,6 +1,8 @@
 Map06 {
 
 function(OnEnter);
+setEffect(lamp,0);
+fade(out,-1);
 fade(in,1);
 setCameraPosition();
 setCameraBorders(-1,-1,-1,600);
@@ -14,7 +16,7 @@ end();
 function(ToMap05);
 setCanMove(player,0);
 fade(out,1);
-if($turns == 0)
+if($turns <= 0)
 addToQueue("call(GoToMap05)",1);
 fi
 if($turns > 0)
@@ -23,7 +25,7 @@ fi
 end();
 
 function(GoToMap05);
-loadMap("Map04",2);
+loadMap("Map05",1);
 end();
 
 function(ToMap07);

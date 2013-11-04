@@ -1,0 +1,14 @@
+Map08 {
+
+function(OnEnter);
+fade(in,1);
+setCameraPosition();
+setCameraBorders(-1,-1,-1,2920);
+end();
+
+function(Init);
+varClear();
+call(OnEnter);
+end();
+
+}

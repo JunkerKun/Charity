@@ -84,5 +84,6 @@ private:
 	void EditorNum8();
 	void EditorNum9();
 	void EditorNum0();
+	void EditorMoveDown();
 };
 #endif

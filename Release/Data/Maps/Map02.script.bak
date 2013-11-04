@@ -3,13 +3,11 @@ Map02 {
 function(Init);
 setCameraPosition();
 setCameraBorders(0,0,800,900);
-//fade(out,-1);
+fade(out,-1);
 setCanMove(player,0);
 fade(in,2);
 addToQueue("setCanMove(player,1)",2);
-
 varSet(pinkieHere,0);
-
 setActive(usable,416,608,0);
 setActive(usable,288,192,0);
 end();

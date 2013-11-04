@@ -2,9 +2,8 @@
 0 160 160 none 
 0 224 160 none 
 0 160 224 none 
-0 224 224 none 
+0 224 256 none 
 0 160 288 none 
-5 224 288 0 
 0 160 352 none 
 0 160 416 none 
 0 160 480 none 
@@ -14,9 +13,9 @@
 0 352 160 none 
 0 416 160 none 
 0 480 160 none 
-0 352 192 none 
-2 352 192 Diary 
-0 288 224 none 
+0 288 192 none 
+2 288 192 Diary 
+5 288 288 0 
 3 384 352 sprTableJailL 
 3 448 352 sprTableJailR 
 0 288 544 none 
@@ -40,7 +39,6 @@
 0 544 544 none 
 0 608 544 none 
 -404
-TileSet2 256 128 1 3 0 
 TileSet2 256 64 1 2 0 
 TileSet2 192 64 1 2 0 
 TileSet2 192 0 1 1 0 
@@ -49,13 +47,15 @@ TileSet2 128 64 0 1 0
 TileSet2 128 128 0 1 0 
 TileSet2 128 192 0 1 0 
 TileSet2 128 0 4 0 0 
-TileSet2 192 128 1 3 0 
-TileSet2 256 192 0 4 0 
 TileSet2 192 192 0 4 0 
+TileSet2 256 192 0 4 0 
+TileSet2 192 128 1 3 0 
+TileSet2 256 128 1 3 0 
 TileSet2 192 192 1 5 1 
 TileSet2 192 192 3 6 1 
 TileSet2 192 192 1 4 1 
-TileSet2 256 192 2 4 1 
+TileSet 256 192 3 6 1 
+TileSet2 192 128 1 4 1 
 TileSet2 192 256 0 4 0 
 TileSet2 192 320 0 4 0 
 TileSet2 256 320 0 4 0 
@@ -127,7 +127,6 @@ TileSet2 64 1088 0 4 0
 TileSet2 128 1088 0 4 0 
 TileSet2 192 1088 0 4 0 
 TileSet2 256 1088 0 4 0 
-TileSet2 320 192 0 4 0 
 TileSet2 384 192 0 4 0 
 TileSet2 448 192 0 4 0 
 TileSet2 512 192 0 4 0 
@@ -143,8 +142,8 @@ TileSet2 448 0 1 1 0
 TileSet2 512 0 1 1 0 
 TileSet2 512 128 1 3 0 
 TileSet2 448 64 1 2 0 
+TileSet2 320 192 0 4 0 
 TileSet2 480 160 4 5 1 
-TileSet 320 192 3 6 2 
 TileSet2 512 256 0 4 0 
 TileSet2 384 256 0 4 0 
 TileSet2 320 256 0 4 0 

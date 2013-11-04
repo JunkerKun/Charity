@@ -31,9 +31,8 @@ void TilesManager::Draw(sf::RenderTarget &rt) {
 	int chunkYEnd = std::min(chunksNumber.y,(chunkY+2)*scaleFactor);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
-			int size=chunks->at(i)->at(j)->list->size();
 			//std::sort(chunks->at(i)->at(j)->list->begin(),chunks->at(i)->at(j)->list->end(),SortTilesPredicate);
-			for(int k=0;k<size;k++) {
+			for(int k=0;k<chunks->at(i)->at(j)->list->size();k++) {
 				chunks->at(i)->at(j)->list->at(k)->Draw(rt);
 			};
 		};

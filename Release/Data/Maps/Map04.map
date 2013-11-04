@@ -62,16 +62,13 @@
 0 1760 160 none 
 0 1824 160 none 
 0 1632 480 none 
-0 1696 480 none 
-5 1856 544 2 
-0 1696 544 none 
-0 1696 608 none 
-4 1760 608 ToMap05 
+5 1824 544 2 
+0 1632 544 none 
+0 1632 608 none 
+4 1728 608 ToMap05 
 4 1824 608 ToMap05 
-0 1696 672 none 
-0 1696 736 none 
-0 1760 736 none 
-0 1824 736 none 
+0 1632 672 none 
+0 1632 736 none 
 0 1888 160 none 
 0 1952 160 none 
 0 2016 160 none 
@@ -82,12 +79,9 @@
 0 2016 480 none 
 0 2016 544 none 
 0 2016 608 none 
-4 1888 608 ToMap05 
-4 1952 608 ToMap05 
+4 1920 608 ToMap05 
 0 2016 672 none 
 0 2016 736 none 
-0 1888 736 none 
-0 1952 736 none 
 -404
 TileSet2 64 192 0 1 0 
 TileSet2 128 0 1 1 0 
@@ -316,10 +310,6 @@ TileSet2 1856 320 0 4 0
 TileSet2 1856 384 0 4 0 
 TileSet2 1728 384 0 4 0 
 TileSet2 1792 384 0 5 0 
-TileSet2 1664 512 0 1 0 
-TileSet2 1664 576 0 1 0 
-TileSet2 1600 448 1 0 0 
-TileSet2 1664 448 3 0 0 
 TileSet2 1728 448 0 4 0 
 TileSet2 1728 512 0 4 0 
 TileSet2 1728 576 0 4 0 
@@ -329,14 +319,22 @@ TileSet2 1856 576 0 4 0
 TileSet2 1792 576 0 4 0 
 TileSet2 1792 512 0 4 0 
 TileSet2 1792 448 0 4 0 
-TileSet2 1664 640 0 1 0 
-TileSet2 1664 704 0 1 0 
+TileSet2 1600 512 0 1 0 
+TileSet2 1600 576 0 1 0 
+TileSet2 1600 448 3 0 0 
+TileSet2 1664 448 0 4 0 
+TileSet2 1664 512 0 4 0 
+TileSet2 1664 576 0 4 0 
 TileSet2 1728 704 0 4 0 
 TileSet2 1792 704 0 4 0 
 TileSet2 1856 704 0 4 0 
 TileSet2 1856 640 0 4 0 
 TileSet2 1792 640 0 4 0 
 TileSet2 1728 640 0 5 0 
+TileSet2 1600 640 0 1 0 
+TileSet2 1600 704 0 1 0 
+TileSet2 1664 640 0 4 0 
+TileSet2 1664 704 0 4 0 
 TileSet2 1984 192 0 0 0 
 TileSet2 1920 0 1 1 0 
 TileSet2 1984 0 5 0 0 

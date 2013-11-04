@@ -1,0 +1,225 @@
+10 13
+0 224 96 none 
+0 224 160 none 
+0 224 224 none 
+0 224 288 none 
+0 224 352 none 
+0 224 416 none 
+0 224 480 none 
+0 224 544 none 
+0 224 608 none 
+0 224 672 none 
+0 224 736 none 
+0 224 800 none 
+0 224 864 none 
+0 224 928 none 
+0 224 992 none 
+0 224 1056 none 
+0 224 1120 none 
+0 224 1184 none 
+0 224 1248 none 
+0 224 1312 none 
+0 224 1376 none 
+0 224 1440 none 
+0 224 1504 none 
+0 224 1568 none 
+0 224 1632 none 
+0 320 608 none 
+0 416 608 none 
+0 512 608 none 
+0 512 736 none 
+0 416 736 none 
+0 320 736 none 
+0 480 1632 none 
+0 416 1632 none 
+0 352 1632 none 
+0 288 1632 none 
+0 544 96 none 
+0 544 160 none 
+0 544 224 none 
+0 544 288 none 
+0 544 352 none 
+0 608 352 none 
+0 672 352 none 
+0 736 352 none 
+0 608 608 none 
+0 704 608 none 
+0 704 736 none 
+0 608 736 none 
+0 736 1632 none 
+0 672 1632 none 
+0 608 1632 none 
+0 544 1632 none 
+0 800 352 none 
+0 864 352 none 
+0 928 352 none 
+0 1056 352 none 
+0 992 352 none 
+0 800 608 none 
+0 800 672 none 
+0 800 736 none 
+0 800 800 none 
+0 800 864 none 
+0 800 928 none 
+0 800 992 none 
+0 800 1632 none 
+0 800 1696 none 
+0 800 1760 none 
+0 800 1824 none 
+0 800 1888 none 
+0 800 1952 none 
+0 800 2016 none 
+0 800 2080 none 
+0 800 2144 none 
+0 800 2208 none 
+0 800 2272 none 
+0 800 2336 none 
+0 800 2400 none 
+0 800 2464 none 
+0 800 2528 none 
+0 800 2592 none 
+0 1312 352 none 
+0 1248 352 none 
+0 1184 352 none 
+0 1120 352 none 
+0 1120 608 none 
+0 1216 608 none 
+0 1312 608 none 
+0 1120 672 none 
+0 1120 736 none 
+0 1216 736 none 
+0 1312 736 none 
+0 1120 800 none 
+0 1120 864 none 
+0 1120 928 none 
+0 1120 992 none 
+0 1120 1632 none 
+0 1184 1632 none 
+0 1248 1632 none 
+0 1312 1632 none 
+0 1120 1696 none 
+0 1120 1760 none 
+0 1120 1824 none 
+0 1120 1888 none 
+0 1120 1952 none 
+0 1120 2016 none 
+0 1120 2080 none 
+0 1120 2144 none 
+0 1120 2208 none 
+0 1120 2272 none 
+0 1120 2336 none 
+0 1120 2400 none 
+0 1120 2464 none 
+0 1120 2528 none 
+0 1120 2592 none 
+0 1376 96 none 
+0 1376 160 none 
+0 1376 224 none 
+0 1376 288 none 
+0 1376 352 none 
+0 1408 608 none 
+0 1504 608 none 
+0 1408 736 none 
+0 1504 736 none 
+0 1376 1632 none 
+0 1440 1632 none 
+0 1504 1632 none 
+0 1568 1632 none 
+0 1696 96 none 
+0 1696 160 none 
+0 1696 224 none 
+0 1696 288 none 
+0 1696 352 none 
+0 1696 416 none 
+0 1696 480 none 
+0 1696 544 none 
+0 1696 608 none 
+0 1600 608 none 
+0 1696 672 none 
+0 1696 736 none 
+0 1600 736 none 
+0 1696 800 none 
+0 1696 864 none 
+0 1696 928 none 
+0 1696 992 none 
+0 1696 1056 none 
+0 1696 1120 none 
+0 1696 1184 none 
+0 1696 1248 none 
+0 1696 1312 none 
+0 1696 1376 none 
+0 1696 1440 none 
+0 1696 1504 none 
+0 1696 1568 none 
+0 1632 1632 none 
+0 1696 1632 none 
+-404
+TileSet 256 192 6 2 0 
+TileSet 256 128 6 2 0 
+TileSet 256 64 6 2 0 
+TileSet 256 320 6 2 0 
+TileSet 256 256 6 2 0 
+TileSet 320 64 6 2 0 
+TileSet 384 64 6 2 0 
+TileSet 448 64 6 2 0 
+TileSet 448 128 6 2 0 
+TileSet 448 192 6 2 0 
+TileSet 320 192 6 2 0 
+TileSet 320 128 6 2 0 
+TileSet 384 128 6 2 0 
+TileSet 384 192 6 2 0 
+TileSet 448 320 6 2 0 
+TileSet 384 320 6 2 0 
+TileSet 320 320 6 2 0 
+TileSet 448 256 6 2 0 
+TileSet 384 256 6 2 0 
+TileSet 320 256 6 2 0 
+TileSet 832 576 6 2 0 
+TileSet 896 576 6 2 0 
+TileSet 960 576 6 2 0 
+TileSet 1024 576 6 2 0 
+TileSet 1024 768 6 2 0 
+TileSet 960 768 6 2 0 
+TileSet 896 768 6 2 0 
+TileSet 832 768 6 2 0 
+TileSet 832 704 6 2 0 
+TileSet 896 704 6 2 0 
+TileSet 960 704 6 2 0 
+TileSet 1024 704 6 2 0 
+TileSet 960 640 6 2 0 
+TileSet 896 640 6 2 0 
+TileSet 832 640 6 2 0 
+TileSet 1024 640 6 2 0 
+TileSet 832 960 6 2 0 
+TileSet 896 960 6 2 0 
+TileSet 960 960 6 2 0 
+TileSet 1024 960 6 2 0 
+TileSet 1024 896 6 2 0 
+TileSet 960 896 6 2 0 
+TileSet 896 896 6 2 0 
+TileSet 832 896 6 2 0 
+TileSet 832 832 6 2 0 
+TileSet 896 832 6 2 0 
+TileSet 960 832 6 2 0 
+TileSet 1024 832 6 2 0 
+TileSet 1408 64 6 2 0 
+TileSet 1472 64 6 2 0 
+TileSet 1536 64 6 2 0 
+TileSet 1408 192 6 2 0 
+TileSet 1408 128 6 2 0 
+TileSet 1472 128 6 2 0 
+TileSet 1536 128 6 2 0 
+TileSet 1536 192 6 2 0 
+TileSet 1472 192 6 2 0 
+TileSet 1536 320 6 2 0 
+TileSet 1472 320 6 2 0 
+TileSet 1408 320 6 2 0 
+TileSet 1408 256 6 2 0 
+TileSet 1536 256 6 2 0 
+TileSet 1472 256 6 2 0 
+TileSet 1600 64 6 2 0 
+TileSet 1600 128 6 2 0 
+TileSet 1600 192 6 2 0 
+TileSet 1600 256 6 2 0 
+TileSet 1600 320 6 2 0 
+-404
