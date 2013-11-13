@@ -11,9 +11,9 @@ Player::Player(sf::Texture* tex):Image(tex) {
 	playerHP=&engine->playerHP;
 	playerSP=&engine->playerSP;
 	playerMP=&engine->playerMP;
-	drawHP=engine->drawHP;
-	drawSP=engine->drawSP;
-	drawMP=engine->drawMP;
+	drawHP=&engine->drawHP;
+	drawSP=&engine->drawSP;
+	drawMP=&engine->drawMP;
 	speed=126;
 	objectIndex=1;
 	direction=0;
@@ -79,21 +79,6 @@ bool Player::Update() {
 	xPrev=x;
 	yPrev=y;
 	drawExclamation=false;
-
-	if (overlayHP!=NULL) {
-		overlayHP->visible=drawHP;
-		overlayHPBar->visible=drawHP;
-		if (drawHP) {
-			overlayHPBar->GetSprite().setTextureRect(sf::IntRect(0,0,
-				static_cast<int>((overlayHPBar->imageWidth/100.f)**playerHP),overlayHPBar->imageHeight));
-		};
-	};
-	if (overlaySP!=NULL) {
-		overlaySP->visible=drawSP;
-	};
-	if (overlayMP!=NULL) {
-		overlayMP->visible=drawMP;
-	};
 	if (!isControlled && !isBlocked) {
 		isMoving=false;
 		if (canMove) {
@@ -107,8 +92,8 @@ bool Player::Update() {
 				x+=speed*engine->GetDelta();
 				if (directionTo<=1) {directionTo=0; directionSpin=-1;}
 				else
-				if (directionTo==2) {directionTo=0; directionSpin=-1;}
-				else directionTo=4;
+					if (directionTo==2) {directionTo=0; directionSpin=-1;}
+					else directionTo=4;
 			} else
 				if (engine->input->GetKeyIsPressed(sf::Keyboard::Up)) {
 					isMoving=true;
@@ -173,7 +158,7 @@ bool Player::Update() {
 						blk.x=x;
 						blk.y=y+20;
 						break;
-							};
+						   };
 					case 1: {
 						blk.x=x-16;
 						blk.y=y;
@@ -189,7 +174,7 @@ bool Player::Update() {
 						blk.x=x+20;
 						blk.y=y;
 						break;
-							 };
+						   };
 					};
 					collision=CollisionCheckIntersect(&blk,2);
 					if (collision!=NULL) {
@@ -200,18 +185,20 @@ bool Player::Update() {
 					};
 				};
 		};
-	}
+	} else {
+		engine->camera->angleTo=0;		
+	};
 	directionDelta=Increment(directionDelta,directionTo,6);
 	if (directionDelta>4) {
 		if (directionSpin==1) {
-		directionTo=1;
-		directionDelta-=4;
+			directionTo=1;
+			directionDelta-=4;
 		};
 	};
 	if (directionDelta<1) {
 		if (directionSpin==-1) {
-		directionTo=4;
-		directionDelta+=4;
+			directionTo=4;
+			directionDelta+=4;
 		};
 	};
 	direction=directions[static_cast<int>(Round(directionDelta))];
@@ -255,6 +242,21 @@ bool Player::Update() {
 
 bool Player::Draw(sf::RenderTarget &RT) {
 	if (!visible) return true;
+
+	if (overlayHP!=NULL) {
+		overlayHP->visible=*drawHP;
+		overlayHPBar->visible=*drawHP;
+		if (drawHP) {
+			overlayHPBar->GetSprite().setTextureRect(sf::IntRect(0,0,static_cast<int>((overlayHPBar->imageWidth/100.f)**playerHP),overlayHPBar->imageHeight));
+		};
+	};
+	if (overlaySP!=NULL) {
+		overlaySP->visible=*drawSP;
+	};
+	if (overlayMP!=NULL) {
+		overlayMP->visible=*drawMP;
+	};
+
 	RT.draw(sprShadow);
 	Image::Draw(RT);
 	if (drawExclamation) {
@@ -306,7 +308,7 @@ void Player::SetDirection(int dir, bool instant) {
 };
 
 int Player::GetDirection() {
-	return directionTo;
+	return directions[directionTo];
 };
 
 Player::~Player() {

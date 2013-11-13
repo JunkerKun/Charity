@@ -29,7 +29,7 @@ end();
 function(Nightstand1_2);
 if($Corrupt == 1)
 showText("Today, I met a new friend named Pinkie Pie.");
-showText("# #She asked me if I wanted to play a game.");
+showText("She asked me if I wanted to play a game.");
 fi
 if($Corrupt == 0)
 showText("Today, I met a new pony named Pinkie Pie.");
@@ -91,7 +91,7 @@ if($pinkieHere == 1)
 showText("???","My name is Pinkie Pie. What is your name?");
 showText("Charity","Charity.");
 showText("Pinkie Pie","Woowie what a pretty name!");
-showText("Pinkie Pie","Do you want to play a game Charity?");
+showText("Pinkie Pie","Do you want to play a game, Charity?");
 textCallback(Door1_2);
 fi
 end();
@@ -105,6 +105,8 @@ function(ChoiceYes);
 showText("Charity","Yes.");
 showText("Pinkie","Really!? Okay! Let's have a lot of fun!");
 varSet(Corrupt,1);
+getStamina(sta);
+setStamina($sta+10);
 textCallback(ConvEnd1_1);
 end();
 

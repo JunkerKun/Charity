@@ -3,12 +3,36 @@ Map08 {
 function(OnEnter);
 fade(in,1);
 setCameraPosition();
-setCameraBorders(-1,-1,-1,-1);
+setCameraBorders(-1,-1,-1,3520);
+varSet(touched,0);
 end();
 
 function(Init);
 varClear();
 call(OnEnter);
+end();
+
+function(ToMap07);
+if($touched == 0)
+getDirection(player,dir);
+if($dir == 1)
+setDirection(player,3,0);
+moveObject(player,32,0,0.5);
+fi
+if($dir == 2)
+setDirection(player,0,0);
+moveObject(player,0,32,0.5);
+fi
+
+if($touched == 0)
+showText("Charity","I don't want to go back.");
+textCallback(TriggerActivate);
+fi
+varSet(touched,1);
+end();
+
+function(TriggerActivate);
+varSet(touched,0);
 end();
 
 }

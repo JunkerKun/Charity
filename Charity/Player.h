@@ -21,7 +21,7 @@ private:
 	float maxHP, maxSP, maxMP;
 	float* playerHP,* playerSP,* playerMP;
 	Overlay* overlayHP,* overlayHPBar,* overlaySP,* overlayMP;
-	bool drawHP, drawSP, drawMP;
+	bool* drawHP,* drawSP,* drawMP;
 	sf::Sprite sprShadow;
 	sf::Sprite sprExclamation;
 	bool drawExclamation, canPlaySound;

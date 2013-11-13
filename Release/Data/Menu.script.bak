@@ -1,6 +1,7 @@
 Menu {
 
 function(Init);
+setShowHealth(0);
 showChoice("","Start Game",Start);
 setChoiceDrawSprite(0);
 addChoice("Load Game",Load);

@@ -3,7 +3,7 @@ Map05 {
 function(OnEnter);
 fade(in,1);
 setCameraPosition();
-setCameraBorders(336,-1,1136,-1);
+setCameraBorders(336,-1,1136,5660);
 getEnterPlace(place);
 if($place == 1)
 setEffect(lamp,0.25);
@@ -18,7 +18,6 @@ function(Init);
 addNpc(720,2080,"npcRarity","sprRarity");
 varSet(EnteredMap05,1);
 call(OnEnter);
-
 end();
 
 function(ToMap04);

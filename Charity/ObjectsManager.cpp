@@ -94,6 +94,7 @@ void ObjectsManager::Update() {
 
 void ObjectsManager::Draw(sf::RenderTarget &rt) {
 	if (chunks==NULL) return;
+	drawQueue.clear();
 	int chunkX = floor(engine->camera->xView/chunkSize.x);
 	int chunkY = floor(engine->camera->yView/chunkSize.y);
 	int chunkXStart = std::max(0,chunkX-1);
@@ -102,15 +103,20 @@ void ObjectsManager::Draw(sf::RenderTarget &rt) {
 	int chunkYEnd = std::min(chunksNumber.y,(chunkY+3)*scaleFactor);
 	for(int i=chunkXStart;i<chunkXEnd;i++) {
 		for(int j=chunkYStart;j<chunkYEnd;j++) {
-			std::sort(chunks->at(i)->at(j)->list->begin(),chunks->at(i)->at(j)->list->end(),SortObjectsPredicate);
+			//std::sort(chunks->at(i)->at(j)->list->begin(),chunks->at(i)->at(j)->list->end(),SortObjectsPredicate);
 			for(int k=0;k<chunks->at(i)->at(j)->list->size();k++) {
-				chunks->at(i)->at(j)->list->at(k)->Draw(rt);
-				if (loaded) {
-					loaded=false;
-					return;
-				};
+				//chunks->at(i)->at(j)->list->at(k)->Draw(rt);
+				drawQueue.push_back(chunks->at(i)->at(j)->list->at(k));
 			};
 		};
+	};
+	if (loaded) {
+		loaded=false;
+		return;
+	};
+	std::sort(drawQueue.begin(),drawQueue.end(),SortObjectsPredicate);
+	for(int i=0;i<drawQueue.size();i++) {
+		drawQueue.at(i)->Draw(rt);
 	};
 };
 

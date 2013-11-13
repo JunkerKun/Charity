@@ -5,9 +5,11 @@ end();
 
 function(Init);
 //debug();
-fade(out,-1);
-loadMap("Map08");
+//loadMap("Map08");
 //end();
+setShowHealth(0);
+setHealth(10);
+setStamina(50);
 playMusic("Data/BGM/BGM001.ogg");
 setCameraPosition();
 setCameraBorders(0,0,800,900);
@@ -72,10 +74,18 @@ end();
 fi
 if($porridgeEaten == 0)
 showText("Charity","Maybe if I'm a good pony and eat the porridge mommy will come back.");
-varSet(porridgeEaten,1);
+textCallback(Table_2);
 end();
 fi
-showText("Charity","I ate the porridge, there is nothing left.");
+showText("Charity","I already ate the porridge, there is nothing left.");
+end();
+
+function(Table_2);
+setCanMove(player,0);
+addToQueue("setShowHealth(1)",1);
+addToQueue("varSet(porridgeEaten,1)",0);
+addToQueue("setHealth(20)",0);
+addToQueue("setCanMove(player,1)",0);
 end();
 
 function(Nightstand);

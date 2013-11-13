@@ -3,7 +3,7 @@ Map05 {
 function(OnEnter);
 fade(in,1);
 setCameraPosition();
-setCameraBorders(336,-1,1136,-1);
+setCameraBorders(336,-1,1136,5760);
 getEnterPlace(place);
 if($place == 1)
 setEffect(lamp,0.25);

@@ -3,7 +3,6 @@ Map02 {
 function(Init);
 setCameraPosition();
 setCameraBorders(0,0,800,900);
-fade(out,-1);
 setCanMove(player,0);
 fade(in,2);
 addToQueue("setCanMove(player,1)",2);
@@ -92,7 +91,7 @@ if($pinkieHere == 1)
 showText("???","My name is Pinkie Pie. What is your name?");
 showText("Charity","Charity.");
 showText("Pinkie Pie","Woowie what a pretty name!");
-showText("Pinkie Pie","Do you want to play a game Charity?");
+showText("Pinkie Pie","Do you want to play a game, Charity?");
 textCallback(Door1_2);
 fi
 end();
@@ -106,6 +105,8 @@ function(ChoiceYes);
 showText("Charity","Yes.");
 showText("Pinkie","Really!? Okay! Let's have a lot of fun!");
 varSet(Corrupt,1);
+getStamina(sta);
+setStamina($sta+10);
 textCallback(ConvEnd1_1);
 end();
 

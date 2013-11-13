@@ -11,7 +11,7 @@ Image::Image(char* path):Object() {
 Image::Image(sf::Texture* tex):Object() {
 	std::string name = engine->resourcesManager->GetTextureName(tex);
 	std::vector<int>* vec=engine->resourcesManager->GetTextureSettings(name);
-	Load(tex, vec);
+	if (tex!=NULL) Load(tex, vec);
 };
 
 bool Image::Load(sf::Texture* tex, std::vector<int>* sets) {
